@@ -19,10 +19,7 @@ from bets.views import Index
 
 admin.autodiscover()
 
-urlpatterns = patterns('',
-  url(r'^$', Index.as_view()),
-  url(r'^admin/', include(admin.site.urls)),
-)
-#urlpatterns = [
-#    url(r'^admin/', admin.site.urls),
-#]
+urlpatterns = [
+    url(r'^$', Index.as_view()),
+    url(r'^admin/', admin.site.urls),
+]
