@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row clearfix">
+  <div class="col-md-12 column">
+    {% for bet in bets %}
+    <div class="well">
+        <span>{{ bet.scoreA }} vs {{ bet.scoreB }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

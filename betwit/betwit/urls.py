@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, patterns, include
 from django.contrib import admin
-from bets.views import Index
+from bets.views import Index,Profile
 
 admin.autodiscover()
 
 urlpatterns = [
     url(r'^$', Index.as_view()),
+    url(r'^user/(\w+)/$', Profile.as_view()),
     url(r'^admin/', admin.site.urls),
 ]

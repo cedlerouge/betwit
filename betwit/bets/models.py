@@ -22,5 +22,5 @@ class Bet(models.Model):
     stricke     	= models.BooleanField(default=False)
     created_date	= models.DateTimeField(auto_now_add=True)
     modified_date	= models.DateTimeField(auto_now_add=True)
-    points_won		= models.IntegerField()
+    points_won		= models.IntegerField(null=True, blank=True)
     
