@@ -19,7 +19,7 @@ class Bet(models.Model):
     triesB		= models.IntegerField()
     card		= models.BooleanField(default=False)
     drop_goal		= models.BooleanField(default=False)
-    stricke     	= models.BooleanField(default=False)
+    fight	     	= models.BooleanField(default=False)
     created_date	= models.DateTimeField(auto_now_add=True)
     modified_date	= models.DateTimeField(auto_now_add=True)
     points_won		= models.IntegerField(null=True, blank=True)
