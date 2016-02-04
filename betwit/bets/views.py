@@ -11,8 +11,9 @@ from matchs.models import Match
 from models import Bet
 from forms import BetForm
 
-# for debug 
-import pdb
+import logging
+logger = logging.getLogger('django')
+
 
 class Index(View):
   def get(self, request):
@@ -21,6 +22,16 @@ class Index(View):
   def post(self, request):
     #return HttpResponse('I am called from a post Request')
     return render(request, 'base.html')
+
+class UserRedirect(View):
+  def get(self, request):
+    if request.user.is_authenticated():
+      logger.info('authorized user')
+      return HttpResponseRedirect('/user/'+request.user.username)
+    else:
+      logger.info('unauthorized user')
+      return HttpResponseRedirect('/login/')
+
 
 class Profile(View):
   """

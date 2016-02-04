@@ -6,7 +6,24 @@
   
   <body>
     <nav class="navbar navbar-default" role="navigation">
-      <a class="navbar-brand" href="#">MyBets</a>
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-toggle">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">BetWit</a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="nav-toggle">
+        <ul class="nav navbar-nav">
+          <li ng-class="pageClass('/')"><a href="/results_cup/">R&eacute;sultats & Calendrier</a></li>
+          <li ng-class="pageClass('/add-contact')"><a href="/ranking">Classement</a></li>
+          <li ng-class="pageClass('/add-contact')"><a href="/prognosis">Paris</a></li>
+          <li ng-class="pageClass('/add-contact')"><a href="/rules">R&egrave;glement</a></li>
+          <li ng-class="pageClass('/add-contact')"><a href="/user/">Mon Compte</a></li>
+        </ul>
+      </div>
     </nav>
 
     <div class="container">
