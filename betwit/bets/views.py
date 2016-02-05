@@ -8,11 +8,22 @@ from django.views.generic import View
 
 from user_profile.models import User
 from matchs.models import Match
-from models import Bet
-from forms import BetForm
+from models import Bet, BetCup
+from forms import BetForm, BetCupForm
+
+
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 import logging
 logger = logging.getLogger('django')
+
+
+class LoginRequiredMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
+
 
 
 class Index(View):
@@ -33,7 +44,7 @@ class UserRedirect(View):
       return HttpResponseRedirect('/login/')
 
 
-class Profile(View):
+class Profile(LoginRequiredMixin,View):
   """
   User profile reachable from /user/<username>/ URL
   """
@@ -47,12 +58,21 @@ class Profile(View):
     params['form'] = form
     return render(request, 'profile.html', params)
 
-class PostBet(View):
-  """ Match Post fomr available on page /user/<username> URL"""
+class PostBet(LoginRequiredMixin,View):
+  def get(self, request, username):
+    params              =  dict()
+    user                = User.objects.get(username=username)
+    form                = BetCupForm()
+    params['user']      = user
+    params['form']      = form
+    return render(request, 'betcup.html', params)
+
+
+  """ Match Post form available on page /user/<username> URL"""
   def post(self, request, username):
     form = BetForm(self.request.POST)
     if form.is_valid():
-      user	= User.objects.get(username=username)
+      ser	= User.objects.get(username=username)
       match     = Match.objects.get(id=form.cleaned_data['match'])
       print 'form = %r' % form
       bet	= Bet(
@@ -71,4 +91,39 @@ class PostBet(View):
       return HttpResponseRedirect('/user/'+username+'/')
     else:
       print 'form = %r' % form
-      return render(request, 'profile.html', {'form': form})
+      return render(request, 'betcup.html', {'form': form})
+
+
+class PostBetCup(LoginRequiredMixin,View):
+  def get(self, request, username):
+    params		=  dict()
+    user		= User.objects.get(username=username)
+    form		= BetCupForm()
+    params['user']	= user
+    params['form']	= form
+    return render(request, 'betcup.html', params)
+
+  """
+  Bet Cup Post form available on page /user/<username/betcup URL
+  """
+  def post(self, request, username):
+    form = BetCupForm(self.request.POST)
+    if form.is_valid():
+      user	= User.objects.get(username=username)
+      bet_cuup	= BetCup(
+                    user	= user,
+                    first	= form.cleaned_data['first'],
+                    second      = form.cleaned_data['second'],
+                    thrid       = form.cleaned_data['third'],
+                    fourth      = form.cleaned_data['fourth'],
+                    fifth       = form.cleaned_data['fifth'],
+                    sixth       = form.cleaned_data['sixth'],
+                    grand_slam	= form.cleaned_data['grand_slam'],
+                    wooden_spoon= form.cleaned_data['wooden_spoon'],
+                    created_date= timezone.now()
+                  )
+      bet_cup.save()
+      return HttpResponseRedirect('/user/'+username+'/')
+    else:
+      return render(request,'betcup.html', {'form': form})
+

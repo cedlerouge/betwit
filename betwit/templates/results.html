@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row clearfix">
+  <h3>Resulats et Calendrier du tournoi des VI nations 2016</h3>
+  <div class="col-md-12 column">
+    {% for m in matchs %}
+    <div class="well">
+        <span>{{ m.match_date }} - {{ m.teamA }} ({{ m.scoreA }}) vs ({{ m.scoreB }}) {{ m.scoreB }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+

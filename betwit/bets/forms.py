@@ -15,4 +15,24 @@ class BetForm(forms.Form):
     card	= forms.BooleanField(required=False, initial=False)
     drop_goal	= forms.BooleanField(required=False, initial=False)
     fight	= forms.BooleanField(required=False, initial=False)
-    
+
+
+class BetCupForm(forms.Form):
+
+  teams_choice = (
+      ('an', 'Angleterre'),
+      ('ec', 'Ecosse'),
+      ('fr', 'France'),
+      ('ir', 'Irelande'),
+      ('it', 'Italie'),
+      ('pg', 'Pays de Galles'),
+    )
+
+  first		= forms.ChoiceField(choices=teams_choice, widget=forms.Select())
+  second	= forms.ChoiceField(choices=teams_choice, widget=forms.Select())
+  third		= forms.ChoiceField(choices=teams_choice, widget=forms.Select())
+  fourth	= forms.ChoiceField(choices=teams_choice, widget=forms.Select())
+  fifth		= forms.ChoiceField(choices=teams_choice, widget=forms.Select())
+  sixth		= forms.ChoiceField(choices=teams_choice, widget=forms.Select())
+  grand_slam	= forms.BooleanField(required=False, initial=False)
+  wooden_spoon	= forms.BooleanField(required=False, initial=False)     

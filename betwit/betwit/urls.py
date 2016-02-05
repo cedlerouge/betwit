@@ -15,14 +15,16 @@ Including another URLconf
 """
 from django.conf.urls import url, patterns, include
 from django.contrib import admin
-from bets.views import Index, Profile, PostBet, UserRedirect
+from bets.views import Index, Profile, PostBet, UserRedirect, PostBetCup
+from matchs.views import Results
 
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^$', Index.as_view()),
+    url(r'^$', Results.as_view()),
     url(r'^user/(\w+)/$', Profile.as_view()),
-    url(r'^user/(\w+)/post/$', PostBet.as_view()),
+    url(r'^user/(\w+)/postbet/$', PostBet.as_view()),
+    url(r'^user/(\w+)/postbetcup/$', PostBetCup.as_view()),
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', 'django.contrib.auth.views.login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout'),
