@@ -7,7 +7,7 @@ class BetAdmin(admin.ModelAdmin):
   search_fields	= ('match',)
 # Register your models here.
 
-from models import Bet
+from models import Bet, BetCup
 
 admin.site.register(Bet, BetAdmin)
-
+admin.site.register(BetCup)
