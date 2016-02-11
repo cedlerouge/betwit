@@ -127,3 +127,22 @@ class PostBetCup(LoginRequiredMixin,View):
     else:
       return render(request,'betcup.html', {'form': form})
 
+
+class BetRanking(View):
+  def get(self, request):
+    params		= dict()
+    users		= User.objects.all()
+    rank		= list()
+    for user in users: 
+      bets	= Bet.objects.filter(user = user.id)
+      score	= sum(int(b['points_won']) for b in bets.values())
+      # find best score per prognosis
+      best_score = 0
+      for b in bets.values():
+        if best_score <= int(b['points_won']): 
+          best_score = int(b['points_won'])
+      rank.append( (user.username, score, best_score) )
+    rank.sort(key=lambda r: r[1], reverse=True)
+    params['rank']	= rank
+    return render(request, 'rank.html', params)
+    

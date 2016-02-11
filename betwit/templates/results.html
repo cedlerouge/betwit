@@ -1,14 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
+
 <div class="row clearfix">
   <h3>Resulats et Calendrier du tournoi des VI nations 2016</h3>
-  <div class="col-md-12 column">
-    {% for m in matchs %}
-    <div class="well">
-        <span>{{ m.match_date }} - {{ m.teamA }} ({{ m.scoreA }}) vs ({{ m.scoreB }}) {{ m.scoreB }}</span>
-    </div>
-    {% endfor %}
-  </div>
 </div>
+
+<div class="table -responsive">
+  <table class="table table-stripped">
+    <thead>
+      <tr>
+        <th>Tour</th>
+        <th>Date</th>
+        <th>&Eacute;quipe A</th>
+        <th>&Eacute;quipe B</th>
+        <th>Score A</th>
+        <th>Score B</th>
+        <th>Essais A</th>
+        <th>Essais B</th>
+        <th>Drops</th>
+        <th>Cartons</th>
+        <th>Bagarres</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in matchs %}
+      <tr>
+        <td>{{ m.cup_round }}</td>
+        <td>{{ m.match_date }}</td>
+        <td>{{ m.teamA }}</td>
+        <td>{{ m.teamB }}</td>
+        <td>{{ m.scoreA }}</td>
+        <td>{{ m.scoreB }}</td>
+        <td>{{ m.triesA }}</td>
+        <td>{{ m.triesB }}</td>
+        <td>{{ m.drop_goal }}</td>
+        <td>{{ m.card }}</td>
+        <td>{{ m.fight }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+         
+
 {% endblock %}
 
