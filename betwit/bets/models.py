@@ -22,7 +22,7 @@ class Bet(models.Model):
     fight	     	= models.BooleanField(default=False)
     created_date	= models.DateTimeField(auto_now_add=True)
     modified_date	= models.DateTimeField(auto_now_add=True)
-    points_won		= models.IntegerField(null=True, blank=True)
+    points_won		= models.IntegerField(null=True, blank=True, default=0)
     
 
 class BetCup(models.Model):
