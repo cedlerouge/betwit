@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 class BetAdmin(admin.ModelAdmin):
-  list_display 	= ('user', 'round', 'teamA', 'teamB', 'created_date', 'scoreA', 'scoreB', 'triesA', 'triesB', 'card', 'drop_goal', 'fight')
+  list_display 	= ('user', 'round', 'teamA', 'teamB', 'created_date', 'scoreA', 'scoreB', 'triesA', 'triesB', 'card', 'drop_goal', 'fight', 'points_won')
   list_filter  	= ('user',)
   ordering	= ('-created_date',)
   search_fields	= ('match',)
