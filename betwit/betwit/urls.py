@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, patterns, include
 from django.contrib import admin
-from bets.views import Index, Profile, PostBet, UserRedirect, PostBetCup, BetRanking
+from bets.views import Index, Profile, PostBet, UserRedirect, PostBetCup, BetRanking, BetRules, BetPrognosis
 from matchs.views import Results
 
 admin.autodiscover()
@@ -30,6 +30,6 @@ urlpatterns = [
     url(r'^logout/$', 'django.contrib.auth.views.logout'),
     url(r'^profile/$', UserRedirect.as_view()),
     url(r'^ranking/$', BetRanking.as_view()),
-    #url(r'^prognosis/$', BetPrognosis.as_view()),
-    #url(r'^rules/$', BetRules.as_view())
+    url(r'^prognosis/$', BetPrognosis.as_view()),
+    url(r'^rules/$', BetRules.as_view())
 ]

@@ -44,7 +44,7 @@ class UserRedirect(View):
       return HttpResponseRedirect('/login/')
 
 
-class Profile(LoginRequiredMixin,View):
+class Profile(View):
   """
   User profile reachable from /user/<username>/ URL
   """
@@ -52,17 +52,18 @@ class Profile(LoginRequiredMixin,View):
     params 	= dict()
     userProfile	= User.objects.get(username=username)
     bets 	= Bet.objects.filter(user=userProfile)
-    form	= BetForm()
+    betcup      = BetCup.objects.filter(user=userProfile)
+#    form	= BetForm()
     params['bets'] = bets
     params['user'] = userProfile
-    params['form'] = form
+    params['betcup'] = betcup
     return render(request, 'profile.html', params)
 
 class PostBet(LoginRequiredMixin,View):
   def get(self, request, username):
     params              =  dict()
     user                = User.objects.get(username=username)
-    form                = BetCupForm()
+    form                = BetForm()
     params['user']      = user
     params['form']      = form
     return render(request, 'betcup.html', params)
@@ -72,7 +73,7 @@ class PostBet(LoginRequiredMixin,View):
   def post(self, request, username):
     form = BetForm(self.request.POST)
     if form.is_valid():
-      ser	= User.objects.get(username=username)
+      user	= User.objects.get(username=username)
       match     = Match.objects.get(id=form.cleaned_data['match'])
       print 'form = %r' % form
       bet	= Bet(
@@ -110,11 +111,11 @@ class PostBetCup(LoginRequiredMixin,View):
     form = BetCupForm(self.request.POST)
     if form.is_valid():
       user	= User.objects.get(username=username)
-      bet_cuup	= BetCup(
+      bet_cup	= BetCup(
                     user	= user,
                     first	= form.cleaned_data['first'],
                     second      = form.cleaned_data['second'],
-                    thrid       = form.cleaned_data['third'],
+                    third       = form.cleaned_data['third'],
                     fourth      = form.cleaned_data['fourth'],
                     fifth       = form.cleaned_data['fifth'],
                     sixth       = form.cleaned_data['sixth'],
@@ -146,3 +147,14 @@ class BetRanking(View):
     params['rank']	= rank
     return render(request, 'rank.html', params)
     
+
+class BetRules(View):
+  def get(self, request):
+    params		= dict()
+    return render(request, 'rules.html', params)
+
+
+class BetPrognosis(View):
+  def get(self, request):
+    params		= dict()
+    return render(request, 'prognosis.html', params)

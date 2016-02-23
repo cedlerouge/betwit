@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="col-md-12 column">
+  <h3>R&egrave;glement</h3>
+  <p>Le règlement ci-dessous est soumis à l'ensemble des participants pour approbation. Une fois le règlement accepté par tous, toutes réclamations et désir de changement de ce règlement devront être portées par une majorité des participants pour être entériner. L'organisateur est impartial mais devra gagner à l'issue du tournoi. C'est moi qui décide d'abord.</p>
+  <p><span>Déroulement du championnat des parieurs</span></p>
+  <ul>
+    <li>Deux types de paris existent : ceux lancés avant le début de la compétition, et ceux qui courrent au jour-le-jour.</li>
+    <li> Les premiers concernent les prévisions de classement de poules, et les pronostics de vainqueurs et finalistes (voir ci-contre).</li>
+    <li>Ces paris là constituent donc des bonus qui interviendront respectivement après la phase de poule et après la finale.</li>
+    <li>Les paris "Au jour le jour" sont des pronostics faits pour chaque match de la compétition.</li>
+    <li>C'est à chaque participant de ce jeu de prendre l'initiative de parier pour un match.</li>
+    <li>Il devra pour cela envoyer un mail avec ses pronostics (victoire/scores/essais/risques) à OrganisateurRWC2015@gmail.com.</li>
+    <li>Il peut le faire par l'interface "Parier" et le bouton "Envoyer mon pari par mail" après avoir rempli les champs.</li>
+    <li>L'organisateur remplit quant à lui les résultats officiels qui décideront du classement des pronostiqueurs, mis à jour après chaque match.</li>
+  </ul>
+
+
+  <p><span>Champion</span></p>
+  <p>Le champion est celui qui a le plus de point à l'issue de la compétition. Il sera donc déclaré vainqueur à égalité avec l'organisateur, et se verra remettre une récompense (à définir) </p>
+</div>
+
+<div class="col-md-12 column">
+  <h3>Par par match</h3>
+  <p>Le joueur remplit pour chaque match son pronostic grâce à la feuille "Parier" de son fichier excel.</p>
+  <div class="table-responsive">
+    <table class="table table-stripped">
+      <thead>
+        <tr>
+          <th>R&egrave;gle N</th>
+          <th>&Eacute;v&eacute;nement</th>
+          <th>Points positifs</th>
+          <th>&Eacute;claircissements</th>
+        <tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Victoire-Défaite-Nul </td>
+          <td>3</td>
+          <td>Les 3 points du bon pronostics sont multipliés par la côte. La côte dépend du pari "Victoire/Défaite/Nul" de chacun des participants. 
+Pour les quarts de finale, on passe à 4 x côte
+Pour les demies finales, on passe à 5 x côte
+Pour la finale, on passe à 6 x côte</td>
+       </tr>
+       <tr>
+         <td>2</td>
+         <td>Bon nombre d'essai d'une équipe</td>
+         <td>1</td>
+         <td></td>
+       </tr>
+       <tr>
+         <td>3</td>
+         <td>Bon nombre de points d'une équipe</td>
+         <td></td>
+         <td></td>
+       </tr>
+       <tr>
+         <td>4</td>
+         <td>Bon &eacute;cart</td>
+         <td>2</td>
+         <td>Si les scores ne sont pas bons mais l'écart est bon, 2 points  attribués.</td>
+       </tr>
+       <tr>
+         <td>5</td>
+         <td>Score du match parfait</td>
+         <td>8</td>
+         <td>Si les scores sont exacts pour les deux équipes, un bonus "score parfait" est attribué</td>
+       </tr>
+     </tbody>
+   </table>  
+</div>
+<div class="col-md-12 column">
+  <p>Les risques donnent des points si l'événement se réalise, mais retire des points si l'événement ne se réalise pas</p>
+    <table class="table table-stripped">
+      <thead>
+        <tr>
+          <th>R&egrave;gle N</th>
+          <th>Risques</th>
+          <th>Points positifs</th>
+          <th>Points n&eacute;gatifs</th>
+          <th>&Eacute;claircissements</th>
+        <tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>6</td>
+          <td>1 carton jaune ou rouge au moins dans le match</td>
+          <td>1</td>
+          <td>-1</td>
+          <td>Le carton peut concerner l'une ou l'autre &eacute;quipes.</td>
+       </tr>
+       <tr>
+         <td>7</td>
+         <td>1 Drop au moins dans le match</td>
+         <td>1</td>
+         <td>-1</td>
+         <td>Le drop peut concerner l'une ou l'autre des équipes.</td>
+       </tr>
+       <!--<tr>
+         <td>8</td>
+         <td>1 Nez cassé au moins dans le match</td>
+         <td>1</td>
+         <td>-1</td>
+         <td>Un "nez cassé" comprend aussi rupture des ligaments croisés, la clavicule pétée, ou autres blessures dont la victime est en droit de pleurer amèrement. Toutes autres égratignures non accompagnées de gémissement ne rentrent pas dans cette catégorie.</td>
+       </tr>-->
+       <tr>
+         <td>9</td>
+         <td>1 bagarre générale au moins dans le match</td>
+         <td>2</td>
+         <td>-2</td>
+         <td>Une baston générale doit comprendre au minima 4 hommes, dont au moins 1 du parti adverse.</td>
+       </tr>
+       <!--<tr>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+       </tr>
+       <tr>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+       </tr>
+       <tr>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+       </tr>-->
+     </tbody>
+   </table> 
+</div>
+
+<div class="col-md-12 column">
+  <h3>Paris avant tournoi</h3>
+  <div class="col-md-6 column">
+    <table class="table table-stripped">
+      <thead>
+        <tr>
+          <th>&Eacute;v&eacute;nement</th>
+          <th>Points</th>
+        <tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bon classement d'une équipe en poule</td>
+          <td>2</td>
+        <tr>
+          <td>Bon finaliste</td>
+          <td>5</td>
+ 	<tr>
+          <td>Bon vainqueur : Bonus</td>
+          <td>10</td>
+        </tr>
+      </tbody>
+    </table>  
+
+  </div>
+  <div class="col-md-6 column">
+    <p><span>&Eacute;claircissements</span></p>
+    <p>Avant le tournoi, vous donnez votre classement probable de chaque poule et de la finale.
+A l'issue de la phase de poule, vous récoltez donc vos premiers points bonus en fonction du vrai classement des poules et de vos prévisions.
+A la fin du championnat vous récolterez un deuxième bonus si vos pronostics concernant  la finale se réalisent.
+Le bon vainqueur est cumulable avec le bon finaliste.
+Exemple : Galles en finale et galles vainqueur = 15 points
+    </p>
+  </div>
+</div>
+{% endblock %}
