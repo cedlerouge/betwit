@@ -1,12 +1,72 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="row clearfix">
-  <h3>&nbsp;</h3>
-  <div class="col-md-12 column">
-    {% for bet in bets %}
-    <div class="well">
-        <span>{{ bet.scoreA }} vs {{ bet.scoreB }}</span>
+<div class="row">
+  <div class="col-sm-4 column">
+    <h3>Pronostic classement tournoi</h3>
+    <div class="table-responsive">
+      <table class="table table-stripped">
+        <thead>
+          <tr>
+            <th>Rang</th>
+            <th>&Eacute;quipe</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in betcup %}
+          <tr>
+            <td>{{ r.0 }}</td>
+            <td>{{ r.1 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+  </div> <!-- end of first col-md-6-->
+
+  <div class="col-sm-8 column">
+    <h3>Mes paris sur les match</h3>
+    <div class="table-responsive">
+      <table class="table table-stripped">
+        <thead>
+          <tr>
+            <th>Tour</th>
+            <th>Date</th>
+            <th>&Eacute;quipe A</th>
+            <th>&Eacute;quipe B</th>
+            <th>Score A</th>
+            <th>Score B</th>
+            <th>Essais A</th>
+            <th>Essais B</th>
+            <th>Drops</th>
+            <th>Cartons</th>
+            <th>Bagarres</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for b in bets %}
+          <tr>
+            <td>{{ b.cup_round }}</td>
+            <td>{{ b.match_date }}</td>
+            <td>{{ b.teamA }}</td>
+            <td>{{ b.teamB }}</td>
+            <td>{{ b.scoreA }}</td>
+            <td>{{ b.scoreB }}</td>
+            <td>{{ b.triesA }}</td>
+            <td>{{ b.triesB }}</td>
+            <td>{{ b.drop_goal }}</td>
+            <td>{{ b.card }}</td>
+            <td>{{ b.fight }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+    {% for bet in bets %}
+    <!--<div class="well">
+        <span>{{ bet.scoreA }} vs {{ bet.scoreB }}</span>
+    </div>-->
     {% endfor %}
   </div>
 </div>

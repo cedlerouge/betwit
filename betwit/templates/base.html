@@ -18,10 +18,17 @@
       <div class="collapse navbar-collapse" id="nav-toggle">
         <ul class="nav navbar-nav">
           <li ng-class="pageClass('/')"><a href="/">R&eacute;sultats tournoi VI 2016</a></li>
-          <li ng-class="pageClass('/add-contact')"><a href="/ranking">Classement</a></li>
-          <li ng-class="pageClass('/add-contact')"><a href="/prognosis">Paris</a></li>
-          <li ng-class="pageClass('/add-contact')"><a href="/rules">R&egrave;glement</a></li>
-          <li ng-class="pageClass('/add-contact')"><a href="/login/">Login</a></li>
+          <li ng-class="pageClass('/ranking')"><a href="/ranking">Classement</a></li>
+          <li ng-class="pageClass('/prognosis')"><a href="/prognosis">Paris</a></li>
+          <li ng-class="pageClass('/rules')"><a href="/rules">R&egrave;glement</a></li>
+          {% if user.is_authenticated %}
+          <li ng-class="pageClass('/login')"><a href="/user/{{ user.username }}/">Mes Paris</a></li>
+          <li ng-class="pageClass('/login')"><a href="/user/{{ user.username }}/postbet/">Parier sur un match</a></li>
+          <li ng-class="pageClass('/login')"><a href="/user/{{ user.username }}/postbetcup/">Parier sur le classement</a></li>
+          <li ng-class="pageClass('/login')"><a href="/logout/">D&eacute;connexion</a></li>
+          {% else %}
+          <li ng-class="pageClass('/login')"><a href="/login/">Login</a></li>
+          {% endif %}
         </ul>
       </div>
     </nav>
