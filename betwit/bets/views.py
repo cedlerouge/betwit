@@ -53,6 +53,9 @@ class Profile(View):
     userProfile	= User.objects.get(username=username)
     bets 	= Bet.objects.filter(user=userProfile)
     betcup      = BetCup.objects.filter(user=userProfile)
+    for obj in betcup:
+        obj.fields = dict((field.name, field.value_to_string(obj))
+                                            for field in obj._meta.fields)
 #    form	= BetForm()
     params['bets'] = bets
     params['user'] = userProfile

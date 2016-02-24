@@ -50,4 +50,3 @@ class BetCup(models.Model):
     wooden_spoon	= models.BooleanField(default=False)
     points_won		= models.IntegerField(null=True, blank=True)
     created_date	= models.DateTimeField(auto_now_add=True)
-

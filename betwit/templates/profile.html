@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="row">
-  <div class="col-sm-4 column">
+  <div class="col-sm-3 column">
     <h3>Pronostic classement tournoi</h3>
     <div class="table-responsive">
       <table class="table table-stripped">
@@ -13,17 +13,19 @@
         </thead>
         <tbody>
           {% for r in betcup %}
+            {% for field, value in r.fields.iteritems %}
           <tr>
-            <td>{{ r.0 }}</td>
-            <td>{{ r.1 }}</td>
+            <td>{{ field }}</td>
+            <td>{{ value }}</td>
           </tr>
+          {% endfor %}
           {% endfor %}
         </tbody>
       </table>
     </div>
   </div> <!-- end of first col-md-6-->
 
-  <div class="col-sm-8 column">
+  <div class="col-sm-9 column">
     <h3>Mes paris sur les match</h3>
     <div class="table-responsive">
       <table class="table table-stripped">
