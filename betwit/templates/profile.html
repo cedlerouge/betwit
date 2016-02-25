@@ -13,12 +13,38 @@
         </thead>
         <tbody>
           {% for r in betcup %}
-            {% for field, value in r.fields.iteritems %}
           <tr>
-            <td>{{ field }}</td>
-            <td>{{ value }}</td>
+            <td>1</td>
+            <td>{{ r.first }}</td>
           </tr>
-          {% endfor %}
+            <td>2</td>
+            <td>{{ r.second }}</td>
+          <tr>
+          </tr>
+            <td>3</td>
+            <td>{{ r.thrid }}</td>
+          <tr>
+          </tr>
+            <td>4</td>
+            <td>{{ r.fourth }}</td>
+          <tr>
+          </tr>
+            <td>5</td>
+            <td>{{ r.fifth }}</td>
+          <tr>
+          </tr>
+            <td>6</td>
+            <td>{{ r.sixth }}</td>
+          <tr>
+          </tr>
+            <td>Grand Chelem</td>
+            <td>{{ r.grand_slam }}</td>
+          <tr>
+          </tr>
+            <td>Cuillère de bois</td>
+            <td>{{ r.wooden_spoon }}</td>
+          <tr>
+          </tr>
           {% endfor %}
         </tbody>
       </table>
