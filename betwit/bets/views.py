@@ -18,6 +18,8 @@ from django.utils.decorators import method_decorator
 import logging
 logger = logging.getLogger('django')
 
+from django.utils import timezone
+
 
 class LoginRequiredMixin(object):
     @method_decorator(login_required)
@@ -65,8 +67,22 @@ class Profile(View):
 class PostBet(LoginRequiredMixin,View):
   def get(self, request, username):
     params              =  dict()
+    errors		= list()
     user                = User.objects.get(username=username)
-    form                = BetForm()
+    # get list of bets by user to avoid betting twice on the same match
+    bets        	= Bet.objects.filter(user=user)
+    idOfBetMatch	= [ obj.match.id for obj in bets ]
+    # get all match to know which one to present on form
+    matchs		= Match.objects.all()
+    matchsToBet		= [('', '-- choose a match --'), ]
+    for m in matchs:
+      if timezone.now() < m.match_date and m.id not in idOfBetMatch:
+        matchsToBet.append( (m.id, m.teamA + ' vs ' + m.teamB) )
+    #betcup      	= BetCup.objects.filter(user=user)
+
+    form                = BetForm( match = matchsToBet )
+    #form		= BetForm()
+    #form.match_choices  = matchsToBet
     params['user']      = user
     params['form']      = form
     return render(request, 'betcup.html', params)
@@ -102,10 +118,17 @@ class PostBetCup(LoginRequiredMixin,View):
   def get(self, request, username):
     params		=  dict()
     user		= User.objects.get(username=username)
-    form		= BetCupForm()
-    params['user']	= user
-    params['form']	= form
-    return render(request, 'betcup.html', params)
+    betcup      	= BetCup.objects.filter(user=user)    
+    errors		= list()
+    if len( betcup ) > 0 :
+        errors          = {"Vous avez deja un pari d'avant tournoi"}
+        params["errors"] = errors
+        return render(request, "betcup.html", params)
+    else:
+        form		= BetCupForm()
+        params['user']	= user
+        params['form']	= form
+        return render(request, 'betcup.html', params)
 
   """
   Bet Cup Post form available on page /user/<username/betcup URL
