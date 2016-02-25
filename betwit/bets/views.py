@@ -162,12 +162,12 @@ class BetRanking(View):
     rank		= list()
     for user in users: 
       bets	= Bet.objects.filter(user = user.id)
-      score	= sum(int(b['points_won']) for b in bets.values())
+      score	= sum(int(b['points_won'] if b['points_won'] is not None else 0 ) for b in bets.values())
       # find best score per prognosis
       best_score = 0
       for b in bets.values():
-        if best_score <= int(b['points_won']): 
-          best_score = int(b['points_won'])
+        if best_score <= int(b['points_won'] if b['points_won'] is not None else 0): 
+          best_score = int(b['points_won'] if b['points_won'] is not None else 0)
       rank.append( (user.username, score, best_score) )
     rank.sort(key=lambda r: r[1], reverse=True)
     params['rank']	= rank
