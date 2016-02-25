@@ -19,6 +19,7 @@
 
 
     <!--<fieldset class="module aligned ">-->
+    {% if form %}
     <form method="post" action="">{% csrf_token %}
       <div class="col-md-8 col-md-offset-2">
 
@@ -36,6 +37,7 @@
         </div>
       </div>
     </form>
+    {% endif %}
     <!--</fieldset>-->
     <!--<div class="submit-row">
       <input type="submit" value="Save" class="default" name="_save" />

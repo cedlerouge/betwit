@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="row">
+  <h3>Mes Pronostics</h3>
   <div class="col-sm-3 column">
-    <h3>Pronostic classement tournoi</h3>
+    <h3>Classement du tournoi</h3>
     <div class="table-responsive">
       <table class="table table-stripped">
         <thead>
@@ -36,23 +37,16 @@
             <td>6</td>
             <td>{{ r.sixth }}</td>
           <tr>
-          </tr>
-            <td>Grand Chelem</td>
-            <td>{{ r.grand_slam }}</td>
-          <tr>
-          </tr>
-            <td>Cuillère de bois</td>
-            <td>{{ r.wooden_spoon }}</td>
-          <tr>
-          </tr>
-          {% endfor %}
         </tbody>
       </table>
+      <p>Grand Chelem : {{ r.grand_slam }}</p>
+      <p>Cuillère de bois : {{ r.wooden_spoon }}</p>
+      {% endfor %}
     </div>
   </div> <!-- end of first col-md-6-->
 
   <div class="col-sm-9 column">
-    <h3>Mes paris sur les match</h3>
+    <h3>Paris sur les matchs</h3>
     <div class="table-responsive">
       <table class="table table-stripped">
         <thead>
