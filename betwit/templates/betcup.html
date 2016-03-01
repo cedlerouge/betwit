@@ -20,18 +20,12 @@
 
     <!--<fieldset class="module aligned ">-->
     {% if form %}
-    <form method="post" action="">{% csrf_token %}
-      <div class="col-md-8 col-md-offset-2">
-
-        {% for field in form %}
-        <div class="fieldWrapper">
-          {{ field.errors }}
-          {{ field.label_tag }} {{ field }}
-          {% if field.help_text %}
-          <p class="help">{{ field.help_text|safe }}</p>
-          {% endif %}
-        </div>
-        {% endfor %}
+    <form method="post" action="" class="form-horizontal">{% csrf_token %}
+      <!--div class="col-md-8 col-md-offset-2"-->
+      <div class="form-group">
+        <table>
+          {{ form.as_table }}
+        </table>
         <div>
           <input type="submit" value="post">
         </div>

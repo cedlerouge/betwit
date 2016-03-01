@@ -39,10 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_profile',
     'bets',
-    'matchs'
+    'matchs',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE_CLASSES = [
+#    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -139,3 +141,26 @@ STATICFILES_DIRS = (
 
 LOGIN_REDIRECT_URL = '/profile'
 LOGIN_URL = 'django.contrib.auth.views.login'
+
+INTERNAL_IPS = {
+	"192.168.56.32",
+ 	"192.168.56.1",
+	"127.0.0.1",
+}
+#DEBUG_TOOLBAR_PATCH_SETTINGS = False
+
+#DEBUG_TOOLBAR_PANELS = [
+#    'debug_toolbar.panels.versions.VersionsPanel',
+#    'debug_toolbar.panels.timer.TimerPanel',
+#    'debug_toolbar.panels.settings.SettingsPanel',
+#    'debug_toolbar.panels.headers.HeadersPanel',
+#    'debug_toolbar.panels.request.RequestPanel',
+#    'debug_toolbar.panels.sql.SQLPanel',
+#    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+#    'debug_toolbar.panels.templates.TemplatesPanel',
+#    'debug_toolbar.panels.cache.CachePanel',
+#    'debug_toolbar.panels.signals.SignalsPanel',
+#    'debug_toolbar.panels.logging.LoggingPanel',
+#    'debug_toolbar.panels.redirects.RedirectsPanel',
+#]
+
