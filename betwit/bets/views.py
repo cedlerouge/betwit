@@ -2,7 +2,6 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from django.utils import timezone
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import View
 
@@ -11,7 +10,8 @@ from matchs.models import Match
 from models import Bet, BetCup
 from forms import BetForm, BetCupForm
 
-
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -26,6 +26,11 @@ class LoginRequiredMixin(object):
     def dispatch(self, *args, **kwargs):
         return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
 
+
+class Logout(View):
+  def get(self, request):
+    logout(request)
+    return redirect('home')
 
 
 class Index(View):
@@ -74,13 +79,13 @@ class PostBet(LoginRequiredMixin,View):
     idOfBetMatch	= [ obj.match.id for obj in bets ]
     # get all match to know which one to present on form
     matchs		= Match.objects.all()
-    matchsToBet		= [('', '-- choose a match --'), ]
+    matchsToBet		= [(None, '-- choose a match --'), ]
     for m in matchs:
       if timezone.now() < m.match_date and m.id not in idOfBetMatch:
         matchsToBet.append( (m.id, m.teamA + ' vs ' + m.teamB) )
     #betcup      	= BetCup.objects.filter(user=user)
 
-    form                = BetForm( match = matchsToBet )
+    form                = BetForm( user = user )
     #form		= BetForm()
     #form.match_choices  = matchsToBet
     params['user']      = user
@@ -90,9 +95,9 @@ class PostBet(LoginRequiredMixin,View):
 
   """ Match Post form available on page /user/<username> URL"""
   def post(self, request, username):
-    form = BetForm(self.request.POST)
+    user	= User.objects.get(username=username)
+    form	= BetForm(self.request.POST, user=user)
     if form.is_valid():
-      user	= User.objects.get(username=username)
       match     = Match.objects.get(id=form.cleaned_data['match'])
       print 'form = %r' % form
       bet	= Bet(
