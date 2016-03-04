@@ -62,10 +62,12 @@ class BetForm(forms.Form):
             # get all user's bets already done
             bets		= Bet.objects.filter(user=user)
             idOfBetMatch        = [ obj.match.id for obj in bets ]
-            matchs              = Match.objects.all()
+            #matchs              = Match.objects.all()
+            matchs		= Match.objects.filter(match_date__gte=timezone.now())
             for m in matchs:
                 # checks that match is not already played
-                if timezone.now() < m.match_date and m.id not in idOfBetMatch:
+                #if timezone.now() < m.match_date and m.id not in idOfBetMatch:
+                if m.id not in idOfBetMatch:
                     match_choice.append( (m.id, m.teamA + ' vs ' + m.teamB) )
         super(BetForm, self).__init__(*args, **kwargs)
         self.fields['match'] = forms.ChoiceField(
