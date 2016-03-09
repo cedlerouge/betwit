@@ -75,14 +75,14 @@ class PostBet(LoginRequiredMixin,View):
     errors		= list()
     user                = User.objects.get(username=username)
     # get list of bets by user to avoid betting twice on the same match
-    bets        	= Bet.objects.filter(user=user)
-    idOfBetMatch	= [ obj.match.id for obj in bets ]
+    #bets        	= Bet.objects.filter(user=user)
+    #idOfBetMatch	= [ obj.match.id for obj in bets ]
     # get all match to know which one to present on form
-    matchs		= Match.objects.all()
-    matchsToBet		= [(None, '-- choose a match --'), ]
-    for m in matchs:
-      if timezone.now() < m.match_date and m.id not in idOfBetMatch:
-        matchsToBet.append( (m.id, m.teamA + ' vs ' + m.teamB) )
+    #matchs		= Match.objects.all()
+    #matchsToBet		= [(None, '-- choose a match --'), ]
+    #for m in matchs:
+    #  if timezone.now() < m.match_date and m.id not in idOfBetMatch:
+    #   matchsToBet.append( (m.id, m.teamA + ' vs ' + m.teamB) )
     #betcup      	= BetCup.objects.filter(user=user)
 
     form                = BetForm( user = user )
@@ -188,4 +188,8 @@ class BetRules(View):
 class BetPrognosis(View):
   def get(self, request):
     params		= dict()
+    match		= Match.objects.filter(match_date__lte=timezone.now())
+    bets        	= Bet.objects.all()
+    params['match']	= match
+    params['bets']	= bets
     return render(request, 'prognosis.html', params)

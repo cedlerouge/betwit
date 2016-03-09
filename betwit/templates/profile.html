@@ -39,8 +39,8 @@
           <tr>
         </tbody>
       </table>
-      <p>Grand Chelem : {{ r.grand_slam }}</p>
-      <p>Cuillère de bois : {{ r.wooden_spoon }}</p>
+      <p>Grand Chelem : {% if r.grand_slam %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</p>
+      <p>Cuillère de bois : {% if r.wooden_spoon %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</p>
       {% endfor %}
     </div>
   </div> <!-- end of first col-md-6-->
@@ -54,30 +54,30 @@
             <th>Tour</th>
             <th>Date</th>
             <th>&Eacute;quipe A</th>
-            <th>&Eacute;quipe B</th>
             <th>Score A</th>
-            <th>Score B</th>
             <th>Essais A</th>
             <th>Essais B</th>
-            <th>Drops</th>
-            <th>Cartons</th>
-            <th>Bagarres</th>
+            <th>Score B</th>
+            <th>&Eacute;quipe B</th>
+            <th>Drop</th>
+            <th>Carton</th>
+            <th>Bagarre</th>
           </tr>
         </thead>
         <tbody>
           {% for b in bets %}
           <tr>
-            <td>{{ b.cup_round }}</td>
-            <td>{{ b.match_date }}</td>
-            <td>{{ b.teamA }}</td>
-            <td>{{ b.teamB }}</td>
-            <td>{{ b.scoreA }}</td>
-            <td>{{ b.scoreB }}</td>
-            <td>{{ b.triesA }}</td>
-            <td>{{ b.triesB }}</td>
-            <td>{{ b.drop_goal }}</td>
-            <td>{{ b.card }}</td>
-            <td>{{ b.fight }}</td>
+            <td>{{ b.match.cup_round }}</td>
+            <td>{{ b.match.match_date|date:'j-M H:i' }}</td>
+            <td>{{ b.match.teamA }}</td>
+            <td>{{ b.scoreA|default_if_none:"0" }}</td>
+            <td>{{ b.triesA|default_if_none:"0" }}</td>
+            <td>{{ b.triesB|default_if_none:"0" }}</td>
+            <td>{{ b.scoreB|default_if_none:"0" }}</td>
+            <td>{{ b.match.teamB }}</td>
+            <td>{% if b.drop_goal %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+            <td>{% if b.card %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+            <td>{% if b.fight %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
           </tr>
           {% endfor %}
         </tbody>

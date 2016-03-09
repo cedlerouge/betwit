@@ -1,6 +1,71 @@
 {% extends "base.html" %}
 {% block content %}
+<script>
+/*$(document).ready(function(){
+    $(".toggler").click(function(e){
+        e.preventDefault();
+        $('.round'+$(this).attr('data-betwit-round')).toggle();
+    });
+});*/
+</script>
 <div class="row clearfix">
-doit afficher la liste des match avec les proonostics des joueurs
+  <table class="table" width="100%" cellspacing="0">
+  <!--table data-toggle="table"-->
+    <thead>
+      <tr>
+        <td>Round</td>
+        <td>Match</td>
+        <td>Date</td>
+        <td>&Eacute;quipe A</td>
+        <td>Score A</td>
+        <td>Essais A</td>
+        <td>Essais B</td>
+        <td>Score B</td>
+        <td>&Eacute;quipe B</td>
+        <td>Drop</td>
+        <td>Carton</td>
+        <td>Bagarre</td>
+        <td>total</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in match %}
+      <tr class="info">
+        <td>{{m.cup_round}}</td>
+        <td><a href="#" class="toggler" data-betwit-round="{{m.id}}">+</a></td>
+        <td>{{m.match_date|date:'j-M H:i'}}</td>
+        <td>{{m.teamA}}</td>
+        <td>{{ m.scoreA|default_if_none:"0" }}</td>
+        <td>{{ m.triesA|default_if_none:"0" }}</td>
+        <td>{{ m.triesB|default_if_none:"0" }}</td>
+        <td>{{ m.scoreB|default_if_none:"0" }}</td>
+        <td>{{m.teamB}}</td>
+        <td>{% if m.card %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+        <td>{% if m.drop_goal %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+        <td>{% if m.fight %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+        <td></td>
+      </tr>
+        {% for b in bets %}
+          {% if b.id == m.id %}
+      <tr class="round{{m.id}}" style="display:none">
+        <td></td>
+        <td colspan="2">{{b.user.username}}</td>
+        <td>{% if b.scoreA > b.scoreB %}V{% elif b.scoreA < b.scoreB %}D{% else %}N{% endif %}</td>
+        <td>{{ b.scoreA|default_if_none:"0" }}</td>
+        <td>{{ b.triesA|default_if_none:"0" }}</td>
+        <td>{{ b.triesB|default_if_none:"0" }}</td>
+        <td>{{ b.scoreB|default_if_none:"0" }}</td>
+        <td>{% if b.scoreA > b.scoreB %}D{% elif b.scoreA < b.scoreB %}V{% else %}N{% endif %}</td>
+        <td>{% if b.drop_goal %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+        <td>{% if b.card %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+        <td>{% if b.fight %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+        <td>{{b.points_won}}</td>
+      </tr>
+          {% endif %}
+        {% endfor %}
+      
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock %}
