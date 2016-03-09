@@ -188,4 +188,8 @@ class BetRules(View):
 class BetPrognosis(View):
   def get(self, request):
     params		= dict()
+    match		= Match.objects.filter(match_date__lte=timezone.now())
+    bets        	= Bet.objects.all()
+    params['match']	= match
+    params['bets']	= bets
     return render(request, 'prognosis.html', params)
