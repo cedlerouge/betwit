@@ -30,9 +30,9 @@
     </thead>
     <tbody>
       {% for m in match %}
-      <tr class="info">
+      <tr class="info" id="{{m.id}}">
         <td>{{m.cup_round}}</td>
-        <td><a href="#" class="toggler" data-betwit-round="{{m.id}}">+</a></td>
+        <td><a href="#" class="toggler" data-betwit-matchid="{{m.id}}">+</a></td>
         <td>{{m.match_date|date:'j-M H:i'}}</td>
         <td>{{m.teamA}}</td>
         <td>{{ m.scoreA|default_if_none:"0" }}</td>
@@ -46,10 +46,10 @@
         <td></td>
       </tr>
         {% for b in bets %}
-          {% if b.id == m.id %}
+          {% if b.match.id == m.id %}
       <tr class="round{{m.id}}" style="display:none">
         <td></td>
-        <td colspan="2">{{b.user.username}}</td>
+        <td colspan="2">{{b.user.username|capfirst}}</td>
         <td>{% if b.scoreA > b.scoreB %}V{% elif b.scoreA < b.scoreB %}D{% else %}N{% endif %}</td>
         <td>{{ b.scoreA|default_if_none:"0" }}</td>
         <td>{{ b.triesA|default_if_none:"0" }}</td>

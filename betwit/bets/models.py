@@ -33,7 +33,7 @@ class BetCup(models.Model):
       ('an', 'Angleterre'),
       ('ec', 'Ecosse'),
       ('fr', 'France'),
-      ('ir', 'Irelande'),
+      ('ir', 'Irlande'),
       ('it', 'Italie'),
       ('pg', 'Pays de Galles'),
     )

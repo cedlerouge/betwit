@@ -56,8 +56,10 @@ class Profile(View):
   User profile reachable from /user/<username>/ URL
   """
   def get(self, request, username):
+    # limit rivate page to only the user
+    #if request.user.username == username 
     params 	= dict()
-    userProfile	= User.objects.get(username=username)
+    userProfile	= User.objects.get(username=request.user.username)
     bets 	= Bet.objects.filter(user=userProfile)
     betcup      = BetCup.objects.filter(user=userProfile)
     for obj in betcup:
@@ -73,7 +75,7 @@ class PostBet(LoginRequiredMixin,View):
   def get(self, request, username):
     params              =  dict()
     errors		= list()
-    user                = User.objects.get(username=username)
+    user                = User.objects.get(username=request.user.username)
     # get list of bets by user to avoid betting twice on the same match
     #bets        	= Bet.objects.filter(user=user)
     #idOfBetMatch	= [ obj.match.id for obj in bets ]
@@ -95,7 +97,7 @@ class PostBet(LoginRequiredMixin,View):
 
   """ Match Post form available on page /user/<username> URL"""
   def post(self, request, username):
-    user	= User.objects.get(username=username)
+    user	= User.objects.get(username=request.user.username)
     form	= BetForm(self.request.POST, user=user)
     if form.is_valid():
       match     = Match.objects.get(id=form.cleaned_data['match'])
@@ -113,7 +115,7 @@ class PostBet(LoginRequiredMixin,View):
                     created_date= timezone.now()
                   )
       bet.save()
-      return HttpResponseRedirect('/user/'+username+'/')
+      return HttpResponseRedirect('/user/'+request.user.username+'/')
     else:
       print 'form = %r' % form
       return render(request, 'betcup.html', {'form': form})
@@ -122,7 +124,7 @@ class PostBet(LoginRequiredMixin,View):
 class PostBetCup(LoginRequiredMixin,View):
   def get(self, request, username):
     params		=  dict()
-    user		= User.objects.get(username=username)
+    user		= User.objects.get(username=request.user.username)
     betcup      	= BetCup.objects.filter(user=user)    
     errors		= list()
     if len( betcup ) > 0 :
@@ -141,7 +143,7 @@ class PostBetCup(LoginRequiredMixin,View):
   def post(self, request, username):
     form = BetCupForm(self.request.POST)
     if form.is_valid():
-      user	= User.objects.get(username=username)
+      user	= User.objects.get(username=request.user.username)
       bet_cup	= BetCup(
                     user	= user,
                     first	= form.cleaned_data['first'],
@@ -155,7 +157,7 @@ class PostBetCup(LoginRequiredMixin,View):
                     created_date= timezone.now()
                   )
       bet_cup.save()
-      return HttpResponseRedirect('/user/'+username+'/')
+      return HttpResponseRedirect('/user/'+request.user.username+'/')
     else:
       return render(request,'betcup.html', {'form': form})
 
