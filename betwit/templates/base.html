@@ -23,7 +23,7 @@
           <li ng-class="pageClass('/rules')"><a href="/rules">R&egrave;glement</a></li>
           {% if user.is_authenticated %}
           <li class="dropdown">
-          <a href="/user/{{ user.username }}/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }}<span class="caret"></span></a>
+          <a href="/user/{{ user.username }}/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username|capfirst }}<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li ng-class="pageClass('/login')"><a href="/user/{{ user.username }}/">Mes Paris</a></li>
             <li ng-class="pageClass('/login')"><a href="/user/{{ user.username }}/postbet/">Parier sur un match</a></li>
@@ -48,7 +48,6 @@
 
     <script src="{% static 'js/jquery-2.2.0.min.js' %}"></script> 
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table.min.js' %}"></script>
     <script src="{% static 'js/betwit.js' %}"></script>
   </body>
 </html>

@@ -23,9 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'p-d0wjjt*2)tnpf4^(d(=u*furp*0$lwt-8h(%(g*%$j!u-v=m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "j80.sorsdupi.eu",
+    "betwit.lepont.bzh",
+]
 
 
 # Application definition
@@ -40,7 +43,7 @@ INSTALLED_APPS = [
     'user_profile',
     'bets',
     'matchs',
-    'debug_toolbar',
+#   'debug_toolbar',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -56,6 +59,10 @@ MIDDLEWARE_CLASSES = [
 ]
 
 ROOT_URLCONF = 'betwit.urls'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 TEMPLATES = [
     {
@@ -139,13 +146,18 @@ STATICFILES_DIRS = (
       BASE_DIR + '/static/',
     )
 
+STATIC_ROOT = '/var/www/betwit.lepont.bzh/static/'
+
+AUTH_USER_MODEL = 'user_profile.User'
+
 LOGIN_REDIRECT_URL = '/profile'
-LOGIN_URL = 'django.contrib.auth.views.login'
+#LOGIN_URL = 'django.contrib.auth.views.login'
 
 INTERNAL_IPS = {
 	"192.168.56.32",
  	"192.168.56.1",
 	"127.0.0.1",
+        "46.18.97.206",
 }
 #DEBUG_TOOLBAR_PATCH_SETTINGS = False
 

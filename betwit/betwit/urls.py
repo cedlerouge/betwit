@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, patterns, include
 from django.contrib import admin, auth
-from bets.views import Index, Profile, PostBet, UserRedirect, PostBetCup, BetRanking, BetRules, BetPrognosis, Logout
+from bets.views import Index, Profile, PostBet, UserRedirect, PostBetCup, BetRanking, BetRules, BetPrognosis, Logout, Login
 from matchs.views import Results
 import django.contrib.auth.views
 
@@ -27,7 +27,8 @@ urlpatterns = [
     url(r'^user/(\w+)/postbet/$', PostBet.as_view()),
     url(r'^user/(\w+)/postbetcup/$', PostBetCup.as_view()),
     url(r'^admin/', admin.site.urls),
-    url(r'^login/$', auth.views.login),
+    #url(r'^login/$', auth.views.login),
+    url(r'^login/$', Login.as_view()),
     url(r'^logout/$', Logout.as_view()),
     url(r'^profile/$', UserRedirect.as_view()),
     url(r'^ranking/$', BetRanking.as_view()),

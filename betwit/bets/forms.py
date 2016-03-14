@@ -12,7 +12,7 @@ class BetForm(forms.Form):
     match	= forms.ChoiceField(
 	choices 	= match_choice, 
 	widget 		= forms.Select(),#attrs = {'class':"form-control"}), 
-	help_text 	= "In first select the match")
+	help_text 	= "")
     scoreA	= forms.IntegerField(
 	initial		= 0, 
 	validators	= [MinValueValidator(0)], 
@@ -73,7 +73,7 @@ class BetForm(forms.Form):
         self.fields['match'] = forms.ChoiceField(
 		choices	= match_choice, 
 		widget	= forms.Select(),#attrs = {'class':"form-control"}), 
-		help_text = "In first select the match"
+		help_text = ""
 		)
 
 

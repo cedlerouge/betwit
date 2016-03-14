@@ -10,7 +10,7 @@ from matchs.models import Match
 from models import Bet, BetCup
 from forms import BetForm, BetCupForm
 
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -32,6 +32,31 @@ class Logout(View):
     logout(request)
     return redirect('home')
 
+class Login(View):
+  def get(self, request):
+    params	= dict()
+    return render(request, 'login.html', params)
+
+  def post(self, request):
+    params   = dict()
+    errors   = list()
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+      if user.is_active:
+        login(request, user)
+        return HttpResponseRedirect('/user/'+username+'/')
+      else:
+        errors.append("Ce compte est desactiv&eacute;")
+        params['errors']	= errors
+        return render(request, 'login.html', params)
+    else:
+      errors.append("Le login et le mot de passe ne correspondent pas.") 
+      errors.append("Veuillez essayer retenter de vous connecter")
+      params['errors'] 		= errors
+      return render(request, 'login.html', params)
+        
 
 class Index(View):
   def get(self, request):
@@ -56,13 +81,15 @@ class Profile(View):
   User profile reachable from /user/<username>/ URL
   """
   def get(self, request, username):
+    # limit rivate page to only the user
+    #if request.user.username == username 
     params 	= dict()
-    userProfile	= User.objects.get(username=username)
+    userProfile	= User.objects.get(username=request.user.username)
     bets 	= Bet.objects.filter(user=userProfile)
     betcup      = BetCup.objects.filter(user=userProfile)
-    for obj in betcup:
-        obj.fields = dict((field.name, field.value_to_string(obj))
-                                            for field in obj._meta.fields)
+#    for obj in betcup:
+#        obj.fields = dict((field.name, field.value_to_string(obj))
+#                                            for field in obj._meta.fields)
 #    form	= BetForm()
     params['bets'] = bets
     params['user'] = userProfile
@@ -73,7 +100,7 @@ class PostBet(LoginRequiredMixin,View):
   def get(self, request, username):
     params              =  dict()
     errors		= list()
-    user                = User.objects.get(username=username)
+    user                = User.objects.get(username=request.user.username)
     # get list of bets by user to avoid betting twice on the same match
     #bets        	= Bet.objects.filter(user=user)
     #idOfBetMatch	= [ obj.match.id for obj in bets ]
@@ -95,7 +122,7 @@ class PostBet(LoginRequiredMixin,View):
 
   """ Match Post form available on page /user/<username> URL"""
   def post(self, request, username):
-    user	= User.objects.get(username=username)
+    user	= User.objects.get(username=request.user.username)
     form	= BetForm(self.request.POST, user=user)
     if form.is_valid():
       match     = Match.objects.get(id=form.cleaned_data['match'])
@@ -113,7 +140,7 @@ class PostBet(LoginRequiredMixin,View):
                     created_date= timezone.now()
                   )
       bet.save()
-      return HttpResponseRedirect('/user/'+username+'/')
+      return HttpResponseRedirect('/user/'+request.user.username+'/')
     else:
       print 'form = %r' % form
       return render(request, 'betcup.html', {'form': form})
@@ -122,7 +149,7 @@ class PostBet(LoginRequiredMixin,View):
 class PostBetCup(LoginRequiredMixin,View):
   def get(self, request, username):
     params		=  dict()
-    user		= User.objects.get(username=username)
+    user		= User.objects.get(username=request.user.username)
     betcup      	= BetCup.objects.filter(user=user)    
     errors		= list()
     if len( betcup ) > 0 :
@@ -141,7 +168,7 @@ class PostBetCup(LoginRequiredMixin,View):
   def post(self, request, username):
     form = BetCupForm(self.request.POST)
     if form.is_valid():
-      user	= User.objects.get(username=username)
+      user	= User.objects.get(username=request.user.username)
       bet_cup	= BetCup(
                     user	= user,
                     first	= form.cleaned_data['first'],
@@ -155,7 +182,7 @@ class PostBetCup(LoginRequiredMixin,View):
                     created_date= timezone.now()
                   )
       bet_cup.save()
-      return HttpResponseRedirect('/user/'+username+'/')
+      return HttpResponseRedirect('/user/'+request.user.username+'/')
     else:
       return render(request,'betcup.html', {'form': form})
 
@@ -167,12 +194,12 @@ class BetRanking(View):
     rank		= list()
     for user in users: 
       bets	= Bet.objects.filter(user = user.id)
-      score	= sum(int(b['points_won']) for b in bets.values())
+      score	= sum(int(b['points_won'] if b['points_won'] is not None else 0 ) for b in bets.values())
       # find best score per prognosis
       best_score = 0
       for b in bets.values():
-        if best_score <= int(b['points_won']): 
-          best_score = int(b['points_won'])
+        if best_score <= int(b['points_won'] if b['points_won'] is not None else 0): 
+          best_score = int(b['points_won'] if b['points_won'] is not None else 0)
       rank.append( (user.username, score, best_score) )
     rank.sort(key=lambda r: r[1], reverse=True)
     params['rank']	= rank
