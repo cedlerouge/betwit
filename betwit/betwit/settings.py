@@ -151,7 +151,7 @@ STATIC_ROOT = '/var/www/betwit.lepont.bzh/static/'
 AUTH_USER_MODEL = 'user_profile.User'
 
 LOGIN_REDIRECT_URL = '/profile'
-LOGIN_URL = 'django.contrib.auth.views.login'
+#LOGIN_URL = 'django.contrib.auth.views.login'
 
 INTERNAL_IPS = {
 	"192.168.56.32",
