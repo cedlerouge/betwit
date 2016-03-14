@@ -10,7 +10,7 @@ from matchs.models import Match
 from models import Bet, BetCup
 from forms import BetForm, BetCupForm
 
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -32,6 +32,31 @@ class Logout(View):
     logout(request)
     return redirect('home')
 
+class Login(View):
+  def get(self, request):
+    params	= dict()
+    return render(request, 'login.html', params)
+
+  def post(self, request):
+    params   = dict()
+    errors   = list()
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+      if user.is_active:
+        login(request, user)
+        return HttpResponseRedirect('/user/'+username+'/')
+      else:
+        errors.append("Ce compte est desactiv&eacute;")
+        params['errors']	= errors
+        return render(request, 'login.html', params)
+    else:
+      errors.append("Le login et le mot de passe ne correspondent pas.") 
+      errors.append("Veuillez essayer retenter de vous connecter")
+      params['errors'] 		= errors
+      return render(request, 'login.html', params)
+        
 
 class Index(View):
   def get(self, request):
@@ -60,9 +85,9 @@ class Profile(View):
     userProfile	= User.objects.get(username=username)
     bets 	= Bet.objects.filter(user=userProfile)
     betcup      = BetCup.objects.filter(user=userProfile)
-    for obj in betcup:
-        obj.fields = dict((field.name, field.value_to_string(obj))
-                                            for field in obj._meta.fields)
+#    for obj in betcup:
+#        obj.fields = dict((field.name, field.value_to_string(obj))
+#                                            for field in obj._meta.fields)
 #    form	= BetForm()
     params['bets'] = bets
     params['user'] = userProfile
