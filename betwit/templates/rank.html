@@ -19,7 +19,7 @@
       {% for r in rank %}
       <tr>
         <td>{{ forloop.counter }}</td>
-        <td>{{ r.0 }}</td>
+        <td>{{ r.0|capfirst }}</td>
         <td>{{ r.1 }}</td>
         <td>{{ r.2 }}</td>
       </tr>
