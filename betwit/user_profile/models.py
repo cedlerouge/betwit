@@ -4,10 +4,10 @@ from django.db import models
 
 # Create your models here.
 
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth.models import UserManager
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     """
     Custom user class
     """
@@ -21,13 +21,23 @@ class User(AbstractBaseUser):
     is_admin    = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
 
     objects = UserManager()
 
     class Meta:
-        db_table = u'user_profile_user'
+        db_table = u'user'
 
     def __unicode__(self):
         return self.username
 
+    def get_full_name(self):
+        fullname = self.first_name+" "+self.last_name
+        return self.fullname
+
+    def get_short_name(self):
+        return self.username
+
+    def __str__(self):
+        return self.email
 
