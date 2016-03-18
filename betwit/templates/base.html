@@ -28,6 +28,9 @@
             <li ng-class="pageClass('/login')"><a href="/user/{{ user.username }}/">Mes Paris</a></li>
             <li ng-class="pageClass('/login')"><a href="/user/{{ user.username }}/postbet/">Parier sur un match</a></li>
             <li ng-class="pageClass('/login')"><a href="/user/{{ user.username }}/postbetcup/">Parier sur le classement</a></li>
+            {% if user.is_admin %}
+            <li ng-class="pageClass('/login')"><a href="/admin/">Administration</a></li>
+            {% endif %}
             <li ng-class="pageClass('/login')"><a href="/logout/">D&eacute;connexion</a></li>
           </ul>
           </li>

@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'p-d0wjjt*2)tnpf4^(d(=u*furp*0$lwt-8h(%(g*%$j!u-v=m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "j80.sorsdupi.eu",
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'user_profile',
     'bets',
     'matchs',
-    'debug_toolbar',
+#    'debug_toolbar',
 ]
 
 MIDDLEWARE_CLASSES = [
