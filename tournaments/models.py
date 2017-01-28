@@ -52,6 +52,7 @@ class MatchPoint(models.Model):
     MatchPoint model is a key/value table that store
     - each element of match as key                  
     - each point of winning element as value      
+    - risk let to know if there is netgative point (risk = True) or not (risk = False)
     """                                           
     key             = models.CharField()
     value           = models.IntegerField()
