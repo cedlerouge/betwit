@@ -10,7 +10,8 @@ class Team(models.Model):
     """
     name        = models.CharField(max_length=20)
     nationality = models.CharField(max_length=20)
-    logo        = models.CharField(max_length=20)
+    logo        = models.ImageField(upload_to=settings.IMAGE_UPLOAD_PATH)
+    thumbnail   = models.ImageField(upload_to=settings.THUMBNAIL_UPLOAD_PATH)
 
 class Tournament(models.Model):
     """
@@ -44,6 +45,7 @@ class Match(model.Model):
     created_date    = models.DateTimeField(auto_now_add=True)
     modified_date   = models.DateTimeField(auto_now_add=True)
     points_won      = models.IntegerField(null=True, blank=True, default=0)
+    comment         = models.CharField( max_length=1000 )
 
 class MatchPoint(models.Model):                     
     """                                           
@@ -51,6 +53,6 @@ class MatchPoint(models.Model):
     - each element of match as key                  
     - each point of winning element as value      
     """                                           
-    key             = models.CharField()          
-    value           = models.IntegerField()       
-
+    key             = models.CharField()
+    value           = models.IntegerField()
+    risk            = models.BooleanField(default=False)
