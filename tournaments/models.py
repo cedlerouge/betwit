@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-
+from django.conf import settings
 # Create your models here.
 
 class Team(models.Model):
@@ -20,11 +20,14 @@ class Tournament(models.Model):
     name        = models.CharField(max_length=20)
     year        = models.IntegerField()
 
-class Match(model.Model):
+class Match(models.Model):
     """
     Match model
     """
-    bonus = ("Defense", "Attack")
+    bonus = (
+        ("D","Defense"), 
+        ("A","Attack")
+    )
 
     tournament_id   = models.ForeignKey(Tournament)
     date            = models.DateTimeField(auto_now_add=False)
@@ -54,6 +57,6 @@ class MatchPoint(models.Model):
     - each point of winning element as value      
     - risk let to know if there is netgative point (risk = True) or not (risk = False)
     """                                           
-    key             = models.CharField()
+    key             = models.CharField(max_length=200)
     value           = models.IntegerField()
     risk            = models.BooleanField(default=False)

@@ -106,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-FR'
 
 TIME_ZONE = 'UTC'
 
@@ -126,5 +126,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
+IMAGE_UPLOAD_PATH = os.path.join(STATIC_ROOT, 'uploadsImg')
+THUMBNAIL_UPLOAD_PATH = os.path.join(STATIC_ROOT, 'thumbnails')
 # Simplified static file serving.
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+

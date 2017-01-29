@@ -11,8 +11,8 @@ class MatchBet(models.Model):
     """
     Bets model : one bet per match and per player
     """
-    palyer_id       = models.ForeignKey(User)
-    match_id        = models.ForeigneKey(Match)
+    player_id       = models.ForeignKey(User)
+    match_id        = models.ForeignKey(Match)
     home_team_score = models.IntegerField()
     home_team_tries = models.IntegerField()
     home_team_bonus = models.IntegerField()
@@ -41,8 +41,8 @@ class TournamentBet(models.Model):
       ('pg', 'Pays de Galles'),
     )
 
-    palyer_id       = models.ForeignKey(User)
-    tournament_id   = models.ForeigneKey(Tournament)
+    player_id       = models.ForeignKey(User)
+    tournament_id   = models.ForeignKey(Tournament)
     first_team      = models.CharField(max_length=15, choices=teams, default='--')
     second_team     = models.CharField(max_length=15, choices=teams, default='--')
     third_team      = models.CharField(max_length=15, choices=teams, default='--')
@@ -61,5 +61,5 @@ class BetPoint(models.Model):
     - each element of bet as key
     - each point of winning element as value
     """
-    key             = models.CharField()
+    key             = models.CharField(max_length=200)
     value           = models.IntegerField()
