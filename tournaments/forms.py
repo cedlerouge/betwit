@@ -1,4 +1,5 @@
 from django.forms import ModelForm, Textarea
+from django import forms
 from tournaments.models import Team,Tournament, Match, MatchPoint
 
 
@@ -24,7 +25,8 @@ class MatchForm( ModelForm ):
         model   = Match
         fields  = [ 'date', 'home_team_id', 'away_team_id' ]
 
-Class MatchPointForm( ModelForm ):
+
+class MatchPointForm( ModelForm ):
     class Meta:
         model   = MatchPoint
         fields  = '__all__'
