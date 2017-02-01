@@ -15,13 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from bets.views import Index
 
 urlpatterns = [
+    url( r'^$', Index.as_view(), name="home" ),
     url( r'^admin/', admin.site.urls ),
     url( r'^tournament/', include( 'tournaments.urls', namespace="tournaments" ) ),
-    # TODO take a look to other registrations backends
     url( r'^accounts/', include( 'registration.backends.default.urls' ) ),
     url( r'^accounts/', include( 'django.contrib.auth.urls', namespace='auth' ) ),
     # TODO bets and user page /bets/bets/user
-    #url( r'^bet/', include( 'bets.urls', namespace="bets" ) ),
+    url( r'^bet/', include( 'bets.urls', namespace="bets" ) ),
 ]
