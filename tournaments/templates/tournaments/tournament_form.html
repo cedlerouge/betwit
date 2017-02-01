@@ -9,7 +9,7 @@
 {% block content %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'tournament:{{ elt }}_add' %}" method="post" class="form">
+<form action="{{ post_url }}" method="post" class="form">
     {% csrf_token %}
     {% bootstrap_form form layout='inline' %}
     {% buttons %}

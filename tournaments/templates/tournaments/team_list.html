@@ -5,11 +5,14 @@
 {% endblock %}
 
 {% block content %}
+<div>
+    <h4><a href="{% url 'tournaments:team_add' %}">Add a team</a></h4>
+</div>
 {% if team_list %}
 <div>
     {% for team in team_list %}
     <div>
-        <h4><a href="{% url 'tournament:team_detail' team_id %}">
+        <h4><a href="{% url 'tournaments:team_detail' team.id %}">
         {{ team.name }} | {{ team.nationality }}
         </a></h4>
     </div>

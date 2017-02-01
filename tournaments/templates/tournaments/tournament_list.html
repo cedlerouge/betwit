@@ -5,11 +5,14 @@
 {% endblock %}
 
 {% block content %}
+<div>
+    <h4><a href="{% url 'tournaments:tournament_add' %}">Add a tournament</a></h4>
+</div>
 {% if tournament_list %}
 <div>
     {% for tournament in tournament_list %}
     <div>
-        <h4><a href="{% url 'tournament:tournament_detail' tournament_id %}">
+        <h4><a href="{% url 'tournaments:tournament_detail' tournament.id %}">
         {{ tournament.name }} | {{ tournament.year }}
         </a></h4>
     </div>
