@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
-#    'bets',
+    'bets',
     'tournaments',
     'registration',
 ]
@@ -136,4 +136,9 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = '/tournament/tournament/user'
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window
-REGISTRATION_AUTO_LOGIN = True # Automatically log the user in.
+REGISTRATION_AUTO_LOGIN = False # Automatically log the user in.
+
+# smtpout
+EMAIL_HOST = "smtp.test.com"
+EMAIL_PORT = 25
+DEFAULT_FROM_EMAIL = "betwit@test.com"
