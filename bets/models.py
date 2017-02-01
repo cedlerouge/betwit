@@ -7,6 +7,14 @@ from tournaments.models import Match, Tournament
 
 # Create your models here.
 
+
+class Bettor(models.Model):
+    user            = models.OneToOneField( User, on_delete=models.CASCADE)
+    is_admin        = models.BooleanField(default=False)
+    points_won      = models.IntegerField()
+    
+
+
 class MatchBet(models.Model):
     """
     Bets model : one bet per match and per player
