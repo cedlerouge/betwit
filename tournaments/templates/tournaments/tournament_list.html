@@ -13,7 +13,7 @@
     {% for tournament in tournament_list %}
     <div>
         <h4><a href="{% url 'tournaments:tournament_detail' tournament.id %}">
-        {{ tournament.name }} | {{ tournament.year }}
+        {{ tournament.name }} | {{ tournament.year }} | {{ tournament.begins }}
         </a></h4>
     </div>
     {% endfor %}
