@@ -5,9 +5,12 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
+from django.views.decorators.http import require_http_methods
+
 from django.utils import timezone
 import datetime
 
+from tournaments.models import Tournament
 from .models import MatchBet, TournamentBet
 from .forms import MatchBetForm, TournamentBetForm, BetPointForm
 
@@ -55,12 +58,156 @@ class Profile(View):
         params['betcup'] = tournamentBet
         return render(request, 'bets/profile.html', params)
 
+@require_http_methods(["GET", "POST"])
+def matchBet_add( request, mbet_id=None ):
+    if request.method == 'POST':
+        user         = User.objects.get(username=request.user.username)
+        form         = MatchBetForm(request.POST)
+        if form.is_valid():
+            mbet            = MatchBet()
+            player_id       = user
+            match_id        = form.cleaned_data['match_id']
+            home_team_score = form.cleaned_data['home_team_score']
+            home_team_tries = form.cleaned_data['home_team_tries']
+            home_team_bonus = form.cleaned_data['home_team_bonus']
+            away_team_score = form.cleaned_data['away_team_score']
+            away_team_tries = form.cleaned_data['away_team_tries']
+            away_team_bonus = form.cleaned_data['away_team_bonus']
+            card            = form.cleaned_data['card']
+            drop_goal       = form.cleaned_data['drop_goal']
+            fight           = form.cleaned_data['fight']
+            created_date    = timezone.now()
+            modified_date   = timezone.now()
+            mbet.save()
+            return HttpResponseRedirect( reverse('bets:mbet_detail', args=(mbet.id,)))
+        return render( request, 'bets/bet_form.html', { 'form': form } )
+    else:
+        """
+        GET with matchBet_id => update a bet => check exists bet
+        else diplay an empty form 
+        """
+        params  = dict()
+        if mbet_id:
+            # TODO check if username == matchBet_id
+            username    = request.user.username
+            mbet        = get_object_or_404(MatchBet, pk=mbet_id)
+            if mbet.player_id.username == username:
+                # this is the owner, you can fill the form
+                form                = MatchBetForm( id=mbet_id )
+                params['elt']       = "matchBet"
+                params['post_url']  = "bets:mbet_add"
+                return render( request, 'bets/bet_form.html', params)
+        form                = MatchBetForm()
+        params              = dict()
+        params['form']      = form
+        params['elt']       = "matchBet"
+        params['post_url']  = "'bets:mbet_add' "+tournament_id
+        return render( request, 'bets/bet_form.html', params)
 
-def bet_list( request ):
-    bet_list    = Bet.objects.order_by( '-year' )
-    context     = { 'bet_list':bet_list }
-    return render( request, 'bets/bet_list.html', context )
+@require_http_methods(["GET", "POST"])
+def tournamentBet_add( request, tbet_id=None ):
+    if request.method == 'POST':
+        user         = User.objects.get(username=request.user.username)
+        form         = TournamentBetForm(request.POST)
+        if form.is_valid():
+            tbet                = TournamentBet()
+            tbet.player_id      = user
+            tbet.tournament_id  = form.cleaned_data['tournament_id']
+            tbet.first_team     = form.cleaned_data['first_team']
+            tbet.second_team    = form.cleaned_data['second_team']
+            tbet.third_team     = form.cleaned_data['third_team']
+            tbet.fourth_team    = form.cleaned_data['fourth_team']
+            tbet.fifth_team     = form.cleaned_data['fifth_team']
+            tbet.sixth_team     = form.cleaned_data['sixth_team']
+            tbet.grand_slam     = form.cleaned_data['grand_slam']
+            tbet.wooden_spoon   = form.cleaned_data['wooden_spoon']
+            tbet.created_date   = timezone.now()
+            tbet.modified_date  = timezone.now()
+            tbet.save()
+            return HttpResponseRedirect( reverse('bets:tbet_detail', args=(tbet.id,)))
+        return render( request, 'bets/bet_form.html', { 'form': form } )
+    else:
+        """
+        GET with tournamentBet_id => update a bet => check exists bet
+        else diplay an empty form 
+        """
+        params  = dict()
+        if tbet_id:
+            # TODO check if username == matchBet_id
+            username    = request.user.username
+            tbet        = get_object_or_404(TournamentBet, pk=tbet_id)
+            if tbet.player_id.username == username:
+                # this is the owner, you can fill the form
+                form                = TournamentBetForm( id=tbet_id )
+                params['elt']       = "tournamentBet"
+                params['post_url']  = "bets:tbet_add"
+                return render( request, 'bets/bet_form.html', params)
+        form                = TournamentBetForm()
+        params['form']      = form
+        params['elt']       = "matchBet"
+        params['post_url']  = reverse( 'bets:tbet_add' )
+        return render( request, 'bets/bet_form.html', params)
 
+def bet_index( request ): 
+    # TODO 
+    # disable links if tournament hasn't started
+    params          = dict()
+    tournament_list = Tournament.objects.order_by( '-year' )
+    if len( tournament_list ) == 1:
+        return HttpResponseRedirect( reverse('bets:tbet_list', args=[tournament_list[0].id] ) )
+        #return HttpResponseRedirect( reverse('bets:tbet_list', args=(tbet_list[0].id,)))
+    params['tournament_list' ]  = tournament
+    return render( request, 'bets/tournament_list.html', params )
+
+def tbet_list( request, tournament_id ):
+    params      = dict()
+    tbet_list   = TournamentBet.objects.filter( tournament_id = tournament_id )
+    # TODO deny acces before the begining of the tournament
+    # select every matchs of the tournament and get the date of first one
+    # if date.now() is lower than the match date, display message
+    # wrong because I added a "begins" field in tournament model
+    #tournament  = Tournament.objects.get( tournament_id = tournament_id).filter(begins__lte=timezone.now())
+    tournament  = Tournament.objects.get( id = tournament_id)
+    if tournament.begins < timezone.now():
+        params      = { 'tbet_list':tbet_list }
+    else:
+        countdown   = tournament.begins - timezone.now()
+        waiting_message = "The tournament has not yet started, Access available in %s - %s - %s" % ( (str(countdown), str(tournament.begins), str(timezone.now()) ) )
+        params      = { 'message': waiting_message }
+    return render( request, 'bets/tbet_list.html', params )
+
+def tbet_detail( request, tbet_id ):
+    params      = dict()
+    tbet        = get_object_or_404(TournamentBet, pk=tbet_id)
+    tbetform    = TournamentBetForm( instance=tbet )
+    username    = request.user.username 
+    if tbet.player_id.username == username:
+        params['bet']  = tbetform
+        params['elt']   = 'tournamentBet'
+        return render( request, 'bets/bet_detail.html', params)
+    else:
+        params["message"]   = "You are not allowed to see this page"
+        return render( request, 'bets/bet_detail.html', params )
+
+def mbet_list( request, tbet_id ):
+    # TODO 
+    # Display oinly matchs information if matchs hasn't started
+    mbet_list   = MatchBet.objects.filter( tournament_id = tbet_id )
+    params     = { 'bet_list': mbet_list }
+    return render( request, 'bets/bet_list.html', params )
+
+def mbet_detail( request, mbet_id ):
+    params      = dict()
+    mbet        = get_object_or_404(TournamentBet, pk=mbet_id)
+    mbetform    = MatchBetForm( instance=mbet )
+    username    = request.user.username 
+    if mbet.player_id.username == username:
+        params['bet']  = mbet
+        params['elt']   = 'matchBet'
+        return render( request, 'bets/bet_details.html', params)
+    else:
+        params["message"]   = "You are not allowed to see this page"
+        return render( request, 'bets/bet_detail.html', params )
 
 
 

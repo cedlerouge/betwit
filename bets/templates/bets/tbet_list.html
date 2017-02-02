@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<h2>Tournaments</h2>
+{% endblock %}
+
+{% block content %}
+{% if message %}
+<p>{{ message }}</p>
+{% else %}
+<div class="row clearfix">                          
+  <table class="table" width="100%" cellspacing="0">
+  <!--table data-toggle="table"-->                  
+    <thead>                                         
+      <tr>
+        <td></td>
+        {% for tbet in tbet_list %}
+        <td>{{ tbet.player_id.username }}</td>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>First</td>
+        {% for tbet in tbet_list %}
+        <td>{{ tbet.first_team.name }}<td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <td>Second</td>
+        {% for tbet in tbet_list %}
+        <td>{{ tbet.second_team.name }}<td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <td>Third</td>
+        {% for tbet in tbet_list %}
+        <td>{{ tbet.third_team.name }}<td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <td>Fourth</td>
+        {% for tbet in tbet_list %}
+        <td>{{ tbet.fourth_team.name }}<td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <td>Fifth</td>
+        {% for tbet in tbet_list %}
+        <td>{{ tbet.fifth_team.name }}<td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <td>Sixth</td>
+        {% for tbet in tbet_list %}
+        <td>{{ tbet.sixth_team.name }}<td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <td>Grand Slam</td>
+        {% for tbet in tbet_list %}
+        <td>{{ tbet.grand_slam }}<td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <td>Wooden Spoon</td>
+        {% for tbet in tbet_list %}
+        <td>{{ tbet.wooden_spoon }}<td>
+        {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}

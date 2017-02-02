@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load bootstrap3 %}
+
+{% block title %}
+<h2>{{ elt }}</h2>
+{% endblock %}
+
+{% block content %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<table class="table" width="100%" cellspacing="0">
+  <thead>
+    {% for field in bet %}
+      <th>{{ field.label }}</td>
+    {% endfor %}
+  </thead>
+  <tbody>
+    <tr>
+    {% for field in bet %}
+      <td>{{ field.value|default_if_none:'' }}</td>
+    {% endfor %}
+    </tr>
+  </tbody>
+</table>
+{% endblock %}
