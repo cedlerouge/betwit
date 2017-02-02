@@ -22,7 +22,8 @@ class TournamentForm( ModelForm ):
 
     class Meta:
         model   = Tournament
-        fields  = [ 'name', 'year' ]
+        fields  = '__all__'
+        #[ 'name', 'year' ]
 
 class MatchForm( ModelForm ):
     class Meta:

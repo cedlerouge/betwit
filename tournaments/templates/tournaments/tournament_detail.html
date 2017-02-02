@@ -9,7 +9,6 @@
 {% endblock %}
 
 {% block content %}
-{% bootstrap_button "Add a match" button_type="link" button_class="btn-primary" href="/tournament/{{ tournament.id }}/match_add" %}
 <a href="{% url 'tournaments:match_add' tournament.id %}" class="btn btn-default">Add a match</a>
 <h3>Matchs</h3>
 {% for match in match_list %}

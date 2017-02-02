@@ -144,5 +144,5 @@ def match_add( request, tournament_id ):
         params              = dict()
         params['form']      = form
         params['elt']       = "match"
-        params['post_url']  = reverse("tournaments:match_add", args(tournament_id))
+        params['post_url']  = reverse("tournaments:match_add", args=(tournament_id))
         return render( request, 'tournaments/tournament_form.html', params )
