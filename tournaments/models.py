@@ -22,6 +22,7 @@ class Tournament(models.Model):
     """
     name        = models.CharField(max_length=20)
     year        = models.IntegerField()
+    begins      = models.DateTimeField()
 
     def __str__(self):
         return self.name + " - " + str(self.year)
