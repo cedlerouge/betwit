@@ -20,6 +20,9 @@
     {% for field in bet %}
       <td>{{ field.value|default_if_none:'' }}</td>
     {% endfor %}
+    {% if is_update %}
+      <td><a href="{{ update_url }}">Update</a></td>
+    {% endif %}
     </tr>
   </tbody>
 </table>

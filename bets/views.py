@@ -14,6 +14,12 @@ from tournaments.models import Tournament
 from .models import MatchBet, TournamentBet
 from .forms import MatchBetForm, TournamentBetForm, BetPointForm
 
+import logging
+logger = logging.getLogger('django')
+logger.setLevel( logging.DEBUG )
+logger.addHandler( logging.StreamHandler() )
+logger.info('This is it')
+
 # Create your views here.
 
 class Index(View):
@@ -113,7 +119,12 @@ def tournamentBet_add( request, tournament_id, tbet_id=None ):
         tournament  = get_object_or_404(Tournament, pk=tournament_id)
         form         = TournamentBetForm(request.POST, tournament_id = tournament_id)
         if form.is_valid():
-            tbet                = TournamentBet()
+            if tbet_id is not None:
+                tbet                = TournamentBet(id=tbet_id)
+                logger.info('tbet_id is present, so this is update')                
+            else:
+                tbet                = TournamentBet()
+                logger.info('tbet_id is empty, so this is insert')
             tbet.player_id      = user
             tbet.tournament_id  = tournament
             tbet.first_team     = form.cleaned_data['first_team']
@@ -142,9 +153,10 @@ def tournamentBet_add( request, tournament_id, tbet_id=None ):
             tbet        = get_object_or_404(TournamentBet, pk=tbet_id)
             if tbet.player_id.username == username:
                 # this is the owner, you can fill the form
-                form                = TournamentBetForm( id=tbet_id, tournament_id = tournament_id )
+                form                = TournamentBetForm( instance=tbet, tournament_id = tournament_id )
+                params['form']      = form
                 params['elt']       = "tournamentBet"
-                params['post_url']  = reverse( 'bets:tbet_add', args=(tournament_id ) )
+                params['post_url']  = reverse( 'bets:tbet_add', args=(tournament_id, tbet_id ) )
                 #params['post_url']  = "bets:tbet_add"
                 return render( request, 'bets/bet_form.html', params)
         form                = TournamentBetForm( tournament_id = tournament_id )
@@ -160,6 +172,7 @@ if there is only one tounament redirect to tbet_list
 def bet_index( request ): 
     # TODO 
     # disable links if tournament hasn't started
+    logger.info('Welcome to bets module')
     params          = dict()
     tournament_list = Tournament.objects.order_by( '-year' )
     if len( tournament_list ) == 1:
@@ -215,6 +228,12 @@ def tbet_detail( request, tbet_id ):
     tbet        = get_object_or_404(TournamentBet, pk=tbet_id)
     tbetform    = TournamentBetForm( instance=tbet )
     username    = request.user.username 
+    # Check if update is yet possible tournnament.begins > timezone.now()
+    tournament  = Tournament.objects.get( id = tbet.tournament_id.id )
+    if tournament and tournament.begins > timezone.now():
+        params['is_update']     = True
+        params['update_url']    = reverse( 'bets:tbet_add', args=(tournament.id, tbet.id))
+
     if tbet.player_id.username == username:
         params['bet']  = tbetform
         params['elt']   = 'tournamentBet'
