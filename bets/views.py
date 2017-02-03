@@ -95,24 +95,27 @@ def matchBet_add( request, mbet_id=None ):
                 # this is the owner, you can fill the form
                 form                = MatchBetForm( id=mbet_id )
                 params['elt']       = "matchBet"
-                params['post_url']  = "bets:mbet_add"
+                #params['post_url']  = "bets:mbet_add"
+                params['post_url']  = reverse( 'bets:mbet_add', args=(tournament_id, mbet_id))
                 return render( request, 'bets/bet_form.html', params)
         form                = MatchBetForm()
         params              = dict()
         params['form']      = form
         params['elt']       = "matchBet"
-        params['post_url']  = "'bets:mbet_add' "+tournament_id
+        #params['post_url']  = "'bets:mbet_add' "+tournament_id
+        params['post_url']  = reverse( 'bets:mbet_add', args=(tournament_id) )
         return render( request, 'bets/bet_form.html', params)
 
 @require_http_methods(["GET", "POST"])
-def tournamentBet_add( request, tbet_id=None ):
+def tournamentBet_add( request, tournament_id, tbet_id=None ):
     if request.method == 'POST':
         user         = User.objects.get(username=request.user.username)
-        form         = TournamentBetForm(request.POST)
+        tournament  = get_object_or_404(Tournament, pk=tournament_id)
+        form         = TournamentBetForm(request.POST, tournament_id = tournament_id)
         if form.is_valid():
             tbet                = TournamentBet()
             tbet.player_id      = user
-            tbet.tournament_id  = form.cleaned_data['tournament_id']
+            tbet.tournament_id  = tournament
             tbet.first_team     = form.cleaned_data['first_team']
             tbet.second_team    = form.cleaned_data['second_team']
             tbet.third_team     = form.cleaned_data['third_team']
@@ -123,6 +126,7 @@ def tournamentBet_add( request, tbet_id=None ):
             tbet.wooden_spoon   = form.cleaned_data['wooden_spoon']
             tbet.created_date   = timezone.now()
             tbet.modified_date  = timezone.now()
+            # TODO Do not let save a tournament bet if an user has already his one
             tbet.save()
             return HttpResponseRedirect( reverse('bets:tbet_detail', args=(tbet.id,)))
         return render( request, 'bets/bet_form.html', { 'form': form } )
@@ -138,16 +142,21 @@ def tournamentBet_add( request, tbet_id=None ):
             tbet        = get_object_or_404(TournamentBet, pk=tbet_id)
             if tbet.player_id.username == username:
                 # this is the owner, you can fill the form
-                form                = TournamentBetForm( id=tbet_id )
+                form                = TournamentBetForm( id=tbet_id, tournament_id = tournament_id )
                 params['elt']       = "tournamentBet"
-                params['post_url']  = "bets:tbet_add"
+                params['post_url']  = reverse( 'bets:tbet_add', args=(tournament_id ) )
+                #params['post_url']  = "bets:tbet_add"
                 return render( request, 'bets/bet_form.html', params)
-        form                = TournamentBetForm()
+        form                = TournamentBetForm( tournament_id = tournament_id )
         params['form']      = form
-        params['elt']       = "matchBet"
-        params['post_url']  = reverse( 'bets:tbet_add' )
+        params['elt']       = "tournament Bet"
+        params['post_url']  = reverse( 'bets:tbet_add', args=( tournament_id) )
         return render( request, 'bets/bet_form.html', params)
 
+"""
+List every tournament by year
+if there is only one tounament redirect to tbet_list
+"""
 def bet_index( request ): 
     # TODO 
     # disable links if tournament hasn't started
@@ -156,9 +165,15 @@ def bet_index( request ):
     if len( tournament_list ) == 1:
         return HttpResponseRedirect( reverse('bets:tbet_list', args=[tournament_list[0].id] ) )
         #return HttpResponseRedirect( reverse('bets:tbet_list', args=(tbet_list[0].id,)))
-    params['tournament_list' ]  = tournament
+    params['tournament_list' ]  = tournament_list
     return render( request, 'bets/tournament_list.html', params )
 
+"""
+List every tournament bets 
+if tournament hasn't yet started : 
+- if user has already placed a bet, display countdown
+- else ask him if he wants to place a bet
+"""
 def tbet_list( request, tournament_id ):
     params      = dict()
     tbet_list   = TournamentBet.objects.filter( tournament_id = tournament_id )
@@ -166,14 +181,33 @@ def tbet_list( request, tournament_id ):
     # select every matchs of the tournament and get the date of first one
     # if date.now() is lower than the match date, display message
     # wrong because I added a "begins" field in tournament model
-    #tournament  = Tournament.objects.get( tournament_id = tournament_id).filter(begins__lte=timezone.now())
+    # DONE
     tournament  = Tournament.objects.get( id = tournament_id)
+    params['tournament']    = tournament
+    params['prout']         = "Debut"
     if tournament.begins < timezone.now():
-        params      = { 'tbet_list':tbet_list }
+        params['tbet_list'] = tbet_list
+        params['prout']         = "tournament.begins < timezone.now()"
     else:
+        params['prout']         = " pas commence"
+        # If user has not yet placed a bet, propose him
+        # else display message
+        user        = User.objects.get( username = request.user.username )
         countdown   = tournament.begins - timezone.now()
-        waiting_message = "The tournament has not yet started, Access available in %s - %s - %s" % ( (str(countdown), str(tournament.begins), str(timezone.now()) ) )
-        params      = { 'message': waiting_message }
+        message = "The tournament has not yet started, Access available in %s - %s - %s" % ( (str(countdown), str(tournament.begins), str(timezone.now()) ) )
+        has_bet = False
+        for t in tbet_list:
+            if t.player_id.id == user.id:
+                # The player has already bet
+                params['message']       = "You have to wait until Tournament begins: " + str(countdown)
+                params['button_title']  = "Uptade your Bet "
+                params['button_url']    = reverse( "bets:tbet_add", args=(t.tournament_id.id, t.id))
+                has_bet = True
+        if not has_bet :
+            params['message']       = "The tournament will start in %s, would you like to place a ranking bet ? " % (str(countdown))
+            params['button_title']  = "Place a ranking bet"
+            params['button_url']    = reverse( 'bets:tbet_add', args=(tournament_id) )
+        
     return render( request, 'bets/tbet_list.html', params )
 
 def tbet_detail( request, tbet_id ):

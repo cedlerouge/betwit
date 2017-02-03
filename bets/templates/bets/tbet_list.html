@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 
 {% block title %}
-<h2>Tournaments</h2>
+<h2>Tournament {{ tournament.name }} - {{ tournament.year }}</h2>
 {% endblock %}
 
 {% block content %}
-{% if message %}
-<p>{{ message }}</p>
+Ceci est un {{ prout }}
+{% if message != "" %}
+<div>
+    <p>{{ message }}</p>
+    <a href="{{ button_url }}" class="btn btn-default">{{ button_title }}</a>
+</div>
 {% else %}
 <div class="row clearfix">                          
   <table class="table" width="100%" cellspacing="0">

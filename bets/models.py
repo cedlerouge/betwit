@@ -40,23 +40,36 @@ class TournamentBet(models.Model):
     """
 
     # TODO rendre cette list dynamique 
-    teams = (
-      ('an', 'Angleterre'),
-      ('ec', 'Ecosse'),
-      ('fr', 'France'),
-      ('ir', 'Irlande'),
-      ('it', 'Italie'),
-      ('pg', 'Pays de Galles'),
-    )
+    # DONE in TournamentBetForm
+    #matchs = Match.objects.filter( tournament_id = tid )
+    #teams = list()
+    #for m in matchs: 
+    #    t = (m.home_team_id.name, m.home_team_id.name)
+    #    if t not in teams:
+    #        team.append(t)
+    #teams = (
+    #  ('an', 'Angleterre'),
+    #  ('ec', 'Ecosse'),
+    #  ('fr', 'France'),
+    #  ('ir', 'Irlande'),
+    #  ('it', 'Italie'),
+    #  ('pg', 'Pays de Galles'),
+    #)
 
     player_id       = models.ForeignKey(User)
     tournament_id   = models.ForeignKey(Tournament)
-    first_team      = models.CharField(max_length=15, choices=teams, default='--')
-    second_team     = models.CharField(max_length=15, choices=teams, default='--')
-    third_team      = models.CharField(max_length=15, choices=teams, default='--')
-    fourth_team     = models.CharField(max_length=15, choices=teams, default='--')
-    fifth_team      = models.CharField(max_length=15, choices=teams, default='--')
-    sixth_team      = models.CharField(max_length=15, choices=teams, default='--')
+    #first_team      = models.CharField(max_length=15, choices=teams, default='--')
+    #second_team     = models.CharField(max_length=15, choices=teams, default='--')
+    #third_team      = models.CharField(max_length=15, choices=teams, default='--')
+    #fourth_team     = models.CharField(max_length=15, choices=teams, default='--')
+    #fifth_team      = models.CharField(max_length=15, choices=teams, default='--')
+    #sixth_team      = models.CharField(max_length=15, choices=teams, default='--')
+    first_team      = models.CharField(max_length=15)
+    second_team     = models.CharField(max_length=15)
+    third_team      = models.CharField(max_length=15)
+    fourth_team     = models.CharField(max_length=15)
+    fifth_team      = models.CharField(max_length=15)
+    sixth_team      = models.CharField(max_length=15)
     grand_slam      = models.BooleanField(default=False)
     wooden_spoon    = models.BooleanField(default=False)
     points_won      = models.IntegerField(null=True, blank=True)
