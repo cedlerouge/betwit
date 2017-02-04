@@ -58,7 +58,7 @@ class Match(models.Model):
     comment         = models.TextField( max_length=1000, null=True, blank=True )
 
     def __unicode__(self):
-        return "%s > %s" % (self.home_team_id, self.away_team_id)
+        return "%s vs %s" % (self.home_team_id, self.away_team_id)
 
 class MatchPoint(models.Model):                     
     """                                           

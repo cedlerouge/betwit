@@ -6,14 +6,14 @@
 
 {% block content %}
 <div>
-    <h4><a href="{% url 'bets:tbet_add' %}">Add a bet ranking</a></h4>
+    <h4>Choissez un tournoi sur lequel parier</h4>
 </div>
 {% if tournament_list %}
 <div>
     {% for tournament in tournament_list %}
     <div>
         <h4><a href="{% url 'bets:tbet_list' tournament.id %}">
-        {{ tournament.name }} | {{ tournament.year }}
+        {{ tournament.name }} | {{ tournament.year }} | {{ tournament.begins }}
         </a></h4>
     </div>
     {% endfor %}

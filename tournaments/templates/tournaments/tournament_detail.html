@@ -9,7 +9,6 @@
 {% endblock %}
 
 {% block content %}
-<a href="{% url 'tournaments:match_add' tournament.id %}" class="btn btn-default">Add a match</a>
 <h3>Matchs</h3>
 {% for match in match_list %}
     <h4><a href="{% url 'tournaments:match_detail' match.id %}">

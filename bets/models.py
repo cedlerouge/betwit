@@ -16,6 +16,11 @@ class Bettor(models.Model):
 
 
 class MatchBet(models.Model):
+    bonus_choices   = (
+        ( 'Null', 'Null'), 
+        ('Defense', 'Defense'),
+        ('Attack', 'Attack' ),
+    )
     """
     Bets model : one bet per match and per player
     """
@@ -23,10 +28,10 @@ class MatchBet(models.Model):
     match_id        = models.ForeignKey(Match)
     home_team_score = models.IntegerField()
     home_team_tries = models.IntegerField()
-    home_team_bonus = models.IntegerField()
+    home_team_bonus = models.CharField(max_length=15, choices=bonus_choices, default='--')
     away_team_score = models.IntegerField()
     away_team_tries = models.IntegerField()
-    away_team_bonus = models.IntegerField()
+    away_team_bonus = models.CharField(max_length=15, choices=bonus_choices, default='--')
     card            = models.BooleanField(default=False)
     drop_goal       = models.BooleanField(default=False)
     fight           = models.BooleanField(default=False)

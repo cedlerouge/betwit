@@ -5,11 +5,10 @@
 {% endblock %}
 
 {% block content %}
-Ceci est un {{ prout }}
 {% if message != "" %}
 <div>
     <p>{{ message }}</p>
-    <a href="{{ button_url }}" class="btn btn-default">{{ button_title }}</a>
+    <a href="{{ tbet_button_url }}" class="btn btn-default">{{ tbet_button_title }}</a>
 </div>
 {% else %}
 <div class="row clearfix">                          
@@ -76,4 +75,8 @@ Ceci est un {{ prout }}
   </table>
 </div>
 {% endif %}
+<h4>Choissisez un match sur lequel parier</h4>
+<div>
+    <a href="{{ mbet_button_url }}" class="btn btn-default">{{ mbet_button_title }}</a>
+</div>
 {% endblock %}

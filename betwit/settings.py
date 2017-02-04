@@ -150,7 +150,7 @@ THUMBNAIL_UPLOAD_PATH = os.path.join(STATIC_ROOT, 'thumbnails')
 # Simplified static file serving.
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-LOGIN_REDIRECT_URL = '/bet/u/'
+LOGIN_REDIRECT_URL = '/bets/u/'
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window
 REGISTRATION_AUTO_LOGIN = False # Automatically log the user in.
 

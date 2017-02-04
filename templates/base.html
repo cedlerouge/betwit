@@ -1,39 +1,54 @@
-{% load bootstrap3 %}
 
+{% load bootstrap3 %}
+<html>
+  <head>
+    <title>Betwit</title>
+  </head>
+
+  <body>
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
 {% block bootstrap3_content %}
-<div class="container">
-    <nav class="navbar navbar-default">
-        <div class="navbar-header">
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="{% url 'tournaments:tournament_list' %}">Tournaments</a></li>
-                <li><a href="{% url 'tournaments:team_list' %}">Teams</a></li>
-                <li><a href="{% url 'tournaments:match_list' %}">Matchs</a></li>
-                <li><a href="{% url 'bets:Index' %}">Paris</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'tournaments:tournament_list'  %}">Hello {{ user.username }}</a></li>
-               {% if user.is_superuser %}
-                <li ng-class="pageClass('/login')"><a href="/admin/">Administration</a></li>
+    <div class="container">
+        <nav class="navbar navbar-default">
+            <div class="navbar-header">
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'tournaments:tournament_list' %}">Les tournois</a></li>
+                       <!-- sous menu results | calendrier | -->
+                    <li><a href="{% url 'tournaments:team_list' %}">Les &eacute;quipes</a></li>
+                       <!-- sous menu classement des équipes-->
+                    <li><a href="{% url 'bets:index' %}">Parier</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                    <li class="dropdown">
+                    <a href="{% url 'bets:profile'  %}">Bonjour {{ user.username }}</a></li>
+                    <ul class="dropdown-menu">
+                        <li ng-class="pageClass('/login')"><a href="/bets/u/{{ user.username }}/">Mes Paris</a></li>
+                        <li ng-class="pageClass('/login')"><a href="/bets/">Nouveau Pari</a></li>
+                    </ul>
+                    </li>
+                   {% if user.is_superuser %}
+                    <li ng-class="pageClass('/login')"><a href="/admin/">Administration</a></li>
+                    {% endif %}
+                    <li><a href={% url 'auth:logout' %}>D&eacute;connexion</a></li>
+                {% else %}
+                    <li><a href={% url 'auth:login' %}>Connexion</a></li>
+                    <li><a href="/accounts/register">S'enregistrer</a></li>
                 {% endif %}
-                <li><a href={% url 'auth:logout' %}>Logout</a></li>
-            {% else %}
-                <li><a href={% url 'auth:login' %}>Login</a></li>
-                <li><a href="/accounts/register">Register</a></li>
-            {% endif %}
-            </ul>
-        </div>
-    </nav>
+                </ul>
+            </div>
+        </nav>
 
-    <h1>{% block title %}(no title){% endblock %}</h1>
+        <h1>{% block title %}(no title){% endblock %}</h1>
 
-    {% bootstrap_messages %}
+        {% bootstrap_messages %}
 
-    {% block content %}(no content){% endblock %}
-</div>
+        {% block content %}(no content){% endblock %}
+    </div>
 {% endblock %}
+  </body>
+</html>
