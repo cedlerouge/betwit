@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<h2>Les tournois</h2>
+{% endblock %}
+
+{% block content %}
+{% if tournament_list %}
+<div class="row clearfix">
+    <table class="table" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <td><Nom</td>
+                <td>Ann&eacute;e</td>
+                <td>Date de d&eacute;but</td>
+            <tr>
+        </thead>
+        <tbody>
+            {% for t in tournament_list %}
+            <tr>
+                <td><a href="{% url 'tournaments:tournament_detail' t.id %}">{{ t.name }}</a></td>
+                <td>{{ t.year }}</td>
+                <td>{{ t.begins }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table
+</div>
+{% else %}
+<p>No tournaments are available.</p>
+{% endif %}
+{% endblock %}

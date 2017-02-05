@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load bootstrap3 %}
+
+{% block title %}
+<h2>{{ tournament.name }}</h2>
+
+<h3>{{ tournament.year }}</h3>
+{% endblock %}
+
+{% block content %}
+<h3>Matchs</h3>
+{% for match in match_list %}
+    <h4><a href="{% url 'tournaments:match_detail' match.id %}">
+    {{ match.date }} | {{ match.home_team_id }} vs {{ match.away_team_id }}
+    </a></h4>
+{% endfor %}
+{% endblock %}
+
+

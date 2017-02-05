@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<h2>Matchs</h2>
+{% endblock %}
+
+{% block content %}
+{% if match_list %}
+<div>
+    {% for match in match_list %}
+    <div>
+        <h4><a href="{% url 'tournaments:match_detail' match.id %}">
+        {{ match.date }} | {{ match.home_team_id }} vs {{ match.away_team_id }}
+        </a></h4>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No matchs are available.</p>
+{% endif %}
+{% endblock %}

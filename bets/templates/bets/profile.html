@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}
+<h2>Mes pronostics</h2>
+<h4>Tournoi {{ tournament.name }} - {{ tournament.year }}</h4>
+{% endblock %}
+
+{% block content %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<h4>Pronostic du classement du tournoi</h4>
+{% if tbet %}
+<table class="table" width="100%" cellspacing="0">
+  <thead>
+    {% for field in tbet %}
+      <th>{{ field.label }}</td>
+    {% endfor %}
+  </thead>
+  <tbody>
+    <tr>
+    {% for field in tbet %}
+      <td>{{ field.value|default_if_none:'' }}</td>
+    {% endfor %}
+    {% if betcup_is_update %}
+      <td><a href="{{ betcup_update_url }}">Modifier</a></td>
+    {% endif %}
+    </tr>
+  </tbody>
+</table>
+{% endif %}
+
+<h4>Pronostic des matchs</h4>
+<table class="table" width="100%" cellspacing="0">
+  <thead>
+      <th>
+        <!--td>Match</td-->
+        <td>Date</td>           
+        <td>&Eacute;quipe A</td>
+        <td>Score A</td>        
+        <td>Essais A</td>
+        <td>Bonus A</td>
+        <td>Bonus B</td>
+        <td>Essais B</td>       
+        <td>Score B</td>        
+        <td>&Eacute;quipe B</td>
+        <td>Drop</td>           
+        <td>Carton</td>         
+        <td>Bagarre</td>        
+        <td>total</td>          
+      </th>
+  </thead>
+  <tbody>
+    <tr>
+    {% for b in mbet %}
+        <td></td>
+        <td>{{ b.match_id.date | date:'j-M H:i' }}</td>
+        <td>{{ b.match_id.home_team_id.name }}</td>
+        <td>{{ b.home_team_score | default_if_none:"0" }}</td>
+        <td>{{ b.home_team_tries | default_if_none:"0" }}</td>
+        <td>{{ b.home_team_bonus | default_if_none:"0" }}</td>
+        <td>{{ b.away_team_bonus | default_if_none:"0" }}</td>
+        <td>{{ b.away_team_tries | default_if_none:"0" }}</td> 
+        <td>{{ b.away_team_score | default_if_none:"0" }}</td>
+        <td>{{ b.match_id.away_team_id.name }}</td>
+        <td>{{ b.card }}</td>
+        <td>{{ b.fight }}</td>
+        <td>{{ b.drop_goal }}<td>
+        {% if current_date < b.match_id.date %}
+            <td><a href="/bets/mbet_add/{{ tournament.id }}/{{ b.id }}">Modifier</a></td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+    </tr>
+  </tbody>
+</table>
+
+
+
+{% endblock %}
+

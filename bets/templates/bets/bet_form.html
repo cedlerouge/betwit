@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% load bootstrap3 %}
+
+{% block title %}
+<h2>Add a {{ elt }}</h2>
+{% endblock %}
+
+{% block content %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{{ post_url }}" method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form layout='inline' %}
+    {% buttons %}
+    <button type="submit" class="btn btn-primary">
+        {% bootstrap_icon "star" %} Add
+    </button>   
+    {% endbuttons %}
+</form> 
+{% endblock %}
+
+<div class="row clearfix">
+  <div class="col-md-12 column">
+    {% if errors %}
+    <ul>
+      {% for error in errors %}
+      <li>{{ error }} </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% if form.subject.errors %}
+    <ol>
+    {% for error in form.subject.errors %}
+        <li><strong>{{ error|escape }}</strong></li>
+    {% endfor %}
+    </ol>
+    {% endif %}
+
+
+    <!--<fieldset class="module aligned ">-->
+    {% if form %}
+    <form method="post" action="" class="form-horizontal">{% csrf_token %}
+      <!--div class="col-md-8 col-md-offset-2"-->
+      <div class="form-group">
+        <table>
+          {{ form.as_table }}
+        </table>
+        <div>
+          <input type="submit" value="post">
+        </div>
+      </div>
+    </form>
+    {% endif %}
+    <!--</fieldset>-->
+    <!--<div class="submit-row">
+      <input type="submit" value="Save" class="default" name="_save" />
+    </div>-->
+  </div>
+</div>
+

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% load bootstrap3 %}
+
+{% block title %}
+<h2>{{ elt }}</h2>
+{% endblock %}
+
+{% block content %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<table class="table" width="100%" cellspacing="0">
+  <thead>
+    {% if elt == 'matchBet' %}
+    <td></td>
+    {% endif %}
+    {% for field in bet %}
+      <th>{{ field.label }}</td>
+    {% endfor %}
+  </thead>
+  <tbody>
+    <tr>
+    {% if elt == 'matchBet' %}
+    <td>{{ bet.match_id }}</td>
+    {% endif %}
+    {% for field in bet %}
+      <td>{{ field.value|default_if_none:'' }}</td>
+    {% endfor %}
+    {% if is_update %}
+      <td><a href="{{ update_url }}">Update</a></td>
+    {% endif %}
+    </tr>
+  </tbody>
+</table>
+{% endblock %}
