@@ -11,6 +11,9 @@
 
 <table class="table" width="100%" cellspacing="0">
   <thead>
+    {% if elt == 'matchBet' %}
+    <td></td>
+    {% endif %}
     {% for field in bet %}
       <th>{{ field.label }}</td>
     {% endfor %}
