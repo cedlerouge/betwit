@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<script>
+/*$(document).ready(function(){
+    $(".toggler").click(function(e){
+        e.preventDefault();
+        $('.round'+$(this).attr('data-betwit-round')).toggle();
+    });
+});*/
+</script>
+<div class="row clearfix">
+  <table class="table" width="100%" cellspacing="0">
+  <!--table data-toggle="table"-->
+    <thead>
+      <tr>
+        <td>Round</td>
+        <td>Match</td>
+        <td>Date</td>
+        <td>&Eacute;quipe A</td>
+        <td>Score A</td>
+        <td>Essais A</td>
+        <td>Essais B</td>
+        <td>Score B</td>
+        <td>&Eacute;quipe B</td>
+        <td>Drop</td>
+        <td>Carton</td>
+        <td>Bagarre</td>
+        <td>total</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in match %}
+      <tr class="info" id="{{m.id}}">
+        <td>{{m.cup_round}}</td>
+        <td><a href="#" class="toggler" data-betwit-matchid="{{m.id}}">+</a></td>
+        <td>{{m.date|date:'j-M H:i'}}</td>
+        <td>{{m.home_team_id.name}}</td>
+        <td>{{ m.home_team_score|default_if_none:"0" }}</td>
+        <td>{{ m.home_team_tries|default_if_none:"0" }}</td>
+        <td>{{ m.away_team_tries|default_if_none:"0" }}</td>
+        <td>{{ m.away_team_score|default_if_none:"0" }}</td>
+        <td>{{m.away_team_id.name}}</td>
+        <td>{% if m.card %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+        <td>{% if m.drop_goal %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+        <td>{% if m.fight %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+        <td></td>
+      </tr>
+        {% for b in bet %}
+          {% if b.match_id.id == m.id %}
+      <tr class="round{{m.id}}" style="display:none">
+        <td></td>
+        <td colspan="2">{{b.user.username|capfirst}}</td>
+        <td>{% if b.home_team_score > b.away_team_score %}V{% elif b.home_team_score < b.away_team_score %}D{% else %}N{% endif %}</td>
+        <td>{{ b.home_team_score|default_if_none:"0" }}</td>
+        <td>{{ b.home_team_tries|default_if_none:"0" }}</td>
+        <td>{{ b.away_team_tries|default_if_none:"0" }}</td>
+        <td>{{ b.away_team_score|default_if_none:"0" }}</td>
+        <td>{% if b.home_team_score > b.away_team_score %}D{% elif b.home_team_score < b.away_team_score %}V{% else %}N{% endif %}</td>
+        <td>{% if b.drop_goal %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+        <td>{% if b.card %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+        <td>{% if b.fight %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+        <td>{{b.points_won}}</td>
+      </tr>
+          {% endif %}
+        {% endfor %}
+      
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

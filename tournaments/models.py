@@ -35,9 +35,18 @@ class Match(models.Model):
         ("D","Defense"), 
         ("A","Attack")
     )
+    cup_round   = (
+        ( '1', 'Round 1'),
+        ( '2', 'Round 2'),
+        ( '3', 'Round 3'),
+        ( '4', 'Round 4'),
+        ( '5', 'Round 5'),
+    )
+
 
     tournament_id   = models.ForeignKey( Tournament )
     date            = models.DateTimeField( auto_now_add=False )
+    cup_round       = models.CharField(max_length=1, choices=cup_round, default='1')
     #tournament_round = models.IntegerField()
     home_team_id    = models.ForeignKey(Team, related_name="home_team" )
     home_team_score = models.IntegerField( null=True, blank=True )

@@ -288,10 +288,14 @@ def mbet_list( request, tbet_id ):
     return render( request, 'bets/bet_list.html', params )
 
 def mbet_detail( request, mbet_id ):
-    params      = dict()
+    params      = {'error_message': None, 'is_update': None }
     mbet        = get_object_or_404(MatchBet, pk=mbet_id)
     mbetform    = MatchBetForm( instance=mbet )
     username    = request.user.username 
+    match       = Match.objects.get( id=mbet.match_id.id)
+    if match is not None:
+        if match.date > timezone.now():
+            params['update'] = True
     if mbet.player_id.username == username:
         params['bet']  = mbetform
         params['elt']   = 'matchBet'
@@ -300,6 +304,13 @@ def mbet_detail( request, mbet_id ):
         params["message"]   = "You are not allowed to see this page"
         return render( request, 'bets/bet_detail.html', params )
 
-
-
+@login_required
+def prognosis( request ):
+    params      = {'error_message': None, 'is_update': None }
+    match       = Match.objects.filter(date__lte=timezone.now())
+    mbet        = MatchBet.objects.all()
+    params['match'] = match
+    params['bet']   = mbet
+    return render(request, 'bets/prognosis.html', params)
+    
 #class BetView( View )

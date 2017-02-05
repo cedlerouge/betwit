@@ -16,6 +16,7 @@ urlpatterns = [
     url( r'^mbet_add/(?P<tournament_id>[0-9]+)/$', views.matchBet_add, name='mbet_add' ),
     url( r'^mbet_add/(?P<tournament_id>[0-9]+)/(?P<mbet_id>[0-9]+)/$', views.matchBet_add, name='mbet_add' ),
     url( r'^mbet/(?P<mbet_id>[0-9]+)/$', views.mbet_detail, name="mbet_detail" ),
+    url( r'^prognosis/$', views.prognosis, name="prognosis" ),
     
     
     
