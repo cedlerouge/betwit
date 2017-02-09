@@ -155,7 +155,8 @@ LOGIN_REDIRECT_URL = '/bets/u/'
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window
 REGISTRATION_AUTO_LOGIN = False # Automatically log the user in.
 
-# smtpout
-EMAIL_HOST = "smtp.test.com"
-EMAIL_PORT = 25
-DEFAULT_FROM_EMAIL = "betwit@test.com"
+# smtpout=
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_HOST = "smtp.test.com"
+#EMAIL_PORT = 25
+#DEFAULT_FROM_EMAIL = "betwit@test.com"
