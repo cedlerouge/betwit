@@ -7,6 +7,8 @@ class MatchBetForm( ModelForm ):
     """
     MatchBet form to place a bet on a match
     """
+    #matchs              = Match.objects.filter(date__gte=timezone.now())
+
     class Meta:
         model   = MatchBet
         exclude = ['player_id', 'points_won']

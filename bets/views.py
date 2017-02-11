@@ -91,6 +91,7 @@ class Profile(View):
 
 @require_http_methods(["GET", "POST"])
 def matchBet_add( request, tournament_id=None, mbet_id=None ):
+    logger.info("matchbet")
     if request.method == 'POST':
         user         = User.objects.get(username=request.user.username)
         form         = MatchBetForm(request.POST)
@@ -225,13 +226,14 @@ if tournament hasn't yet started :
 """
 @login_required
 def tbet_list( request, tournament_id ):
-    params      = dict()
+    params      = {'error_message': None, 'is_update': None }
     tbet_list   = TournamentBet.objects.filter( tournament_id = tournament_id )
     # TODO deny acces before the begining of the tournament
     # select every matchs of the tournament and get the date of first one
     # if date.now() is lower than the match date, display message
     # wrong because I added a "begins" field in tournament model
     # DONE
+    # This is done by adding a new field in tournament model : "begins"
     tournament  = Tournament.objects.get( id = tournament_id)
     params['tournament']    = tournament
     if tournament.begins < timezone.now():
@@ -256,6 +258,7 @@ def tbet_list( request, tournament_id ):
             params['tbet_button_url']    = reverse( 'bets:tbet_add', args=(tournament_id) )
 
     # Add a button to place a match bet
+    
     params['mbet_button_title'] = "Add a match bet"
     params['mbet_button_url']   = reverse( 'bets:mbet_add', args=( tournament_id ) )
         

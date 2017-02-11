@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block content %}
-{% if message != "" %}
+{% if error_message != None %}
 <div>
-    <p>{{ message }}</p>
+    <p>{{ error_message }}</p>
     <a href="{{ tbet_button_url }}" class="btn btn-default">{{ tbet_button_title }}</a>
 </div>
 {% else %}
