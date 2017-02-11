@@ -90,11 +90,13 @@ class Profile(View):
         return render(request, 'bets/profile.html', params)
 
 @require_http_methods(["GET", "POST"])
-def matchBet_add( request, tournament_id=None, mbet_id=None ):
+def matchBet_add( request, tournament_id=None, mbet_id=None, m_id=None ):
     logger.info("matchbet")
+    params          = {'error_message': None, 'is_update': None }
     if request.method == 'POST':
-        user         = User.objects.get(username=request.user.username)
-        form         = MatchBetForm(request.POST)
+        user        = User.objects.get(username=request.user.username)
+        form        = MatchBetForm(request.POST)
+        logger.info (" je suis le formulaire poste de matchbet_add: ", str(form.fields))
         if form.is_valid():
             if mbet_id is not None:
                 # TODO Do not let save a match bet if an user has already his one for a specified match id
@@ -104,6 +106,11 @@ def matchBet_add( request, tournament_id=None, mbet_id=None ):
                 logger.info('mbet.home_team_score:' + str(mbet.home_team_score))
                 logger.info('mbet.created_date:' + str(mbet.created_date))
             else:
+                # check if a player has already bet on that match 
+                mbet_temp           = MatchBet.objects.filter( match_id = form.cleaned_data['match_id'] ).filter( player_id = user )
+                if mbet_temp: 
+                    # If bet exists, user must be redirect to the update form
+                    return HttpResponseRedirect( reverse('bets:mbet_detail', args=(mbet_temp[0].id,)))
                 mbet                = MatchBet()
                 mbet.player_id      = user
                 mbet.match_id       = form.cleaned_data['match_id']
@@ -141,8 +148,13 @@ def matchBet_add( request, tournament_id=None, mbet_id=None ):
                 #params['post_url']  = "bets:mbet_add"
                 params['post_url']  = reverse( 'bets:mbet_add', args=(tournament_id, mbet_id))
                 return render( request, 'bets/bet_form.html', params)
-        form                = MatchBetForm()
-        params              = dict()
+        form    = None
+        if m_id:
+            match       = Match.objects.get( id = m_id )
+            if match:
+                form    = MatchBetForm( initiate = { 'match_id': match } )
+        if form is None: 
+            form                = MatchBetForm()
         params['form']      = form
         params['elt']       = "matchBet"
         #params['post_url']  = "'bets:mbet_add' "+tournament_id
@@ -219,6 +231,19 @@ def bet_index( request ):
     return render( request, 'bets/tournament_list.html', params )
 
 """
+This view display only available match of a tournament
+"""
+def mbet_available( request, tournament_id ):
+    logger.info('Welcome to available bets')
+    params      = {'error_message': None, 'is_update': None }
+    tournament  = get_object_or_404(Tournament, pk=tournament_id)
+    matchs      = Match.objects.filter( tournament_id = tournament_id )
+    params['tournament']    = tournament
+    params['match_list']    = matchs
+    return render( request, 'bets/mbet_available', params )
+    
+
+"""
 List every tournament bets 
 if tournament hasn't yet started : 
 - if user has already placed a bet, display countdown
@@ -264,6 +289,9 @@ def tbet_list( request, tournament_id ):
         
     return render( request, 'bets/tbet_list.html', params )
 
+"""
+This view display every information of a tournament bet
+"""
 def tbet_detail( request, tbet_id ):
     params      = dict()
     tbet        = get_object_or_404(TournamentBet, pk=tbet_id)
@@ -283,6 +311,9 @@ def tbet_detail( request, tbet_id ):
         params["message"]   = "You are not allowed to see this page"
         return render( request, 'bets/bet_detail.html', params )
 
+"""
+This view display every bet of a tournament
+"""
 def mbet_list( request, tbet_id ):
     # TODO 
     # Display oinly matchs information if matchs hasn't started
@@ -290,6 +321,9 @@ def mbet_list( request, tbet_id ):
     params     = { 'bet_list': mbet_list }
     return render( request, 'bets/bet_list.html', params )
 
+"""
+This view display every information of a match bet 
+"""
 def mbet_detail( request, mbet_id ):
     params      = {'error_message': None, 'is_update': None }
     mbet        = get_object_or_404(MatchBet, pk=mbet_id)
@@ -299,6 +333,7 @@ def mbet_detail( request, mbet_id ):
     if match is not None:
         if match.date > timezone.now():
             params['update'] = True
+            params['update_url' ] = reverse( 'bets:mbet_add', args=(match.tournament_id.id, mbet_id,))
     if mbet.player_id.username == username:
         params['bet']  = mbetform
         params['elt']   = 'matchBet'
@@ -307,6 +342,9 @@ def mbet_detail( request, mbet_id ):
         params["message"]   = "You are not allowed to see this page"
         return render( request, 'bets/bet_detail.html', params )
 
+"""
+This view display all bets by match and round
+"""
 @login_required
 def prognosis( request ):
     params      = {'error_message': None, 'is_update': None }
