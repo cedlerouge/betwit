@@ -2,12 +2,30 @@ from django.forms import ModelForm, Textarea
 from django import forms
 from bets.models import MatchBet,TournamentBet, BetPoint
 from tournaments.models import Match
+from django.utils import timezone
 
 class MatchBetForm( ModelForm ):
     """
     MatchBet form to place a bet on a match
     """
     #matchs              = Match.objects.filter(date__gte=timezone.now())
+    def __init__( self, *args, **kwargs ):
+        mid = kwargs.pop( 'match_id', None)
+        tid = kwargs.pop( 'tournament_id', None)
+        # check if match is available for betting
+        # if match_id is not None, limit choice to that match
+        # else limit choice to only available match (match.date > timezone.now()
+        choice = [(None, '-- choose a match --'), ]
+        # this is in case we present a form where user can bet on every available match
+        choice = forms.ModelChoiceField(queryset=Match.objects.filter( date__gte = timezone.now() ) )
+        # if mid defined, this is because user used /mbet_add/tid/match/mid
+        if mid is not None:
+            choice = forms.ModelChoiceField(queryset=Match.objects.filter( id = mid ) )
+        # if tid defined, this is beacause user used /mbet_add/tid
+        if tid is not None:
+            choice  = forms.ModelChoiceField( queryset = Match.objects.filter( tournament_id = tid ).filter( date__gte = timezone.now() ) )
+        super( MatchBetForm, self ).__init__( *args, **kwargs )
+        self.fields['match_id'] = choice
 
     class Meta:
         model   = MatchBet

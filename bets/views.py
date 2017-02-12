@@ -96,6 +96,10 @@ def matchBet_add( request, tournament_id=None, mbet_id=None, m_id=None ):
     if request.method == 'POST':
         user        = User.objects.get(username=request.user.username)
         form        = MatchBetForm(request.POST)
+        #if form.fields['match_id'] is not None:
+        #    mid = str(form.data.match_id)
+        #    form.fields['match_id'] = forms.ModelChoiceField(queryset=Match.objects.filter( id = mid ) )
+            #form.fields['match_id'].value = Match.objects.get( id = mid )
         logger.info (" je suis le formulaire poste de matchbet_add: ", str(form.fields))
         if form.is_valid():
             if mbet_id is not None:
@@ -150,11 +154,12 @@ def matchBet_add( request, tournament_id=None, mbet_id=None, m_id=None ):
                 return render( request, 'bets/bet_form.html', params)
         form    = None
         if m_id:
+            # match_id is set because
             match       = Match.objects.get( id = m_id )
             if match:
-                form    = MatchBetForm( initiate = { 'match_id': match } )
+                form    = MatchBetForm( initial = { 'match_id': match } )
         if form is None: 
-            form                = MatchBetForm()
+            form                = MatchBetForm( tournament_id = tournament_id)
         params['form']      = form
         params['elt']       = "matchBet"
         #params['post_url']  = "'bets:mbet_add' "+tournament_id
@@ -225,7 +230,7 @@ def bet_index( request ):
     params          = dict()
     tournament_list = Tournament.objects.order_by( '-year' )
     if len( tournament_list ) == 1:
-        return HttpResponseRedirect( reverse('bets:tbet_list', args=[tournament_list[0].id] ) )
+        return HttpResponseRedirect( reverse('bets:mbet_list', args=[tournament_list[0].id] ) )
         #return HttpResponseRedirect( reverse('bets:tbet_list', args=(tbet_list[0].id,)))
     params['tournament_list' ]  = tournament_list
     return render( request, 'bets/tournament_list.html', params )
@@ -240,7 +245,7 @@ def mbet_available( request, tournament_id ):
     matchs      = Match.objects.filter( tournament_id = tournament_id )
     params['tournament']    = tournament
     params['match_list']    = matchs
-    return render( request, 'bets/mbet_available', params )
+    return render( request, 'bets/mbet_available.html', params )
     
 
 """

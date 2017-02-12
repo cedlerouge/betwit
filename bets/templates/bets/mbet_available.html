@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<h2>Tournament {{ tournament.name }} - {{ tournament.year }}</h2>
+{% endblock %}
+
+{% block content %}
+{% if error_message != None %}
+<div>
+    <p>{{ error_message }}</p>
+</div>
+{% else %}
+<div class="row-fluid">
+    <div class="span9">
+        <div class="row-fluid"> 
+        {% for m in match_list %}
+            <div class="span3">
+                <a href="/bets/mbet_add/{{ m.tournament_id.id }}/match/{{ m.id }}/">{{ m.home_team_id.name }} vs {{ m.away_team_id.name }}</a>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+
