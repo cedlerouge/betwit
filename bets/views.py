@@ -242,7 +242,7 @@ def mbet_available( request, tournament_id ):
     logger.info('Welcome to available bets')
     params      = {'error_message': None, 'is_update': None }
     tournament  = get_object_or_404(Tournament, pk=tournament_id)
-    matchs      = Match.objects.filter( tournament_id = tournament_id )
+    matchs      = Match.objects.filter( tournament_id = tournament_id ).filter( date__gte = timezone.now( ))
     params['tournament']    = tournament
     params['match_list']    = matchs
     return render( request, 'bets/mbet_available.html', params )
