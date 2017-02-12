@@ -23,6 +23,9 @@ urlpatterns = [
     url( r'^tournaments/', include( 'tournaments.urls', namespace="tournaments" ) ),
     url( r'^accounts/', include( 'registration.backends.default.urls' ) ),
     url( r'^accounts/', include( 'django.contrib.auth.urls', namespace='auth' ) ),
+    url( r'^reset/', include( 'django.contrib.auth.urls') ),
+    
+    #url( r'^accounts/.*', include( 'django.contrib.auth.urls', namespace='auth' ) ),
     # TODO bets and user page /bets/bets/user
     url( r'^bets/', include( 'bets.urls', namespace="bets" ) ),
 ]

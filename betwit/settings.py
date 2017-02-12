@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
+    'jquery',
     'bets',
     'tournaments',
     'registration',
@@ -148,13 +149,12 @@ STATICFILES_DIRS = (
 IMAGE_UPLOAD_PATH = os.path.join(STATIC_ROOT, 'uploadsImg')
 THUMBNAIL_UPLOAD_PATH = os.path.join(STATIC_ROOT, 'thumbnails')
 # Simplified static file serving.
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = '/bets/u/'
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window
 REGISTRATION_AUTO_LOGIN = False # Automatically log the user in.
 
-# smtpout
-EMAIL_HOST = "smtp.test.com"
-EMAIL_PORT = 25
-DEFAULT_FROM_EMAIL = "betwit@test.com"
+# smtpout=
+# send email in console
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
