@@ -1,16 +1,25 @@
 {% extends 'base.html' %}
 
 {% block title %}
-<h2>Les tournois</h2>
+Les tournois
 {% endblock %}
 
 {% block content %}
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#tournois">Tournois</a></li>
+  <li><a data-toggle="tab" href="#teams">&Eacute;quipes</a></li>
+  <li><a data-toggle="tab" href="#results">R&eacute;sultats et dates</a></li>
+  <!-- hide rules on xsmall screen because it is diplay on 2nd line-->
+  <li class="hidden-xs"><a data-toggle="tab" href="#rules">R&egrave;glement</a></li>
+</ul>
 {% if tournament_list %}
-<div class="row clearfix">
+<!--div class="row clearfix"-->
+<div class="tab-content">
+    <div id="tournois" class="tab-pane fade in active">
     <table class="table" width="100%" cellspacing="0">
         <thead>
             <tr>
-                <td><Nom</td>
+                <td>Nom</td>
                 <td>Ann&eacute;e</td>
                 <td>Date de d&eacute;but</td>
             <tr>
@@ -24,8 +33,22 @@
             </tr>
             {% endfor %}
         </tbody>
-    </table
+    </table>
+    </div>
+    <div id="teams" class="tab-pane fade">
+        liste des equipes
+    </div>
+    <div id="results" class="tab-pane fade">
+        tableau des résultats et des calendriers
+    </div>
+    <div id="rules" class="tab-pane fade .hidden-sm">
+        reglement 
+    </div>
 </div>
+<div class="device-xs visible-xs">XS</div>
+<div class="device-sm visible-sm">SM</div>
+<div class="device-md visible-md">MD</div>
+<div class="device-lg visible-lg">LG</div>
 {% else %}
 <p>No tournaments are available.</p>
 {% endif %}
