@@ -36,8 +36,8 @@
           <ul class="nav navbar-nav navbar-left">
             <li><a href="/tournaments/">Tournois</a></li>
             <li><a href="/bets/prognosis/">Paris</a></li>
-            <li><a href="/bets/ranks/">Classement</a></li>
-            <li><a href="/rules/">R&egrave;glement</a></li>
+            <!--li><a href="/bets/ranks/">Classement</a></li-->
+            <li class="hidden-sm"><a href="/rules/">R&egrave;glement</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
@@ -67,7 +67,6 @@
     </nav>
 
     <div class="container" role="main">
-      <h1>{% block title %}(no title){% endblock %}</h1>
 
         {% bootstrap_messages %}
 

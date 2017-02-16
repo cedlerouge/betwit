@@ -11,6 +11,11 @@ from .forms import TeamForm, TournamentForm, MatchForm, MatchPointForm
 
 # Create your views here.
 
+def tournament_last( request ):
+    # Tournament state = 1(Enabled) 2(Comming) 3(Archived)
+    tournament      = Tournament.objects.filter( state = 1).order_by( '-year' )[0]
+    return HttpResponseRedirect( reverse('tournaments:tournament_detail', args=(tournament.id,)))
+
 def tournament_list( request ):
     tournament_list = Tournament.objects.order_by( '-year' )
     context         = { 'tournament_list':tournament_list }
@@ -26,8 +31,12 @@ def tournament_list( request ):
 #    return render( request, 'tournaments/tournament_detail.html', params )
 def tournament_detail( request, tournament_id ):
     tournament      = get_object_or_404( Tournament, pk=tournament_id )
-    match_list      = Match.objects.filter( tournament_id = tournament_id )
-    context         = { "tournament":tournament, "match_list":match_list }
+    match_list      = Match.objects.filter( tournament_id = tournament_id ).order_by( "round" ).order_by('date')
+    team_list       = []
+    for m in match_list:
+        if m.home_team_id not in team_list:
+            team_list.append(m.home_team_id)
+    context         = { "tournament":tournament, "match_list":match_list, "team_list": team_list}
     return render( request, 'tournaments/tournament_detail.html', context )
 
 def tournament_form( request ):
