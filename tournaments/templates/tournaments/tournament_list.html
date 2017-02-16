@@ -1,18 +1,24 @@
 {% extends 'base.html' %}
 
 {% block title %}
-<h2>Les tournois</h2>
+Les tournois
 {% endblock %}
 
 {% block content %}
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#tournois">Tournois</a></li>
+</ul>
 {% if tournament_list %}
-<div class="row clearfix">
+<!--div class="row clearfix"-->
+<div class="tab-content">
+    <div id="tournois" class="tab-pane fade in active">
     <table class="table" width="100%" cellspacing="0">
         <thead>
             <tr>
-                <td><Nom</td>
+                <td>Nom</td>
                 <td>Ann&eacute;e</td>
                 <td>Date de d&eacute;but</td>
+                <td>Status</td>
             <tr>
         </thead>
         <tbody>
@@ -21,10 +27,12 @@
                 <td><a href="{% url 'tournaments:tournament_detail' t.id %}">{{ t.name }}</a></td>
                 <td>{{ t.year }}</td>
                 <td>{{ t.begins }}</td>
+                <td>{% ifequal t.state '2' %}En pr&eacute;paration{% endifequal %}{% ifequal t.state '1' %}Actif{% endifequal %}{% ifequal t.state '3' %}Archiv&eacute;{% endifequal %}</td>
             </tr>
             {% endfor %}
         </tbody>
-    </table
+    </table>
+    </div>
 </div>
 {% else %}
 <p>No tournaments are available.</p>

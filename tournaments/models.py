@@ -20,9 +20,16 @@ class Tournament(models.Model):
     """
     Tournament model
     """
+    state_choice = (
+        ("1", "Enabled"),
+        ("2", "Comming"),
+        ("3", "Archived")
+    )
+
     name        = models.CharField(max_length=20)
     year        = models.IntegerField()
     begins      = models.DateTimeField()
+    state       = models.CharField(max_length=1, choices=state_choice, default='2')
 
     def __str__(self):
         return self.name + " - " + str(self.year)
@@ -32,6 +39,7 @@ class Match(models.Model):
     Match model
     """
     bonus = (
+        ('N', "Null"),
         ("D","Defense"), 
         ("A","Attack")
     )
