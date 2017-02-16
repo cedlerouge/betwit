@@ -7,10 +7,6 @@ Les tournois
 {% block content %}
 <ul class="nav nav-tabs">
   <li class="active"><a data-toggle="tab" href="#tournois">Tournois</a></li>
-  <li><a data-toggle="tab" href="#teams">&Eacute;quipes</a></li>
-  <li><a data-toggle="tab" href="#results">R&eacute;sultats et dates</a></li>
-  <!-- hide rules on xsmall screen because it is diplay on 2nd line-->
-  <li class="hidden-xs"><a data-toggle="tab" href="#rules">R&egrave;glement</a></li>
 </ul>
 {% if tournament_list %}
 <!--div class="row clearfix"-->
@@ -22,6 +18,7 @@ Les tournois
                 <td>Nom</td>
                 <td>Ann&eacute;e</td>
                 <td>Date de d&eacute;but</td>
+                <td>Status</td>
             <tr>
         </thead>
         <tbody>
@@ -30,25 +27,13 @@ Les tournois
                 <td><a href="{% url 'tournaments:tournament_detail' t.id %}">{{ t.name }}</a></td>
                 <td>{{ t.year }}</td>
                 <td>{{ t.begins }}</td>
+                <td>{% ifequal t.state '2' %}En pr&eacute;paration{% endifequal %}{% ifequal t.state '1' %}Actif{% endifequal %}{% ifequal t.state '3' %}Archiv&eacute;{% endifequal %}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
     </div>
-    <div id="teams" class="tab-pane fade">
-        liste des equipes
-    </div>
-    <div id="results" class="tab-pane fade">
-        tableau des résultats et des calendriers
-    </div>
-    <div id="rules" class="tab-pane fade .hidden-sm">
-        reglement 
-    </div>
 </div>
-<div class="device-xs visible-xs">XS</div>
-<div class="device-sm visible-sm">SM</div>
-<div class="device-md visible-md">MD</div>
-<div class="device-lg visible-lg">LG</div>
 {% else %}
 <p>No tournaments are available.</p>
 {% endif %}

@@ -12,7 +12,8 @@ from .forms import TeamForm, TournamentForm, MatchForm, MatchPointForm
 # Create your views here.
 
 def tournament_last( request ):
-    tournament      = Tournament.objects.order_by( '-year' )[0]
+    # Tournament state = 1(Enabled) 2(Comming) 3(Archived)
+    tournament      = Tournament.objects.filter( state = 1).order_by( '-year' )[0]
     return HttpResponseRedirect( reverse('tournaments:tournament_detail', args=(tournament.id,)))
 
 def tournament_list( request ):
