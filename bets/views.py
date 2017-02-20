@@ -89,6 +89,26 @@ class Profile(View):
         params['current_date'] = timezone.now()
         return render(request, 'bets/profile.html', params)
 
+
+class BetRanking(View):
+  def get(self, request):
+    params      = dict()
+    users       = User.objects.all()
+    rank        = list()
+    for user in users:
+      match_bets  = MatchBet.objects.filter(player_id = user)
+      score = sum(int(b['points_won'] if b['points_won'] is not None else 0 ) for b in match_bets.values())
+      # find best score per prognosis
+      best_score = 0
+      for b in match_bets.values():
+        if best_score <= int(b['points_won'] if b['points_won'] is not None else 0):
+          best_score = int(b['points_won'] if b['points_won'] is not None else 0)
+      rank.append( (user.username, score, best_score) )
+    rank.sort(key=lambda r: r[1], reverse=True)
+    params['rank']  = rank
+    return render(request, 'bets/rank.html', params)
+
+
 @require_http_methods(["GET", "POST"])
 def matchBet_add( request, tournament_id=None, mbet_id=None, m_id=None ):
     logger.info("matchbet")

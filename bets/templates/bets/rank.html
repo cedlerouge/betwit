@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row clearfix">
+  <h3>Classement des parieurs</h3>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Rang</th>
+        <th>Nom</th>
+        <th>Score</th>
+        <th>Meilleur pari</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rank %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ r.0|capfirst }}</td>
+        <td>{{ r.1 }}</td>
+        <td>{{ r.2 }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+{% endblock %}
