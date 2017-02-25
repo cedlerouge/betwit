@@ -39,9 +39,9 @@ class Match(models.Model):
     Match model
     """
     bonus = (
-        ('N', "Null"),
-        ("D","Defense"), 
-        ("A","Attack")
+        ('Null', "Null"),
+        ("Defense","Defense"), 
+        ("Attack","Attack")
     )
     cup_round   = (
         ( '1', 'Round 1'),
