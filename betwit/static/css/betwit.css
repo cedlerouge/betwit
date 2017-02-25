@@ -83,3 +83,12 @@ body {
     background-color: #020634;
   }
 }
+
+
+/* table */
+thead {
+    background-color: #053161;
+    background-color: #6495ED;
+    background-color: #ADD8E6;
+    /*color: #f2f3f9;*/
+}
