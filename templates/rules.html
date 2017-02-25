@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <h4>R&egrave;gleement du tournoi</h4>
+    <b>R&egrave;gles g&eacute;n&eacute;rales</b>
+    <p>Ce concours de pronostic concerne le Tournoi des 6 Nations 2017.<br/>
+    C'est &agrav; chaque participant de ce jeu de prendre l'initiative de parier pour un match.<br/>
+    On ne peut plus parier pour un match après le début de la rencontre.<br/>
+Le comptage des points est automatique et se réfère aux tableaux ci-dessous.<br/>
+Le champion est celui qui a le plus de point à l'issue de la compétition.<p>
+
+    <b>Les paris</b>
+    <p>Les paris &quot;Au jour le jour&quot; sont des pronostics faits pour chaque match de la comp&eacute;tition.<br/>
+Les paris &quot;Avant tournoi&quot; concernent les prévisions du classement final.<br/>
+Les "risques", s'ils sont choisis par un joueur, peuvent rapporter des points si l'&eacute;v&eacute;nement se r&eacute;alise, mais donnent des points n&eacute;si l'&eacute;v&eacute;nement ne se r&eacute;alise pas.</p>
+
+
+    <div class="table-responsive">
+        <table class="table table-condensed table-striped">
+            <caption>Paris pendant le tournoi</caption>
+            <thead class="thead-inverse">
+                <tr>
+                    <th>&Eacute;v&eacute;nement</td>
+                    <th>+</th>
+                    <th>-</th>
+                    <th>&Eacute;claircissements</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Victoire-D&eacute;faite-Nul</td>
+                    <td>2</td>
+                    <td></td>
+                    <td>Les 2 points du bon pronostic sont multipli&eacute;s par la c&ocirc;te.<br/>
+                        La c&ocirc;t&eacute; d&eacute;pend du pari "Victoire/Défaite/Nul" de chacun des participants.</td>
+                </tr>
+                <tr>
+                    <td>Bon nombre d'essai d'une &eacute;quipe</td>
+                    <td>1</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Bon nombre de points d'une &eacute;quipe</td>
+                    <td>1</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Bon &eacute;cart</td>
+                    <td>2</td>
+                    <td></td>
+                    <td>Si les scores ne sont pas bons mais l'&eacute;cart est bon, 2 points attribu&eacute;s.</td>
+                </tr>
+                <tr>
+                    <td>Score du match parfait</td>
+                    <td>6</td>
+                    <td></td>
+                    <td>Si les scores sont exacts pour les deux &eacute;quipes, un bonus "score parfait" est attribu&eacute;</td>
+                </tr>
+                <tr class="warning">
+                    <td>Carton jaune</td>
+                    <td>1</td> 
+                    <td class="danger">-1</td>
+                    <td>Au moins un carton jaune a &eacute;t&eacute; distribu&eactue; à l'une ou l'autre des &eacute;quipes.</td>
+                </tr>    
+                <tr class="warning">
+                    <td>Drop</td>
+                    <td>1</td> 
+                    <td class="danger">-1</td>
+                    <td>Au moins un drop. Le drop peut concerner l'une ou l'autre des &eacute;quipes.</td>
+                </tr>        
+                <tr class="danger">
+                    <td>Bagarre g&eacute;n&eacute;rale</td>
+                    <td>2</td> 
+                    <td class="danger">-2</td>
+                    <td>Au moins une bagarre. Une baston générale doit comprendre au minima 4 hommes, dont au moins 1 du parti adverse.<br/>
+Si aucun coup de poing n'est distribué, le contrat n'est pas rempli.</td>
+                </tr>        
+                <tr class="warning">        
+                    <td>Bonus offensif</td>
+                    <td>1</td> 
+                    <td class="danger">-1</td>
+                    <td>Le bonus offensif est valid&eacute; par une équipe qui marque plus de 4 essais</td>
+                </tr>
+                <tr class="warning">
+                    <td>Bonus d&eacute;fensif</td>
+                    <td>1</td>
+                    <td class="danger">-1</td>
+                    <td>Le bonus dfensif est valid&eacute; par une &eacute;quipe perdant de 7 points ou moins</td>
+                </tr>
+            </tbody>
+        </table>
+    </div> <!-- tableau point pendant tournoi -->
+    
+    <div class="clearfix">
+        <table class="table table-condensed table-striped">
+        <caption>Paris avant tournoi</caption>
+            <thead>
+                <tr>
+                    <th>Risques</th>
+                    <th>+</th>
+                    <th>-</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Bon classement d'une équipe</td>
+                    <td>2</td>
+                    <td></td>
+                </tr>        
+                <tr>         
+                    <td>Bon vainqueur : Bonus</td>
+                    <td>2</td>
+                    <td></td>
+                </tr>        
+                <tr class="danger">         
+                    <td>Grand chelem</td>
+                    <td>5</td>
+                    <td>-5</td>
+                </tr>        
+                <tr class="danger">         
+                    <td>Cuiller de bois</td>
+                    <td>5</td>
+                    <td>-5</td>
+                </tr>        
+                <tr>         
+                    <td>Classement parfait</td>
+                    <td>20</td>
+                    <td></td>
+                </tr>        
+            </tbody>
+        </table>
+    </div> <!-- tableau de points -->
+</div>
+{% endblock %}

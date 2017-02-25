@@ -32,6 +32,10 @@ class Index(View):
         #return HttpResponse('I am called from a post Request')
         return render(request, 'base.html')
 
+class Rules(View):
+    def get(self, request):
+        return render(request, 'rules.html')
+
 class UserRedirect(View):
     def get(self, request):
         if request.user.is_authenticated():
