@@ -3,9 +3,10 @@ from . import views
 
 urlpatterns = [
     url( r'^u/$', views.UserRedirect.as_view(), name='profile'),
-    url( r'^u/(?P<username>\w+)/$', views.Profile.as_view() ),
+    url( r'^u/(?P<username>\w+)/$', views.UserProfile.as_view()),
     # list tournaments, il only one, display matchbets
     url( r'^$', views.bet_index, name='index' ),
+    url( r'^mybets/$', views.MyBets.as_view(), name='mybets'),
     url( r'^tbet_add/$', views.bet_index, name="tbet_add" ),
     url( r'^tbet_add/(?P<tournament_id>[0-9]+)/$', views.tournamentBet_add, name="tbet_add" ),
     url( r'^tbet_add/(?P<tournament_id>[0-9]+)/(?P<tbet_id>[0-9]+)/$', views.tournamentBet_add, name="tbet_add" ),

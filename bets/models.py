@@ -1,19 +1,30 @@
 from __future__ import unicode_literals
-
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 from django.db import models
 from django.contrib.auth.models import User
 from tournaments.models import Match, Tournament
+import pytz
+
 
 
 # Create your models here.
 
-
-class Bettor(models.Model):
+class Profile(models.Model):
     user            = models.OneToOneField( User, on_delete=models.CASCADE)
     is_admin        = models.BooleanField(default=False)
-    points_won      = models.IntegerField()
-    
+    tz              = models.CharField(max_length=30,default='Europe/Paris')
+    points_won      = models.IntegerField( null=True, default=0 )
 
+
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, **kwargs):
+    if kwargs["created"]:
+        Profile.objects.create(user = instance)
+
+@receiver(post_save, sender=User)
+def update_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 class MatchBet(models.Model):
     bonus_choices   = (

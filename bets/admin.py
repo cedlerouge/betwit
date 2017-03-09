@@ -1,21 +1,29 @@
 from django.contrib import admin
 # to edit bettor and auth_user in same admin page
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.admin import UserAdmin 
 from django.contrib.auth.models import User
 
-from models import Bettor, MatchBet, TournamentBet
+from models import Profile, MatchBet, TournamentBet
 
 # Register your models here.
 
-class BettorInline(admin.TabularInline):
-    model               = Bettor
-    verbose_name_plural = 'bettor'
+class ProfileInline(admin.StackedInline): #TabularInline):
+    model               = Profile
+    can_delete          = False
+    verbose_name_plural = 'Profile'
+    fk_name             = 'user'
 
-class UserAdmin(BaseUserAdmin):
-    list_display  = ('username', 'first_name', 'last_name', 'last_login', 'is_superuser', 'is_staff', 'is_active', 'date_joined')
-    search_fields = ('first_name', 'last_name',)
-    ordering      = ('date_joined',)
-    inlines = (BettorInline,)
+class CustomUserAdmin(UserAdmin):
+    inlines     = (ProfileInline,)
+    
+    def get_inline_instances(self, request, obj=None):
+        if not obj:
+            return list()
+        return super(CustomUserAdmin, self).get_inline_instances(request, obj)
+    #list_display  = ('username', 'first_name', 'last_name', 'last_login', 'is_superuser', 'is_staff', 'is_active', 'date_joined')
+    #search_fields = ('first_name', 'last_name',)
+    #ordering      = ('date_joined',)
+    #inlines = (UserProfileInline,)
 
 class BetAdmin(admin.ModelAdmin):
   list_display  = ('player', 'round', 'created_date', 'home_team', 'home_team_score', 'home_team_tries', 'home_team_bonus', 'away_team_bonus', 'away_team_tries', 'away_team_score', 'away_team', 'card', 'drop_goal', 'fight', 'points_won')
@@ -52,7 +60,7 @@ class TournamentAdmin(admin.ModelAdmin):
 
 # Re-register UserAdmin
 admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+admin.site.register(User, CustomUserAdmin)
 
 admin.site.register(MatchBet, BetAdmin)
 

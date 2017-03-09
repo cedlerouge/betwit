@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+<h2>Mise &agrave; jour profile</h2>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+{% if userForm and profileForm %}
+<form action="/settings/" method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form userForm layout='inline' %}
+    {% bootstrap_form profileForm layout='inline' %}
+    {% buttons %}
+    <button type="submit" class="btn btn-primary">
+        {% bootstrap_icon "star" %} Enregister
+    </button>   
+    {% endbuttons %}
+</form> 
+{% endif %}
+{% endblock %}
+

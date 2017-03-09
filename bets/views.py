@@ -14,7 +14,7 @@ import datetime
 
 from tournaments.models import Tournament, Match
 from .models import MatchBet, TournamentBet
-from .forms import MatchBetForm, TournamentBetForm, BetPointForm
+from .forms import MatchBetForm, TournamentBetForm, BetPointForm, ProfileForm, UserForm
 
 import logging
 logger = logging.getLogger('django')
@@ -47,7 +47,66 @@ class UserRedirect(View):
             return HttpResponseRedirect('/accounts/login/')
 
 
-class Profile(View):
+class UserProfile(View):
+    """
+    User profile reachable from /user/<username>/ URL
+    """
+
+    # TODO @login_required <--- https://docs.djangoproject.com/en/1.10/topics/class-based-views/intro/#decorating-class-based-views
+    def get(self, request):
+        params          = {'error_message': None }
+        user            = None
+        is_his_own      = False
+        user_share      = False
+
+        """ 2 choices : 
+        * display information => /accounts/settings
+        * display form to update settings => accounts/settings/update
+        """
+        if "profile" in request.path:
+            logger.info(" je suis dans update: " + request.user.username )
+            if request.user.username:
+                user_form       = UserForm(instance=request.user)
+                profile_form    = ProfileForm(instance=request.user.profile)
+                params['userForm']      = user_form
+                params['profileForm']   = profile_form
+            else: 
+                params['error_message'] =  "You must be authenticated"
+                
+            return render(request, 'bets/profile_form.html', params)
+
+        else:
+            """
+            if the user's profile :
+                display all information and modify button
+            else:
+                display only what the user wants to share
+            """
+            if request.user.username :
+                user            = User.objects.get(username = request.user.username)
+            params['user']  = user
+            # TODO manage the user profile display for other visitors
+            #if username == request.user.username:
+            #    is_his_own = True
+            #    user_share = True
+            #else: 
+            #    if user.userprofile.allow_share : 
+            #        user_share = True    
+            return render(request, 'bets/settings.html', params)
+
+    def post(self, request, username=None):
+        params          = {'error_message': None }
+        user_form       = UserForm(request.POST, instance=request.user)
+        profile_form    = ProfileForm(request.POST, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return HttpResponseRedirect(reverse('settings'))
+        else:
+            return render(request, 'bets/profile_form.html', params)
+            
+
+class MyBets(View):
     """
     User home reachable from /user/<username>/ URL
     Display a page with every bets of the last tournament (last to the first)
@@ -91,7 +150,7 @@ class Profile(View):
             params['betcup_is_update'] = True
             params['betcup_update_url'] = reverse( 'bets:tbet_add', args=(last_tournament_with_bet.id, tournamentBet.id))
         params['current_date'] = timezone.now()
-        return render(request, 'bets/profile.html', params)
+        return render(request, 'bets/mybets.html', params)
 
 
 class BetRanking(View):
