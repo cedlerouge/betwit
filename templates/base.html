@@ -54,10 +54,10 @@
               <span class="fa fa-user"></span>&nbsp;
               {{ user.username }}<b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="{% url 'bets:profile'  %}">Mes Paris</a></li>
+              <li><a href="{% url 'bets:mybets' %}">Mes Paris</a></li>
               <li><a href="/bets/mbet_add/">Nouveau Pari</a></li>
               <li class="divider"></li>
-              <li><a href="/accounts/settings/">Mes Infos</a></li>
+              <li><a href="/settings/">Mes Infos</a></li>
               <li><a href="/accounts/password/change/">Change Password</a></li>
               {% if user.is_staff %}
                 <li class="divider"></li>

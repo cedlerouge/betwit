@@ -1,8 +1,10 @@
 from django.forms import ModelForm, Textarea
 from django import forms
-from bets.models import MatchBet,TournamentBet, BetPoint
+from bets.models import MatchBet,TournamentBet, BetPoint, Profile
+from django.contrib.auth.models import User
 from tournaments.models import Match
 from django.utils import timezone
+import pytz
 
 class MatchBetForm( ModelForm ):
     """
@@ -110,3 +112,19 @@ class BetPointForm( ModelForm ):
     class Meta:
         model   = BetPoint
         fields  = '__all__'
+
+class UserForm(ModelForm):
+    class Meta:
+        model   = User
+        fields = ('first_name', 'last_name', 'email')
+
+class ProfileForm( ModelForm ):
+
+    tz = forms.ChoiceField(
+        label= 'Fuseau Horaire',
+        choices=[(t, t) for t in pytz.common_timezones]
+        )
+
+    class Meta:
+        model   = Profile
+        fields  = ['tz']
