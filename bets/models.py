@@ -16,7 +16,6 @@ class Profile(models.Model):
     tz              = models.CharField(max_length=30,default='Europe/Paris')
     points_won      = models.IntegerField( null=True, default=0 )
 
-
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, **kwargs):
     if kwargs["created"]:
@@ -24,7 +23,11 @@ def create_profile(sender, instance, **kwargs):
 
 @receiver(post_save, sender=User)
 def update_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    try:
+        instance.profile.save()
+    except :
+        Profile.objects.create(user = instance)
+
 
 class MatchBet(models.Model):
     bonus_choices   = (
