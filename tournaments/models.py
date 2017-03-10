@@ -72,6 +72,7 @@ class Match(models.Model):
     created_date    = models.DateTimeField( auto_now_add=True )
     modified_date   = models.DateTimeField( auto_now_add=True )
     points_won      = models.IntegerField( null=True, blank=True, default=0 )
+    odds            = models.IntegerField( null=True, blank=True, default=0 )
     comment         = models.TextField( max_length=1000, null=True, blank=True )
 
     def __unicode__(self):
