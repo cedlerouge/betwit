@@ -9,8 +9,6 @@ class TimezoneMiddleware(MiddlewareMixin):
     
     def process_request(self, request):
         if request.user.is_authenticated():
-            user = User(username = request.user)
-            profile = Profile( user = user )
-            timezone.activate(pytz.timezone(profile.tz))
+            timezone.activate(pytz.timezone(request.user.profile.tz))
         else:
             timezone.deactivate()
