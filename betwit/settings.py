@@ -108,20 +108,95 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+#LOGGING = {
+#    'version': 1,
+#    'disable_existing_loggers': False,
+#    'handlers': {
+#        'console': {
+#            'class': 'logging.StreamHandler',
+#        },
+#    },
+#    'loggers': {
+#        'django': {
+#            'handlers': ['console'],
+#            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+#        },
+#    },
+#}
+# http://thegeorgeous.com/2015/02/27/Logging-into-multiple-files-in-Django.html
+# https://www.webforefront.com/django/setupdjangologging.html
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
+    # filters will define when a logger should run
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    # format in which logs will be written
+    'formatters': {
+        'simple': {
+            'format': '[%(asctime)s] %(levelname)s %(message)s',
+        'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+        'verbose': {
+            'format': '[%(asctime)s] %(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s',
+        'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+    },
+    # handlers define the file to be written, which level to write in that file,
+    # which format to use and which filter applies to that logger
     'handlers': {
         'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'development_logfile': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.FileHandler',
+            'filename': 'log/django_dev.log',
+            'formatter': 'verbose'
+        },
+        'production_logfile': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'filename': 'log/django_production.log',
+            'formatter': 'simple'
+        },
+        'dba_logfile': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_false','require_debug_true'],
+            'class': 'logging.FileHandler',
+            'filename': 'log/django_dba.log',
+            'formatter': 'simple'
         },
     },
+    # here the handlers for the loggers and the level of each logger is defined
     'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        'bets': {
+            'handlers': ['console','development_logfile','production_logfile'],
+         },
+         'tournaments': {
+            'handlers': ['console','development_logfile','production_logfile'],
+         },
+        'dba': {
+            'handlers': ['console','dba_logfile'],
         },
-    },
+        'django': {
+            'handlers': ['console','development_logfile','production_logfile'],
+        },
+        'py.warnings': {
+            'handlers': ['console','development_logfile'],
+        },
+    }
 }
 
 # Internationalization

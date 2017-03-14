@@ -6,11 +6,10 @@ from django.contrib.auth.models import User
 from tournaments.models import Match, Tournament
 import pytz
 
-import logging
-logger = logging.getLogger('django')
-logger.setLevel( logging.DEBUG )
-logger.addHandler( logging.StreamHandler() )
+import logging                              
+logger = logging.getLogger('console')
 logger.info('This is bets/models')
+logger.debug("This is bets/models")
 
 
 # Create your models here.
@@ -21,7 +20,6 @@ class Profile(models.Model):
     tz              = models.CharField(max_length=30,default='Europe/Paris')
     points_won      = models.IntegerField( null=True, default=0 )
 
-
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, **kwargs):
     if kwargs["created"]:
@@ -29,7 +27,11 @@ def create_profile(sender, instance, **kwargs):
 
 @receiver(post_save, sender=User)
 def update_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    try:
+        instance.profile.save()
+    except :
+        Profile.objects.create(user = instance)
+
 
 class MatchBet(models.Model):
     bonus_choices   = (

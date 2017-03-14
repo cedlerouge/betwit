@@ -17,9 +17,7 @@ from .models import MatchBet, TournamentBet
 from .forms import MatchBetForm, TournamentBetForm, BetPointForm, ProfileForm, UserForm
 
 import logging
-logger = logging.getLogger('django')
-logger.setLevel( logging.DEBUG )
-logger.addHandler( logging.StreamHandler() )
+logger = logging.getLogger('bets')
 logger.info('This is it')
 
 # Create your views here.
@@ -53,7 +51,7 @@ class UserProfile(View):
     """
 
     # TODO @login_required <--- https://docs.djangoproject.com/en/1.10/topics/class-based-views/intro/#decorating-class-based-views
-    def get(self, request):
+    def get(self, request, username=None):
         params          = {'error_message': None }
         user            = None
         is_his_own      = False
