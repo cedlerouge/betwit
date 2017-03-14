@@ -7,10 +7,9 @@ from tournaments.models import Match, Tournament
 import pytz
 
 import logging                              
-logger = logging.getLogger('django')        
-logger.setLevel( logging.DEBUG )            
-logger.addHandler( logging.StreamHandler() )
-logger.info('This is bets/models')                   
+logger = logging.getLogger('console')
+logger.info('This is bets/models')
+logger.debug("This is bets/models")
 
 
 # Create your models here.

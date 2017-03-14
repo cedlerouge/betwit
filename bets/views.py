@@ -17,9 +17,7 @@ from .models import MatchBet, TournamentBet
 from .forms import MatchBetForm, TournamentBetForm, BetPointForm, ProfileForm, UserForm
 
 import logging
-logger = logging.getLogger('django')
-logger.setLevel( logging.DEBUG )
-logger.addHandler( logging.StreamHandler() )
+logger = logging.getLogger('bets')
 logger.info('This is it')
 
 # Create your views here.
