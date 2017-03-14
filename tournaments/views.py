@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.contrib.auth.decorators import login_required 
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.utils import timezone
+from operator import attrgetter
 import datetime
 
-from .models import Tournament, Match, Team, MatchPoint
+from .models import Tournament, Match, Team, MatchPoint, TeamMatchPoints, TeamStat
 from .forms import TeamForm, TournamentForm, MatchForm, MatchPointForm
 
 # Create your views here.
@@ -21,22 +22,33 @@ def tournament_list( request ):
     context         = { 'tournament_list':tournament_list }
     return render( request, 'tournaments/tournament_list.html', context )
 
-#def tournament_detail( request, tournament_id ):
-#    tournament      = get_object_or_404( Tournament, pk=tournament_id )
-#    #teams           = Team.objects.filter(
-#    params          = dict()
-#    matchs          = Match.objects.filter( tournament_id=tournament_id ).order_by( '-date' )
-#    params['tournament'] = tournament
-#    params['matchs'] = matchs
-#    return render( request, 'tournaments/tournament_detail.html', params )
 def tournament_detail( request, tournament_id ):
     tournament      = get_object_or_404( Tournament, pk=tournament_id )
-    match_list      = Match.objects.filter( tournament_id = tournament_id ).order_by( "round" ).order_by('date')
+    matchs          = Match.objects.filter( tournament = tournament_id ).order_by( "round" ).order_by('date')
     team_list       = []
-    for m in match_list:
-        if m.home_team_id not in team_list:
-            team_list.append(m.home_team_id)
-    context         = { "tournament":tournament, "match_list":match_list, "team_list": team_list}
+    # To display stat by match, we must give a tuple( match, home_match_points, away_team_points)
+    match_list      = []
+    # first tab
+    for m in matchs:
+        home_team_points = TeamMatchPoints.objects.filter(team=m.home_team)
+        away_team_points = TeamMatchPoints.objects.filter(team=m.away_team)
+        match_list.append((m, home_team_points, away_team_points))
+        if m.home_team not in team_list:
+            team_list.append(m.home_team)
+
+    # Compute team ranking (second tab)
+    rank            = []
+    try:
+        for t in team_list :
+            #team_points = TeamMatchPoints.objects.get(team = t)
+            #team_score  = sum(int(p['points'] if p['points'] is not None else 0) for p in team_points.values())
+            team_stats  = TeamStat.objects.get(team = t, tournament = tournament)
+            rank.append(team_stats)
+        #rank.sort(key=lambda r: r.points, reverse=True)
+        rank.sort(key = attrgetter('points','ptsdiff'), reverse=True)
+    except:
+        rank = []
+    context         = { "tournament":tournament, "match_list":match_list, "team_list": team_list, "team_rank": rank}
     return render( request, 'tournaments/tournament_detail.html', context )
 
 def tournament_form( request ):
@@ -69,7 +81,7 @@ def match_detail( request, match_id ):
     return render( request, 'tournaments/match_detail.html', { 'match':match } )
 
 def match_form( request ):
-    form    = MatchForm()                                                    
+    form    = MatchForm()
     return render( request, 'tournaments/tournament_form.html', { 'post_url': 'tournaments:match', 'form': form } )
 
 #@login_required
@@ -91,14 +103,14 @@ def team_add( request ):
             team.save()
             return HttpResponseRedirect( reverse('tournaments:team_detail', args=(team.id,)))
         return render( request, 'tournaments/tournament_form.html', { 'form': form } )
-        
+
     else:
         form                = TeamForm()
         params              = dict()
         params['form']      = form
         params['elt']       = "team"
         params['post_url']  = reverse("tournaments:team_add")
-        return render( request, 'tournaments/tournament_form.html', params ) 
+        return render( request, 'tournaments/tournament_form.html', params )
 
 @require_http_methods(["GET", "POST"])
 def tournament_add( request ):
@@ -139,10 +151,10 @@ def match_add( request, tournament_id ):
             # TODO add logo and thumbnail
             #logo    = ImageModel( logo = request.FILES['logo'] )
             match      = Match()
-            match.tournament_id = tournament_id
+            match.tournament = tournament_id
             match.date          = form.cleaned_data['date']
-            match.home_team_id  = form.cleaned_data['home_team_id']
-            match.away_team_id  = form.cleaned_data['away_team_id']
+            match.home_team     = form.cleaned_data['home_team']
+            match.away_team     = form.cleaned_data['away_team']
             match.created_date  = timezone.now()
             match.save()
             return HttpResponseRedirect( reverse('tournaments:match_detail', args=(match.id,)))

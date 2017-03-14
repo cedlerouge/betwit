@@ -21,7 +21,7 @@
   <tbody>
     <tr>
     {% if elt == 'matchBet' %}
-    <td>{{ bet.match_id }}</td>
+    <td>{{ bet.match }}</td>
     {% endif %}
     {% for field in bet %}
       <td>{{ field.value|default_if_none:'' }}</td>

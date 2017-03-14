@@ -3,9 +3,9 @@ from . import views
 
 """
 L'application tournament affiche le dernier tournois actif (different de archived or comming)
-dans cette page est affiche 
+dans cette page est affiche
 * 2 onglets : equipe et resultats
-* un bouton pour choisir un autre tournoi 
+* un bouton pour choisir un autre tournoi
 """
 
 urlpatterns = [

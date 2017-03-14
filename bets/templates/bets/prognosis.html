@@ -36,24 +36,24 @@
         <td>{{m.cup_round}}</td>
         <td><a href="#" class="toggler" data-betwit-matchid="{{m.id}}">+</a></td>
         <td>{{m.date|date:'j-M H:i'}}</td>
-        <td>{{m.home_team_id.name}}</td>
+        <td>{{m.home_team.name}}</td>
         <td>{{ m.home_team_score|default_if_none:"0" }}</td>
         <td>{{ m.home_team_tries|default_if_none:"0" }}</td>
         <td>{{ m.home_team_bonus }}</td>
         <td>{{ m.away_team_bonus }}</td>
         <td>{{ m.away_team_tries|default_if_none:"0" }}</td>
         <td>{{ m.away_team_score|default_if_none:"0" }}</td>
-        <td>{{m.away_team_id.name}}</td>
+        <td>{{m.away_team.name}}</td>
         <td>{% if m.card %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
         <td>{% if m.drop_goal %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
         <td>{% if m.fight %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
         <td></td>
       </tr>
         {% for b in bet %}
-          {% if b.match_id.id == m.id %}
+          {% if b.match.id == m.id %}
       <tr class="round{{m.id}}" style="display:none">
         <td></td>
-        <td colspan="2">{{b.player_id.username|capfirst}}</td>
+        <td colspan="2">{{b.player.username|capfirst}}</td>
         <td>{% if b.home_team_score > b.away_team_score %}V{% elif b.home_team_score < b.away_team_score %}D{% else %}N{% endif %}</td>
         <td>{{ b.home_team_score|default_if_none:"0" }}</td>
         <td>{{ b.home_team_tries|default_if_none:"0" }}</td>

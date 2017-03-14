@@ -10,7 +10,7 @@
     {% for match in match_list %}
     <div>
         <h4><a href="{% url 'tournaments:match_detail' match.id %}">
-        {{ match.date }} | {{ match.home_team_id }} vs {{ match.away_team_id }}
+        {{ match.date }} | {{ match.home_team }} vs {{ match.away_team }}
         </a></h4>
     </div>
     {% endfor %}

@@ -6,7 +6,7 @@ from django.utils.deprecation import MiddlewareMixin
 
 
 class TimezoneMiddleware(MiddlewareMixin):
-    
+
     def process_request(self, request):
         if request.user.is_authenticated():
             user = User(username = request.user)

@@ -59,19 +59,19 @@
     <tr>
     {% for b in mbet %}
         <!--td></td-->
-        <td>{{ b.match_id.date | date:'j-M H:i' }}</td>
-        <td>{{ b.match_id.home_team_id.name }}</td>
+        <td>{{ b.match.date | date:'j-M H:i' }}</td>
+        <td>{{ b.match.home_team.name }}</td>
         <td>{{ b.home_team_score | default_if_none:"0" }}</td>
         <td>{{ b.home_team_tries | default_if_none:"0" }}</td>
         <td>{{ b.home_team_bonus | default_if_none:"0" }}</td>
         <td>{{ b.away_team_bonus | default_if_none:"0" }}</td>
         <td>{{ b.away_team_tries | default_if_none:"0" }}</td> 
         <td>{{ b.away_team_score | default_if_none:"0" }}</td>
-        <td>{{ b.match_id.away_team_id.name }}</td>
+        <td>{{ b.match.away_team.name }}</td>
         <td>{{ b.card }}</td>
         <td>{{ b.fight }}</td>
         <td>{{ b.drop_goal }}<td>
-        {% if current_date < b.match_id.date %}
+        {% if current_date < b.match.date %}
             <td><a href="/bets/mbet_add/{{ tournament.id }}/{{ b.id }}">Modifier</a></td>
         {% endif %}
     </tr>

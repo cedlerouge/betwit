@@ -15,7 +15,7 @@
         <div class="row-fluid"> 
         {% for m in match_list %}
             <div class="span3">
-                <a href="/bets/mbet_add/{{ m.tournament_id.id }}/match/{{ m.id }}/">{{ m.home_team_id.name }} vs {{ m.away_team_id.name }}</a>
+                <a href="/bets/mbet_add/{{ m.tournament.id }}/match/{{ m.id }}/">{{ m.home_team.name }} vs {{ m.away_team.name }}</a>
             </div>
         {% endfor %}
         </div>

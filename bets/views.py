@@ -59,7 +59,7 @@ class UserProfile(View):
         is_his_own      = False
         user_share      = False
 
-        """ 2 choices : 
+        """ 2 choices :
         * display information => /accounts/settings
         * display form to update settings => accounts/settings/update
         """
@@ -70,9 +70,9 @@ class UserProfile(View):
                 profile_form    = ProfileForm(instance=request.user.profile)
                 params['userForm']      = user_form
                 params['profileForm']   = profile_form
-            else: 
+            else:
                 params['error_message'] =  "You must be authenticated"
-                
+
             return render(request, 'bets/profile_form.html', params)
 
         else:
@@ -89,9 +89,9 @@ class UserProfile(View):
             #if username == request.user.username:
             #    is_his_own = True
             #    user_share = True
-            #else: 
-            #    if user.userprofile.allow_share : 
-            #        user_share = True    
+            #else:
+            #    if user.userprofile.allow_share :
+            #        user_share = True
             return render(request, 'bets/settings.html', params)
 
     def post(self, request, username=None):
@@ -104,7 +104,7 @@ class UserProfile(View):
             return HttpResponseRedirect(reverse('settings'))
         else:
             return render(request, 'bets/profile_form.html', params)
-            
+
 
 class MyBets(View):
     """
@@ -127,16 +127,16 @@ class MyBets(View):
             logger.debug( "tournament => " + t.name )
             tournamentBet   = None
             tbetForm        = None
-            tournamentBet   = TournamentBet.objects.filter( tournament_id=t ).filter( player_id = userProfile ).first()
+            tournamentBet   = TournamentBet.objects.filter( tournament=t ).filter( player = userProfile ).first()
             if tournamentBet:
                 tbetForm    = TournamentBetForm( instance=tournamentBet )
-                match       = Match.objects.filter( tournament_id=t )
+                match       = Match.objects.filter( tournament=t )
                 for m in match :
                     matchBet = None
-                    matchBet    = MatchBet.objects.filter( match_id = m ).filter( player_id = userProfile ).first()
+                    matchBet    = MatchBet.objects.filter( match = m ).filter( player = userProfile ).first()
                     if matchBet:
                         lm.append(matchBet)
- 
+
         #        break
     #    for obj in betcup:
     #        obj.fields = dict((field.name, field.value_to_string(obj))
@@ -159,7 +159,7 @@ class BetRanking(View):
     users       = User.objects.all()
     rank        = list()
     for user in users:
-      match_bets  = MatchBet.objects.filter(player_id = user)
+      match_bets  = MatchBet.objects.filter(player = user)
       score = sum(int(b['points_won'] if b['points_won'] is not None else 0 ) for b in match_bets.values())
       # find best score per prognosis
       best_score = 0
@@ -179,28 +179,28 @@ def matchBet_add( request, tournament_id=None, mbet_id=None, m_id=None ):
     if request.method == 'POST':
         user        = User.objects.get(username=request.user.username)
         form        = MatchBetForm(request.POST)
-        #if form.fields['match_id'] is not None:
-        #    mid = str(form.data.match_id)
-        #    form.fields['match_id'] = forms.ModelChoiceField(queryset=Match.objects.filter( id = mid ) )
-            #form.fields['match_id'].value = Match.objects.get( id = mid )
+        #if form.fields['match'] is not None:
+        #    mid = str(form.data.match)
+        #    form.fields['match'] = forms.ModelChoiceField(queryset=Match.objects.filter( id = mid ) )
+            #form.fields['match'].value = Match.objects.get( id = mid )
         logger.info (" je suis le formulaire poste de matchbet_add: ", str(form.fields))
         if form.is_valid():
             if mbet_id is not None:
                 # TODO Do not let save a match bet if an user has already his one for a specified match id
                 mbet                = get_object_or_404(MatchBet, pk=mbet_id)
                 logger.info('mbet_id is present, so this is update')
-                logger.info('mbet.id:' + str(mbet.id))  
+                logger.info('mbet.id:' + str(mbet.id))
                 logger.info('mbet.home_team_score:' + str(mbet.home_team_score))
                 logger.info('mbet.created_date:' + str(mbet.created_date))
             else:
-                # check if a player has already bet on that match 
-                mbet_temp           = MatchBet.objects.filter( match_id = form.cleaned_data['match_id'] ).filter( player_id = user )
-                if mbet_temp: 
+                # check if a player has already bet on that match
+                mbet_temp           = MatchBet.objects.filter( match = form.cleaned_data['match'] ).filter( player = user )
+                if mbet_temp:
                     # If bet exists, user must be redirect to the update form
                     return HttpResponseRedirect( reverse('bets:mbet_detail', args=(mbet_temp[0].id,)))
                 mbet                = MatchBet()
-                mbet.player_id      = user
-                mbet.match_id       = form.cleaned_data['match_id']
+                mbet.player         = user
+                mbet.match          = form.cleaned_data['match']
                 mbet.created_date   = timezone.now()
                 logger.info('mbet_id is empty, so this is insert')
 
@@ -220,14 +220,14 @@ def matchBet_add( request, tournament_id=None, mbet_id=None, m_id=None ):
     else:
         """
         GET with matchBet_id => update a bet => check exists bet
-        else diplay an empty form 
+        else diplay an empty form
         """
         params  = dict()
         if mbet_id:
             # TODO check if username == matchBet_id
             username    = request.user.username
             mbet        = get_object_or_404(MatchBet, pk=mbet_id)
-            if mbet.player_id.username == username:
+            if mbet.player.username == username:
                 # this is the owner, you can fill the form
                 form                = MatchBetForm( instance=mbet )
                 params['form']      = form
@@ -237,12 +237,12 @@ def matchBet_add( request, tournament_id=None, mbet_id=None, m_id=None ):
                 return render( request, 'bets/bet_form.html', params)
         form    = None
         if m_id:
-            # match_id is set because
+            # match is set because
             match       = Match.objects.get( id = m_id )
             if match:
-                form    = MatchBetForm( initial = { 'match_id': match } )
-        if form is None: 
-            form                = MatchBetForm( tournament_id = tournament_id)
+                form    = MatchBetForm( initial = { 'match': match } )
+        if form is None:
+            form                = MatchBetForm( tournament = tournament_id)
         params['form']      = form
         params['elt']       = "matchBet"
         #params['post_url']  = "'bets:mbet_add' "+tournament_id
@@ -254,16 +254,16 @@ def tournamentBet_add( request, tournament_id, tbet_id=None ):
     if request.method == 'POST':
         user         = User.objects.get(username=request.user.username)
         tournament  = get_object_or_404(Tournament, pk=tournament_id)
-        form         = TournamentBetForm(request.POST, tournament_id = tournament_id)
+        form         = TournamentBetForm(request.POST, tournament = tournament_id)
         if form.is_valid():
             if tbet_id is not None:
                 # TODO Do not let save a tournament bet if an user has already his one
                 tbet                = get_object_or_404(TournamentBet, pk=tbet_id)
-                logger.info('tbet_id is present, so this is update')                
+                logger.info('tbet_id is present, so this is update')
             else:
-                tbet                = TournamentBet()   
-                tbet.player_id      = user
-                tbet.tournament_id  = tournament
+                tbet                = TournamentBet()
+                tbet.player         = user
+                tbet.tournament     = tournament
                 tbet.created_date   = timezone.now()
                 logger.info('tbet_id is empty, so this is insert')
             tbet.first_team     = form.cleaned_data['first_team']
@@ -281,22 +281,22 @@ def tournamentBet_add( request, tournament_id, tbet_id=None ):
     else:
         """
         GET with tournamentBet_id => update a bet => check exists bet
-        else diplay an empty form 
+        else diplay an empty form
         """
         params  = dict()
         if tbet_id:
             # TODO check if username == matchBet_id
             username    = request.user.username
             tbet        = get_object_or_404(TournamentBet, pk=tbet_id)
-            if tbet.player_id.username == username:
+            if tbet.player.username == username:
                 # this is the owner, you can fill the form
-                form                = TournamentBetForm( instance=tbet, tournament_id = tournament_id )
+                form                = TournamentBetForm( instance=tbet, tournament = tournament_id )
                 params['form']      = form
                 params['elt']       = "tournamentBet"
                 params['post_url']  = reverse( 'bets:tbet_add', args=(tournament_id, tbet_id ) )
                 #params['post_url']  = "bets:tbet_add"
                 return render( request, 'bets/bet_form.html', params)
-        form                = TournamentBetForm( tournament_id = tournament_id )
+        form                = TournamentBetForm( tournament = tournament_id )
         params['form']      = form
         params['elt']       = "tournament Bet"
         params['post_url']  = reverse( 'bets:tbet_add', args=( tournament_id) )
@@ -306,8 +306,8 @@ def tournamentBet_add( request, tournament_id, tbet_id=None ):
 List every tournament by year
 if there is only one tounament redirect to tbet_list
 """
-def bet_index( request ): 
-    # TODO 
+def bet_index( request ):
+    # TODO
     # disable links if tournament hasn't started
     logger.info('Welcome to bets module')
     params          = dict()
@@ -325,22 +325,22 @@ def mbet_available( request, tournament_id ):
     logger.info('Welcome to available bets')
     params      = {'error_message': None, 'is_update': None }
     tournament  = get_object_or_404(Tournament, pk=tournament_id)
-    matchs      = Match.objects.filter( tournament_id = tournament_id ).filter( date__gte = timezone.now( ))
+    matchs      = Match.objects.filter( tournament = tournament_id ).filter( date__gte = timezone.now( ))
     params['tournament']    = tournament
     params['match_list']    = matchs
     return render( request, 'bets/mbet_available.html', params )
-    
+
 
 """
-List every tournament bets 
-if tournament hasn't yet started : 
+List every tournament bets
+if tournament hasn't yet started :
 - if user has already placed a bet, display countdown
 - else ask him if he wants to place a bet
 """
 @login_required
 def tbet_list( request, tournament_id ):
     params      = {'error_message': None, 'is_update': None }
-    tbet_list   = TournamentBet.objects.filter( tournament_id = tournament_id )
+    tbet_list   = TournamentBet.objects.filter( tournament = tournament_id )
     # TODO deny acces before the begining of the tournament
     # select every matchs of the tournament and get the date of first one
     # if date.now() is lower than the match date, display message
@@ -359,11 +359,11 @@ def tbet_list( request, tournament_id ):
         message = "The tournament has not yet started, Access available in %s - %s - %s" % ( (str(countdown), str(tournament.begins), str(timezone.now()) ) )
         has_bet = False
         for t in tbet_list:
-            if t.player_id.id == user.id:
+            if t.player.id == user.id:
                 # The player has already bet
                 params['message']       = "You have to wait until Tournament begins: " + str(countdown)
                 params['tbet_button_title']  = "Uptade your Bet "
-                params['tbet_button_url']    = reverse( "bets:tbet_add", args=(t.tournament_id.id, t.id))
+                params['tbet_button_url']    = reverse( "bets:tbet_add", args=(t.tournament.id, t.id))
                 has_bet = True
         if not has_bet :
             params['message']       = "The tournament will start in %s, would you like to place a ranking bet ? " % (str(countdown))
@@ -371,10 +371,10 @@ def tbet_list( request, tournament_id ):
             params['tbet_button_url']    = reverse( 'bets:tbet_add', args=(tournament_id) )
 
     # Add a button to place a match bet
-    
+
     params['mbet_button_title'] = "Add a match bet"
     params['mbet_button_url']   = reverse( 'bets:mbet_add', args=( tournament_id ) )
-        
+
     return render( request, 'bets/tbet_list.html', params )
 
 """
@@ -384,14 +384,14 @@ def tbet_detail( request, tbet_id ):
     params      = dict()
     tbet        = get_object_or_404(TournamentBet, pk=tbet_id)
     tbetform    = TournamentBetForm( instance=tbet )
-    username    = request.user.username 
+    username    = request.user.username
     # Check if update is yet possible tournnament.begins > timezone.now()
-    tournament  = Tournament.objects.get( id = tbet.tournament_id.id )
+    tournament  = Tournament.objects.get( id = tbet.tournament.id )
     if tournament and tournament.begins > timezone.now():
         params['is_update']     = True
         params['update_url']    = reverse( 'bets:tbet_add', args=(tournament.id, tbet.id))
 
-    if tbet.player_id.username == username:
+    if tbet.player.username == username:
         params['bet']  = tbetform
         params['elt']   = 'tournamentBet'
         return render( request, 'bets/bet_detail.html', params)
@@ -403,26 +403,26 @@ def tbet_detail( request, tbet_id ):
 This view display every bet of a tournament
 """
 def mbet_list( request, tbet_id ):
-    # TODO 
+    # TODO
     # Display oinly matchs information if matchs hasn't started
-    mbet_list   = MatchBet.objects.filter( tournament_id = tbet_id )
+    mbet_list   = MatchBet.objects.filter( tournament = tbet_id )
     params     = { 'bet_list': mbet_list }
     return render( request, 'bets/bet_list.html', params )
 
 """
-This view display every information of a match bet 
+This view display every information of a match bet
 """
 def mbet_detail( request, mbet_id ):
     params      = {'error_message': None, 'is_update': None }
     mbet        = get_object_or_404(MatchBet, pk=mbet_id)
     mbetform    = MatchBetForm( instance=mbet )
-    username    = request.user.username 
-    match       = Match.objects.get( id=mbet.match_id.id)
+    username    = request.user.username
+    match       = Match.objects.get( id=mbet.match.id)
     if match is not None:
         if match.date > timezone.now():
             params['update'] = True
-            params['update_url' ] = reverse( 'bets:mbet_add', args=(match.tournament_id.id, mbet_id,))
-    if mbet.player_id.username == username:
+            params['update_url' ] = reverse( 'bets:mbet_add', args=(match.tournament.id, mbet_id,))
+    if mbet.player.username == username:
         params['bet']  = mbetform
         params['elt']   = 'matchBet'
         return render( request, 'bets/bet_detail.html', params)
@@ -441,5 +441,5 @@ def prognosis( request ):
     params['match'] = match
     params['bet']   = mbet
     return render(request, 'bets/prognosis.html', params)
-    
+
 #class BetView( View )

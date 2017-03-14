@@ -12,10 +12,10 @@ class MatchBetForm( ModelForm ):
     """
     #matchs              = Match.objects.filter(date__gte=timezone.now())
     def __init__( self, *args, **kwargs ):
-        mid = kwargs.pop( 'match_id', None)
-        tid = kwargs.pop( 'tournament_id', None)
+        mid = kwargs.pop( 'match', None)
+        tid = kwargs.pop( 'tournament', None)
         # check if match is available for betting
-        # if match_id is not None, limit choice to that match
+        # if match is not None, limit choice to that match
         # else limit choice to only available match (match.date > timezone.now()
         choice = [(None, '-- choose a match --'), ]
         # this is in case we present a form where user can bet on every available match
@@ -25,13 +25,13 @@ class MatchBetForm( ModelForm ):
             choice = forms.ModelChoiceField(queryset=Match.objects.filter( id = mid ) )
         # if tid defined, this is beacause user used /mbet_add/tid
         if tid is not None:
-            choice  = forms.ModelChoiceField( queryset = Match.objects.filter( tournament_id = tid ).filter( date__gte = timezone.now() ) )
+            choice  = forms.ModelChoiceField( queryset = Match.objects.filter( tournament = tid ).filter( date__gte = timezone.now() ) )
         super( MatchBetForm, self ).__init__( *args, **kwargs )
-        self.fields['match_id'] = choice
+        self.fields['match'] = choice
 
     class Meta:
         model   = MatchBet
-        exclude = ['player_id', 'points_won']
+        exclude = ['player', 'points_won']
 
 class TournamentBetForm( ModelForm ):
     """
@@ -65,17 +65,17 @@ class TournamentBetForm( ModelForm ):
 
     # TODO get every team name of the tournament
     def __init__( self, *args, **kwargs):
-        tid     = kwargs.pop( 'tournament_id', None)
+        tid     = kwargs.pop( 'tournament', None)
         teams   = [(None, '-- choose a team --'), ]
         if tid is not None:
-            matchs  = Match.objects.filter( tournament_id = tid )
+            matchs  = Match.objects.filter( tournament = tid )
             for m in matchs:
-                t = (m.home_team_id.name, m.home_team_id.name)
+                t = (m.home_team.name, m.home_team.name)
                 if t not in teams:
                     teams.append(t)
-                t = (m.away_team_id.name, m.away_team_id.name )
+                t = (m.away_team.name, m.away_team.name )
                 if t not in teams:
-                   teams.append(t) 
+                   teams.append(t)
 
         super(TournamentBetForm, self).__init__(*args, **kwargs)
         self.fields['first_team'] = forms.ChoiceField(
@@ -106,7 +106,7 @@ class TournamentBetForm( ModelForm ):
 
     class Meta:
         model   = TournamentBet
-        exclude = ['player_id', 'tournament_id', 'points_won', 'created_date', 'modified_date']
+        exclude = ['player', 'tournament', 'points_won', 'created_date', 'modified_date']
 
 class BetPointForm( ModelForm ):
     class Meta:

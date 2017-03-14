@@ -5,9 +5,9 @@
 {% block content %}
 <ul class="nav nav-tabs">                                                    
   <li class="active"><a data-toggle="tab" href="#results">{{ tournament.name }} - {{ tournament.year }}</a></li> 
-  <li><a data-toggle="tab" href="#teams">&Eacute;quipes</a></li>
+  <li><a data-toggle="tab" href="#rank">Classement</a></li>
   <!-- hide rules on xsmall screen because it is diplay on 2nd line-->
-  <li class="hidden-xs"><a data-toggle="tab" href="#rules">Classement</a></li>
+  <li class="hidden-xs"><a data-toggle="tab" href="#teams">&Eacute;quipes</a></li>
 </ul>
 <div class="tab-content">
   <div id="results" class="tab-pane fade in active table-responsive">
@@ -17,25 +17,126 @@
         <tr>
           <th>Round</th>
           <th>Match</th>
-          <th>&Eacute;quipe A</th>
           <th>Date</th>
+          <th>&Eacute;quipe A</th>
+          <th>Score</th>
           <th>&Eacute;quipe B</th>
         <tr>
       </thead>
       <tbody>
         {% for m in match_list %}
-        <tr class="info" id="{{m.id}}">
-          <td>{{m.cup_round}}</td>
-          <td><a href="#" class="toggler" data-betwit-matchid="{{m.id}}">+</a></td>
-          <td>{{m.home_team_id.name}}</td>
-          <td>{{m.date|date:'j-M H:i'}}</td>
-          <td>{{m.away_team_id.name}}</td>
+        <tr class="info" id="{{m.0.id}}">
+          <td>{{m.0.cup_round}}</td>
+          <td><a href="#" class="toggler" data-betwit-matchid="{{m.0.id}}">+</a></td>
+          <td>{{m.0.date|date:'j-M H:i'}}</td> 
+          <td>{{m.0.home_team.name}}</td>
+          <td>{{ m.0.home_team_score }} vs {{ m.0.away_team_score }}</td>
+          <td>{{m.0.away_team.name}}</td>
+        </tr>
+        <tr class="round{{m.0.id}}" style="display:none">
+          <td></td>
+          <td>Nombre d'essais</td>
+          <td></td>
+          <td>{{ m.0.home_team_tries }}</td>
+          <td>vs</td>
+          <td>{{ m.0.away_team_tries }}</td>
+        </tr>
+        <tr class="round{{m.0.id}}" style="display:none">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Drop</td>
+          <td>Carton</td>
+          <td>Bagarre</td>
+        </tr>
+        <tr class="round{{m.0.id}}" style="display:none">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{% if m.0.drop_goal %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td> 
+          <td>{% if m.0.card %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+          <td>{% if m.0.fight %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+        </tr>
+        <tr class="round{{m.0.id}}" style="display:none">
+          <td></td>
+          <td>bonus</td>
+          <td></td> 
+          <td>{{ m.home_team_bonus }}</td>
+          <td></td>
+          <td>{{ m.away_team_bonus }}</td>
+        </tr>
+        <tr class="round{{m.0.id}}" style="display:none">
+          <td></td>
+          <td>Point de Victoire</td>
+          <td></td> 
+          <td>{{ m.1.victory }}</td>
+          <td></td>
+          <td>{{ m.2.victory }}</td>
+        </tr>
+       <tr class="round{{m.0.id}}" style="display:none">
+          <td></td>
+          <td>Point de bonus</td>
+          <td></td> 
+          <td>{{ m.1.trybonus }} - {{ m.1.losebonus }}</td>
+          <td></td>
+          <td>{{ m.1.trybonus }} - {{ m.1.losebonus }}</td>
+        </tr>
+        <tr class="round{{m.0.id}}" style="display:none">
+          <td></td>
+          <td>Total</td>
+          <td></td> 
+          <td>{{ m.1.pooints }}</td>
+          <td></td>
+          <td>{{ m.2.pooints }}</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   {% else %}
     Aucun match correspondant
+  {% endif %}
+  </div>
+  <div id="rank" class="tab-pane fade">
+  {% if team_rank %}
+    <table class="table table-striped table-condensed" width="100%" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Rang</th>
+          <th>&Eacute;quipe</th>
+          <th>PL</th>
+          <th>W</th>
+          <th>D</th>
+          <th>L</th>
+          <th>PF</th>
+          <th>PA</th>
+          <th>TF</th>
+          <th>TA</th>
+          <th>TB</th>
+          <th>LB</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in team_rank %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ r.team.name|capfirst }}</td>
+          <td>{{ r.played }}</td>
+          <td>{{ r.win }}</td>
+          <td>{{ r.draw }}</td>
+          <td>{{ r.lose }}</td>
+          <td>{{ r.ptsfor }}</td>
+          <td>{{ r.ptsagainst }}</td>
+          <td>{{ r.ptsdiff }}</td>
+          <td>{{ r.tryfor }}</td>
+          <td>{{ r.tryagainst }}</td>
+          <td>{{ r.trybonus }}</td>
+          <td>{{ r.losebonus }}</td>
+          <td>{{ r.points }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   {% endif %}
   </div>
   <div id="teams" class="tab-pane fade table-responsive">
@@ -59,8 +160,6 @@
   {% else %}
     Aucune &eacute;quipe renseign&eacute;e
   {% endif %}
-  </div>
-  <div id="rules" class="tab-pane fade">
   </div>
   <br/>
   {% buttons %}
