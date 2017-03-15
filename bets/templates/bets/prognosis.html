@@ -44,10 +44,10 @@
         <td>{{ m.away_team_tries|default_if_none:"0" }}</td>
         <td>{{ m.away_team_score|default_if_none:"0" }}</td>
         <td>{{m.away_team.name}}</td>
-        <td>{% if m.card %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
         <td>{% if m.drop_goal %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+        <td>{% if m.card %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
         <td>{% if m.fight %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
-        <td></td>
+        <td>{{ m.odds }}</td>
       </tr>
         {% for b in bet %}
           {% if b.match.id == m.id %}

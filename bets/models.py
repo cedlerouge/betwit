@@ -8,8 +8,10 @@ import pytz
 
 import logging                              
 logger = logging.getLogger('console')
-logger.info('This is bets/models')
-logger.debug("This is bets/models")
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler())
+logger.info('This is info bets/models')
+logger.debug("This is debug bets/models")
 
 
 # Create your models here.
@@ -138,25 +140,28 @@ def update_matchbet_points(sender, instance, **kwargs):
 
             # compute home_team_bonus
             logger.info('--home bonus--')
-            if 'Null'.lower() ==  b.home_team_bonus.lower():
+            if 'Null'.lower() in  b.home_team_bonus.lower():
                 points +=0
-            elif b.home_team_bonus.lower() == instance.home_team_bonus.lower():
+            elif b.home_team_bonus.lower() in instance.home_team_bonus.lower():
                 points += 1
             else:
                 points -= 1
+            logger.info('b.home_team_bonus => ' + str(b.home_team_bonus))
+            logger.info('instance.home_team_bonus => ' + str(instance.home_team_bonus))
             logger.info('points => ' + str(points))
 
             # compute away_team_bonus
             logger.info('--away bonus--')
-            if 'Null'.lower() ==  b.away_team_bonus.lower():
+            if 'Null'.lower() in  b.away_team_bonus.lower():
                 points +=0
-            elif b.away_team_bonus.lower() == instance.away_team_bonus.lower():
+            elif b.away_team_bonus.lower() in instance.away_team_bonus.lower():
                 points += 1
             else:
                 points -= 1
             logger.info('points => ' + str(points))
 
             b.points_won = points
+            logger.info("b.points_won ==============> " + str(b.points_won))
             b.save()
 
 

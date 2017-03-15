@@ -8,7 +8,7 @@ from django.db.models.signals import post_save
 
 import logging
 clog = logging.getLogger("django")
-clog.setLevel( logging.DEBUG )            
+clog.setLevel( logging.ERROR )
 clog.addHandler( logging.StreamHandler() )
 clog.debug('This is tournaments/models')
 

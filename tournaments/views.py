@@ -34,8 +34,16 @@ def tournament_detail( request, tournament_id ):
     match_list      = []
     # first tab
     for m in matchs:
-        home_team_points = TeamMatchPoint.objects.get(team=m.home_team, match=m)
-        away_team_points = TeamMatchPoint.objects.get(team=m.away_team, match=m)
+        try:
+            home_team_points = TeamMatchPoint.objects.get(team = m.home_team, match = m)
+        except Exception, e:
+            logger.error("get home " + str(m.home_team) + " TeamMatchPoint: ", e)
+            home_team_points = TeamMatchPoint(team = m.home_team, match = m)
+        try: 
+            away_team_points = TeamMatchPoint.objects.get(team=m.away_team, match=m)
+        except Exception, e:
+            logger.error("get away " + str(m.away_team) + " TeamMatchPoint: ", e)
+            away_team_points = TeamMatchPoint(team = m.away_team, match = m)
         match_list.append((m, home_team_points, away_team_points))
         if m.home_team not in team_list:
             team_list.append(m.home_team)
@@ -51,7 +59,7 @@ def tournament_detail( request, tournament_id ):
         #rank.sort(key=lambda r: r.points, reverse=True)
         rank.sort(key = attrgetter('points','ptsdiff'), reverse=True)
     except Exception:
-        logger.error('team stat => ' + e)
+        logger.error('team stat => ', e)
         rank = []
     context         = { "tournament":tournament, "match_list":match_list, "team_list": team_list, "team_rank": rank}
     return render( request, 'tournaments/tournament_detail.html', context )
