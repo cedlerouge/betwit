@@ -7,10 +7,10 @@ from django.db.models.signals import post_save
 # Create your models here.
 
 import logging
-logger = logging.getLogger('django')
-logger.setLevel( logging.DEBUG )
-logger.addHandler( logging.StreamHandler() )
-logger.info('This is tournaments/models')
+clog = logging.getLogger("django")
+clog.setLevel( logging.DEBUG )            
+clog.addHandler( logging.StreamHandler() )
+clog.debug('This is tournaments/models')
 
 class Team(models.Model):
     """
@@ -57,6 +57,12 @@ class TeamStat(models.Model):
     losebonus   = models.IntegerField(null=True, blank=True, default=0)
     points      = models.IntegerField(null=True, blank=True, default=0)
 
+    def __unicode__(self):
+        return "%s : %s" % (
+            self.tournament,
+            self.team
+        )
+
 class Match(models.Model):
     """
     Match model
@@ -99,7 +105,7 @@ class Match(models.Model):
     def __unicode__(self):
         return "%s vs %s" % (self.home_team, self.away_team)
 
-class TeamMatchPoints(models.Model):
+class TeamMatchPoint(models.Model):
     """
     Team model
     """
@@ -112,11 +118,11 @@ class TeamMatchPoints(models.Model):
     points      = models.IntegerField(null=True, blank=True, default=0)
 
     def __unicode__(self):
-        return "%s : %s vs %s - Round %s" % (
-            self.team.name,
+        return "Round %s - %s vs %s => %s" % (
+            self.match.cup_round,
             self.match.home_team,
             self.match.away_team,
-            self.match.cup_round
+            self.team
         )
 
 @receiver(post_save, sender=Match)
@@ -124,30 +130,31 @@ def update_team_points(sender, instance, **kwargs):
     """
     each time, there is a modification on a match, team_score will be updated
     """
+    clog.debug("update_team_points")
     home_points = 0
     away_points = 0
     gap = instance.home_team_score - instance.away_team_score
 
-    #home_team_points = TeamMatchPoints(match = instance, team = instance.home_team)
-    #away_team_points = TeamMatchPoints(match = instance, team = instance.away_team)
+    #home_team_points = TeamMatchPoint(match = instance, team = instance.home_team)
+    #away_team_points = TeamMatchPoint(match = instance, team = instance.away_team)
 
-    away_team_points    = TeamMatchPoints.objects.filter(match = instance).filter(team = instance.away_team)
-    home_team_points    = TeamMatchPoints.objects.filter(match = instance).filter(team = instance.home_team)
-    logger.info(" len(away_team_points) = " + str(len(away_team_points)))
-    logger.info(" len(home_team_points) = " + str(len(home_team_points)))
+    away_team_points    = TeamMatchPoint.objects.filter(match = instance).filter(team = instance.away_team)
+    home_team_points    = TeamMatchPoint.objects.filter(match = instance).filter(team = instance.home_team)
+    clog.debug(" len(away_team_points) = " + str(len(away_team_points)))
+    clog.debug(" len(home_team_points) = " + str(len(home_team_points)))
     # check if object teampoints exists
     if len(away_team_points) == 0:
-        away_team_points = TeamMatchPoints(team = instance.away_team, match = instance)
-        logger.info("create away TeamPoints " + str(dir(away_team_points)))
+        away_team_points = TeamMatchPoint(team = instance.away_team, match = instance)
+        clog.debug("create away TeamPoint " + str(dir(away_team_points)))
     else:
-        away_team_points = TeamMatchPoints.objects.get(match = instance, team = instance.away_team)
-        logger.info("update away TeamPoints " + str(dir(away_team_points)))
+        away_team_points = TeamMatchPoint.objects.get(match = instance, team = instance.away_team)
+        clog.debug("update away TeamPoint " + str(dir(away_team_points)))
     if len(home_team_points) == 0:
-        logger.info("create home TeamPoints " + str(dir(home_team_points)))
-        home_team_points = TeamMatchPoints(team = instance.home_team, match = instance)
+        clog.debug("create home TeamPoints " + str(dir(home_team_points)))
+        home_team_points = TeamMatchPoint(team = instance.home_team, match = instance)
     else:
-        logger.info("update away TeamPoints " + str(dir(home_team_points)))
-        home_team_points = TeamMatchPoints.objects.get(team = instance.home_team, match = instance)
+        clog.debug("update away TeamPoint " + str(dir(home_team_points)))
+        home_team_points = TeamMatchPoint.objects.get(team = instance.home_team, match = instance)
 
     # victory : +4
     # tries >= 4 : +1
@@ -195,28 +202,37 @@ def update_team_points(sender, instance, **kwargs):
     away_points += away_team_points.losebonus
 
     home_team_points.points = home_points
+    clog.debug("save points home_team")
     home_team_points.save()
     away_team_points.points = away_points
+    clog.debug("save points away_team")
     away_team_points.save()
 
-@receiver(post_save, sender=TeamMatchPoints)
+@receiver(post_save, sender=TeamMatchPoint)
 def update_team_stats(sender, instance, **kwargs):
     """
     each end of match, recompute stats of teams
     It's better than to update at each teammatchpoints update
     """
+    clog.debug("update_team_stats")
     home_team       = instance.match.home_team
     away_team       = instance.match.away_team
+    clog.debug("home_team = " + str(home_team))
+    clog.debug("away_team = " + str(away_team))
+    clog.debug("------------------------- get object home_team_match ------------------------------------------")
     home_team_match = Match.objects.filter(models.Q(home_team = home_team) | models.Q(away_team = home_team)).filter(date__gte = instance.match.tournament.begins)
+    clog.debug("------------------------- get object away_team_match ------------------------------------------")
     away_team_match = Match.objects.filter(models.Q(home_team = away_team) | models.Q(away_team = away_team)).filter(date__gte = instance.match.tournament.begins)
 
     try:
-        home_stats      = TeamStat.objects.get(team = home_team).filter(tournament = instance.match.tournament)
-    except:
+        home_stats      = TeamStat.objects.get(team = home_team, tournament = instance.match.tournament)
+    except Exception, e:
+        clog.debug(e)
         home_stats      = TeamStat(team = home_team, tournament = instance.match.tournament)
     try:
-        away_stats      = TeamStat.objects.get(team = away_team).filter(tournament = instance.match.tournament)
-    except:
+        away_stats      = TeamStat.objects.get(team = away_team, tournament = instance.match.tournament)
+    except Exception, e:
+        clog.debug(e)
         away_stats      = TeamStat(team = away_team, tournament = instance.match.tournament)
 
 
@@ -237,7 +253,7 @@ def update_team_stats(sender, instance, **kwargs):
     for m in home_team_match:
         played += 1
         if home_team == m.home_team:
-            logger.info("stat for home_team => " + str(m.home_team.name))
+            clog.debug("stat for home_team => " + str(m.home_team.name))
             if m.home_team_score > m.away_team_score:
                 win += 1
             if m.home_team_score == m.away_team_score:
@@ -248,13 +264,14 @@ def update_team_stats(sender, instance, **kwargs):
                     losebonus += 1
             if m.home_team_tries >= 4:
                 trybonus += 1
+            clog.debug("home_team is " + str(m.home_team) + "ptsfor => " + str(m.home_team_score) + "ptsagainst => " + str(m.away_team_score))
             ptsfor      += m.home_team_score
             ptsagainst  += m.away_team_score
             tryfor      += m.home_team_tries
             tryagainst  += m.away_team_tries
 
         else:
-            logger.info("stat for home_team => " + str(m.away_team.name))
+            clog.debug("stat for home_team => " + str(m.away_team.name))
             if m.away_team_score > m.home_team_score:
                 win += 1
             if m.away_team_score == m.home_team_score:
@@ -265,10 +282,23 @@ def update_team_stats(sender, instance, **kwargs):
                     losebonus += 1
             if m.away_team_tries >= 4:
                 trybonus += 1
-            ptsfor      += m.home_team_score
-            ptsagainst  += m.away_team_score
-            tryfor      += m.home_team_tries
-            tryagainst  += m.away_team_tries
+            clog.debug("away_team is " + str(m.away_team) + "ptsfor => " + str(m.away_team_score) + "ptsagainst => " + str(m.home_team_score))
+            ptsfor      += m.away_team_score
+            ptsagainst  += m.home_team_score
+            tryfor      += m.away_team_tries
+            tryagainst  += m.home_team_tries
+
+        clog.debug("Equipe: " + str(home_stats.team))
+        clog.debug("played: " + str(played))
+        clog.debug("win: " + str(win))
+        clog.debug("draw: " + str(draw))
+        clog.debug("lose: " + str(lose))
+        clog.debug("trybonus: " + str(trybonus))
+        clog.debug("losebonus: " + str(losebonus))
+        clog.debug("ptsfor: " + str(ptsfor))
+        clog.debug("ptsagainst: " + str(ptsagainst))
+        clog.debug("tryfor: " + str(tryfor))
+        clog.debug("tryagainst: " + str(tryagainst))
 
     home_stats.played       = played
     home_stats.win          = win
@@ -280,10 +310,10 @@ def update_team_stats(sender, instance, **kwargs):
     home_stats.tryagainst   = tryagainst
     home_stats.trybonus     = trybonus
     home_stats.losebonus    = losebonus
-    home_stats.diff         = ptsfor - ptsagainst
-    home_stats.pts          = win * 4 + draw * 2 + trybonus + losebonus
+    home_stats.ptsdiff      = ptsfor - ptsagainst
+    home_stats.points       = win * 4 + draw * 2 + trybonus + losebonus
     # compute grand slam
-    home_stats.pts          += 3 if win == 5 else 0
+    home_stats.points       += 3 if win == 5 else 0
 
     played      = 0
     win         = 0
@@ -328,10 +358,23 @@ def update_team_stats(sender, instance, **kwargs):
                     losebonus += 1
             if m.away_team_tries >= 4:
                 trybonus += 1
-            ptsfor      += m.home_team_score
-            ptsagainst  += m.away_team_score
-            tryfor      += m.home_team_tries
-            tryagainst  += m.away_team_tries
+            ptsfor      += m.away_team_score
+            ptsagainst  += m.home_team_score
+            tryfor      += m.away_team_tries
+            tryagainst  += m.home_team_tries
+
+        clog.debug("Equipe: " + str(away_stats.team))
+        clog.debug("played: " + str(played))
+        clog.debug("win: " + str(win))
+        clog.debug("draw: " + str(draw))
+        clog.debug("lose: " + str(lose))
+        clog.debug("trybonus: " + str(trybonus))
+        clog.debug("losebonus: " + str(losebonus))
+        clog.debug("ptsfor: " + str(ptsfor))
+        clog.debug("ptsagainst: " + str(ptsagainst))
+        clog.debug("tryfor: " + str(tryfor))
+        clog.debug("tryagainst: " + str(tryagainst))
+
 
     away_stats.played       = played
     away_stats.win          = win
@@ -343,12 +386,14 @@ def update_team_stats(sender, instance, **kwargs):
     away_stats.tryagainst   = tryagainst
     away_stats.trybonus     = trybonus
     away_stats.losebonus    = losebonus
-    away_stats.diff         = ptsfor - ptsagainst
-    away_stats.pts          = win * 4 + draw * 2 + trybonus + losebonus
+    away_stats.ptsdiff      = ptsfor - ptsagainst
+    away_stats.points       = win * 4 + draw * 2 + trybonus + losebonus
     # compute grand slam
-    away_stats.pts          += 3 if win == 5 else 0
+    away_stats.points       += 3 if win == 5 else 0
 
+    clog.debug("save stats home_team")    
     home_stats.save()
+    clog.debug("save stats away_team")
     away_stats.save()
 
 

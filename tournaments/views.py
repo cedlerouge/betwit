@@ -7,8 +7,12 @@ from django.utils import timezone
 from operator import attrgetter
 import datetime
 
-from .models import Tournament, Match, Team, MatchPoint, TeamMatchPoints, TeamStat
+from .models import Tournament, Match, Team, MatchPoint, TeamMatchPoint, TeamStat
 from .forms import TeamForm, TournamentForm, MatchForm, MatchPointForm
+
+import logging
+logger = logging.getLogger('django')
+logger.info('This is tournaments/views')
 
 # Create your views here.
 
@@ -30,8 +34,8 @@ def tournament_detail( request, tournament_id ):
     match_list      = []
     # first tab
     for m in matchs:
-        home_team_points = TeamMatchPoints.objects.filter(team=m.home_team)
-        away_team_points = TeamMatchPoints.objects.filter(team=m.away_team)
+        home_team_points = TeamMatchPoint.objects.get(team=m.home_team, match=m)
+        away_team_points = TeamMatchPoint.objects.get(team=m.away_team, match=m)
         match_list.append((m, home_team_points, away_team_points))
         if m.home_team not in team_list:
             team_list.append(m.home_team)
@@ -40,13 +44,14 @@ def tournament_detail( request, tournament_id ):
     rank            = []
     try:
         for t in team_list :
-            #team_points = TeamMatchPoints.objects.get(team = t)
+            #team_points = TeamMatchPoint.objects.get(team = t)
             #team_score  = sum(int(p['points'] if p['points'] is not None else 0) for p in team_points.values())
             team_stats  = TeamStat.objects.get(team = t, tournament = tournament)
             rank.append(team_stats)
         #rank.sort(key=lambda r: r.points, reverse=True)
         rank.sort(key = attrgetter('points','ptsdiff'), reverse=True)
-    except:
+    except Exception:
+        logger.error('team stat => ' + e)
         rank = []
     context         = { "tournament":tournament, "match_list":match_list, "team_list": team_list, "team_rank": rank}
     return render( request, 'tournaments/tournament_detail.html', context )

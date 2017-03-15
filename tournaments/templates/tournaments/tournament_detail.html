@@ -61,9 +61,9 @@
           <td></td>
           <td>bonus</td>
           <td></td> 
-          <td>{{ m.home_team_bonus }}</td>
+          <td>{{ m.0.home_team_bonus }}</td>
           <td></td>
-          <td>{{ m.away_team_bonus }}</td>
+          <td>{{ m.0.away_team_bonus }}</td>
         </tr>
         <tr class="round{{m.0.id}}" style="display:none">
           <td></td>
@@ -85,9 +85,9 @@
           <td></td>
           <td>Total</td>
           <td></td> 
-          <td>{{ m.1.pooints }}</td>
+          <td>{{ m.1.points }}</td>
           <td></td>
-          <td>{{ m.2.pooints }}</td>
+          <td>{{ m.2.points }}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -109,6 +109,7 @@
           <th>L</th>
           <th>PF</th>
           <th>PA</th>
+          <th>DIFF</th>
           <th>TF</th>
           <th>TA</th>
           <th>TB</th>
