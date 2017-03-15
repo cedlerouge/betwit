@@ -94,20 +94,20 @@ def update_matchbet_points(sender, instance, **kwargs):
                 points += 1
             logger.info('points => ' + str(points))
 
-            # compute gap
-            logger.info('--gap--')
-            #b_gap = b.home_team_score - b.away_team_score if b.home_team_score > b.away_team_score else b.away_team_score - b.home_team_score
-            #m_gap = instance.home_team_score - instance.away_team_score if instance.home_team_score > instance.away_team_score else instance.away_team_score - instance.home_team_score
-            b_gap = b.home_team_score - b.away_team_score
-            m_gap = instance.home_team_score - instance.away_team_score
-            if b_gap == m_gap:
-                points += 2
-            logger.info('points => ' + str(points))
-
+            
             # compute the good score
-            logger.info('--goodscore--')
             if b.home_team_score == instance.home_team_score and b.away_team_score == instance.away_team_score:
+                logger.info('--goodscore--')
                 points += 6
+            else :
+                # compute gap
+                logger.info('--gap--')
+                #b_gap = b.home_team_score - b.away_team_score if b.home_team_score > b.away_team_score else b.away_team_score - b.home_team_score
+                #m_gap = instance.home_team_score - instance.away_team_score if instance.home_team_score > instance.away_team_score else instance.away_team_score - instance.home_team_score
+                b_gap = b.home_team_score - b.away_team_score
+                m_gap = instance.home_team_score - instance.away_team_score
+                if b_gap == m_gap:
+                    points += 2
             logger.info('points => ' + str(points))
 
             # compute card

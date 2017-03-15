@@ -6,10 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from django.core.exceptions import ObjectDoesNotExist
-
 from django.views.decorators.http import require_http_methods
-
 from django.utils import timezone
+from operator import attrgetter, itemgetter
 import datetime
 
 from tournaments.models import Tournament, Match
@@ -165,7 +164,8 @@ class BetRanking(View):
         if best_score <= int(b['points_won'] if b['points_won'] is not None else 0):
           best_score = int(b['points_won'] if b['points_won'] is not None else 0)
       rank.append( (user.username, score, best_score) )
-    rank.sort(key=lambda r: r[1], reverse=True)
+    #rank.sort(key=lambda r: r[1], reverse=True)
+    rank.sort(key = itemgetter(1, 2), reverse = True)
     params['rank']  = rank
     return render(request, 'bets/rank.html', params)
 
