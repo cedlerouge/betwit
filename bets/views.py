@@ -165,6 +165,7 @@ class BetRanking(View):
           best_score = int(b['points_won'] if b['points_won'] is not None else 0)
       rank.append( (user.username, score, best_score) )
     #rank.sort(key=lambda r: r[1], reverse=True)
+    # https://wiki.python.org/moin/HowTo/Sorting
     rank.sort(key = itemgetter(1, 2), reverse = True)
     params['rank']  = rank
     return render(request, 'bets/rank.html', params)
@@ -435,7 +436,14 @@ This view display all bets by match and round
 def prognosis( request ):
     params      = {'error_message': None, 'is_update': None }
     match       = Match.objects.filter(date__lte=timezone.now())
+    # TODO filter matchbets by tournament
     mbet        = MatchBet.objects.all()
+    try:
+        tbet        = TournamentBet.objects.filter(tournament = match[0].tournament)
+        params['tournamentbets'] = tbet
+    except Exception, e:
+        logger.error("Get list of tournamentbet : " + str(e))
+        params['tournamentbets'] = []
     params['match'] = match
     params['bet']   = mbet
     return render(request, 'bets/prognosis.html', params)
