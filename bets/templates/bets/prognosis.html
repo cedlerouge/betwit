@@ -41,14 +41,14 @@
           <td>{{m.cup_round}}</td>
           <td><a href="#" class="toggler" data-betwit-matchid="{{m.id}}">+</a></td>
           <td>{{m.date|date:'j-M H:i'}}</td>
-          <td>{{m.home_team.name}}</td>
+          <td><img src="{{ MEDIA_URL }}{{ m.home_team.flag }}"</td>
           <td>{{ m.home_team_score|default_if_none:"0" }}</td>
           <td>{{ m.home_team_tries|default_if_none:"0" }}</td>
           <td>{{ m.home_team_bonus }}</td>
           <td>{{ m.away_team_bonus }}</td>
           <td>{{ m.away_team_tries|default_if_none:"0" }}</td>
           <td>{{ m.away_team_score|default_if_none:"0" }}</td>
-          <td>{{m.away_team.name}}</td>
+          <td><img src="{{ MEDIA_URL }}{{ m.away_team.flag }}"</td>
           <td>{% if m.drop_goal %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
           <td>{% if m.card %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
           <td>{% if m.fight %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
@@ -100,12 +100,12 @@
         {% for tb in tournamentbets %}
         <tr class="info" id="{{m.id}}">
           <td>{{ tb.player.username }}</td>
-          <td>{{ tb.first_team }}</td>
-          <td>{{ tb.second_team }}</td>
-          <td>{{ tb.third_team }}</td>
-          <td>{{ tb.fourth_team }}</td>
-          <td>{{ tb.fifth_team }}</td>
-          <td>{{ tb.sixth_team }}</td>
+          <td><img src="{{ MEDIA_URL }}{{ tb.first_team.flag }}"</td>
+          <td><img src="{{ MEDIA_URL }}{{ tb.second_team.flag }}"</td>
+          <td><img src="{{ MEDIA_URL }}{{ tb.third_team.flag }}"</td>
+          <td><img src="{{ MEDIA_URL }}{{ tb.fourth_team.flag }}"</td>
+          <td><img src="{{ MEDIA_URL }}{{ tb.fifth_team.flag }}"</td>
+          <td><img src="{{ MEDIA_URL }}{{ tb.sixth_team.flag }}"</td>
           <td>{% if tb.grand_slam %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
           <td>{% if tb.wooden_spoon %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
           <td>{{ tb.points_won }}</td>

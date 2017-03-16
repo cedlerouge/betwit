@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from bets.views import Index, Rules, UserProfile
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     url( r'^$', Index.as_view(), name="home" ),
@@ -32,3 +34,6 @@ urlpatterns = [
     # TODO bets and user page /bets/bets/user
     url( r'^bets/', include( 'bets.urls', namespace="bets" ) ),
 ]
+# use django to deliver image only on dev mode
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

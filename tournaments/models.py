@@ -18,8 +18,9 @@ class Team(models.Model):
     """
     name        = models.CharField(max_length=20)
     nationality = models.CharField(max_length=20)
-#    logo        = models.ImageField(upload_to=settings.IMAGE_UPLOAD_PATH)
-#    thumbnail   = models.ImageField(upload_to=settings.THUMBNAIL_UPLOAD_PATH)
+    logo        = models.ImageField(upload_to="photo/", null=True)
+    flag        = models.ImageField(upload_to="photo/", null=True)
+    #thumbnail   = models.ImageField(upload_to=settings.THUMBNAIL_UPLOAD_PATH)
 
     def __str__(self):
         return self.name
