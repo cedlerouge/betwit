@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.db import models
 from django.contrib.auth.models import User
-from tournaments.models import Match, Tournament
+from tournaments.models import Match, Tournament, Team
 import pytz
 
 import logging                              
@@ -200,12 +200,19 @@ class TournamentBet(models.Model):
     #fourth_team     = models.CharField(max_length=15, choices=teams, default='--')
     #fifth_team      = models.CharField(max_length=15, choices=teams, default='--')
     #sixth_team      = models.CharField(max_length=15, choices=teams, default='--')
-    first_team      = models.CharField(max_length=15)
-    second_team     = models.CharField(max_length=15)
-    third_team      = models.CharField(max_length=15)
-    fourth_team     = models.CharField(max_length=15)
-    fifth_team      = models.CharField(max_length=15)
-    sixth_team      = models.CharField(max_length=15)
+    first_team      = models.ForeignKey(Team, related_name='first_team')
+    second_team     = models.ForeignKey(Team, related_name='second_team')
+    third_team      = models.ForeignKey(Team, related_name='third_team')
+    fourth_team     = models.ForeignKey(Team, related_name='fourth_team')
+    fifth_team      = models.ForeignKey(Team, related_name='fifth_team')
+    sixth_team      = models.ForeignKey(Team, related_name='sixth_team')
+
+    #first_team      = models.CharField(max_length=14)
+    #second_team     = models.CharField(max_length=14)
+    #third_team      = models.CharField(max_length=14)
+    #fourth_team     = models.CharField(max_length=14)
+    #fifth_team      = models.CharField(max_length=14)
+    #sixth_team      = models.CharField(max_length=15)
     grand_slam      = models.BooleanField(default=False)
     wooden_spoon    = models.BooleanField(default=False)
     points_won      = models.IntegerField(null=True, blank=True)

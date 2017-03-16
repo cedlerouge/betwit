@@ -106,8 +106,8 @@
           <td>{{ tb.fourth_team }}</td>
           <td>{{ tb.fifth_team }}</td>
           <td>{{ tb.sixth_team }}</td>
-          <td>{{ tb.grand_slam }}</td>
-          <td>{{ tb.wooden_spoon }}</td>
+          <td>{% if tb.grand_slam %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
+          <td>{% if tb.wooden_spoon %}<span class="glyphicon glyphicon-ok-sign"></span>{% else %}<span class="glyphicon glyphicon-remove-sign"></span>{% endif %}</td>
           <td>{{ tb.points_won }}</td>
         </tr>
         {% endfor %}
