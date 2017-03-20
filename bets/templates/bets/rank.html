@@ -13,15 +13,21 @@
         <th>Nom</th>
         <th>Score</th>
         <th>Meilleur pari</th>
+        <th>Rang final</th>
+        <th>Nom</th>
+        <th>Score</th>
       </tr>
     </thead>
     <tbody>
       {% for r in rank %}
       <tr>
         <td>{{ forloop.counter }}</td>
-        <td>{{ r.0|capfirst }}</td>
-        <td>{{ r.1 }}</td>
-        <td>{{ r.2 }}</td>
+        <td>{{ r.0.0|capfirst }}</td>
+        <td>{{ r.0.1 }}</td>
+        <td>{{ r.0.2 }}</td>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ r.1.0|capfirst }}</td>
+        <td>{{ r.1.1 }}</td>
       </tr>
       {% endfor %}
     </tbody>

@@ -155,9 +155,17 @@ class BetRanking(View):
     params      = dict()
     users       = User.objects.all()
     rank        = list()
+    rankf       = list()
     for user in users:
-      match_bets  = MatchBet.objects.filter(player = user)
-      score = sum(int(b['points_won'] if b['points_won'] is not None else 0 ) for b in match_bets.values())
+      # TODO filter parmi les tournois
+      match_bets        = MatchBet.objects.filter(player = user)
+      tournament_bets   = TournamentBet.objects.filter(player = user).last()
+      score     = sum(int(b['points_won'] if b['points_won'] is not None else 0 ) for b in match_bets.values())
+      if tournament_bets:
+        scoref    = score + tournament_bets.points_won
+      else: 
+        scoref = score
+      rankf.append((user.username, scoref))
       # find best score per prognosis
       best_score = 0
       for b in match_bets.values():
@@ -167,7 +175,9 @@ class BetRanking(View):
     #rank.sort(key=lambda r: r[1], reverse=True)
     # https://wiki.python.org/moin/HowTo/Sorting
     rank.sort(key = itemgetter(1, 2), reverse = True)
-    params['rank']  = rank
+    rankf.sort(key = itemgetter(1), reverse = True)
+    r = zip(rank, rankf)
+    params['rank']  = r
     return render(request, 'bets/rank.html', params)
 
 
