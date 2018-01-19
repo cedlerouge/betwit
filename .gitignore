@@ -3,3 +3,4 @@
 */migrations/*
 divers/*
 log/*
+templates/index.html
