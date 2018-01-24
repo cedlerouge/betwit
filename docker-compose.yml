@@ -5,7 +5,7 @@ services:
 #    image: postgres
   web:
     build: ./
-    command: ./start.sh 
+    command: ./scripts/docker_start.sh 
 #python3 manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
