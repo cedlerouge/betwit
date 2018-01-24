@@ -9,7 +9,7 @@ dans cette page est affiche
 """
 
 urlpatterns = [
-    url( r'^$', views.tournament_last, name='tournament_last' ),
+    url( r'^$', views.tournament_list, name='tournament_list' ),
     url( r'^tournaments/$', views.tournament_list, name='tournament_list' ),
     url( r'^tournaments/(?P<tournament_id>[0-9]+)/$', views.tournament_detail, name = "tournament_detail" ),
     #rl( r'^tournaments/(?P<tournament_id>[0-9]+)/match_add/$', views.match_add, name='match_add' ),
