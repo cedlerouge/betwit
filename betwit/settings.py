@@ -43,6 +43,11 @@ INSTALLED_APPS = [
     'bets',
     'tournaments',
     'registration',
+    ## andablog
+    'andablog',
+    'markitup',  # For entry content
+    'taggit',  # For entry tags
+    ##
 ]
 
 MIDDLEWARE = [
@@ -70,7 +75,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.media',
             ],
         },
     },
@@ -237,3 +241,9 @@ REGISTRATION_AUTO_LOGIN = False # Automatically log the user in.
 # smtpout=
 # send email in console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+## andablog
+""" A python-markdown example that allows HTML in the entry content """
+MARKITUP_FILTER = ('markdown.markdown', {'safe_mode': False})
+MARKITUP_SET = 'markitup/sets/markdown/'
+##

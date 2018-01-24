@@ -29,6 +29,9 @@ urlpatterns = [
     url( r'^settings/', UserProfile.as_view(), name="settings"),
     url( r'^settings/profile/', UserProfile.as_view(), name="settings_profile"),
     url( r'^reset/', include( 'django.contrib.auth.urls') ),
+    url( r'^blog/', include( 'andablog.urls', namespace="andablog") ),
+    # for live preview
+    url( r'^markitup/', include('markitup.urls')),
 
     #url( r'^accounts/.*', include( 'django.contrib.auth.urls', namespace='auth' ) ),
     # TODO bets and user page /bets/bets/user
