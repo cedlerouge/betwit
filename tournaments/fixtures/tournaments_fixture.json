@@ -1,0 +1,434 @@
+[
+{
+  "model": "tournaments.team",
+  "pk": 4,
+  "fields": {
+    "name": "Angleterre",
+    "nationality": "Anglais",
+    "logo": "photo/england_logo.png",
+    "flag": "photo/23px-Flag_of_England.svg.png"
+  }
+},
+{
+  "model": "tournaments.team",
+  "pk": 5,
+  "fields": {
+    "name": "France",
+    "nationality": "Fran\u00e7ais",
+    "logo": "photo/france_logo.png",
+    "flag": "photo/Flag_of_France.svg.png"
+  }
+},
+{
+  "model": "tournaments.team",
+  "pk": 6,
+  "fields": {
+    "name": "Ecosse",
+    "nationality": "Ecossais",
+    "logo": "photo/scotland_logo.png",
+    "flag": "photo/Flag_of_Scotland.svg.png"
+  }
+},
+{
+  "model": "tournaments.team",
+  "pk": 7,
+  "fields": {
+    "name": "Pays de Galles",
+    "nationality": "Gallois",
+    "logo": "photo/wales_logo.png",
+    "flag": "photo/Flag_of_Wales_2.svg.png"
+  }
+},
+{
+  "model": "tournaments.team",
+  "pk": 8,
+  "fields": {
+    "name": "Italie",
+    "nationality": "Italien",
+    "logo": "photo/italy_logo.png",
+    "flag": "photo/Flag_of_Italy.svg.png"
+  }
+},
+{
+  "model": "tournaments.team",
+  "pk": 9,
+  "fields": {
+    "name": "Irlande",
+    "nationality": "Irlandais",
+    "logo": "photo/ireland_logo.png",
+    "flag": "photo/IRFU_flag.svg.png"
+  }
+},
+{
+  "model": "tournaments.tournament",
+  "pk": 3,
+  "fields": {
+    "name": "6 nations",
+    "year": 2018,
+    "begins": "2018-02-03T14:25:00Z",
+    "state": "1"
+  }
+},
+
+{
+  "model": "tournaments.match",
+  "pk": 17,
+  "fields": {
+    "tournament": 3,
+    "date": "2018-02-03T14:15:00Z",
+    "cup_round": "1",
+    "home_team": 7,
+    "home_team_score": 0,
+    "home_team_tries": 0,
+    "home_team_bonus": "Null",
+    "away_team": 6,
+    "away_team_score": 0,
+    "away_team_tries": 0,
+    "away_team_bonus": "Null",
+    "card": false,
+    "drop_goal": false,
+    "fight": false,
+    "created_date": "2018-01-07T23:06:20.567Z",
+    "modified_date": "2018-01-07T23:06:20.567Z",
+    "odds": 0,
+    "comment": ""
+  }
+},
+{
+  "model": "tournaments.match",
+  "pk": 18,
+  "fields": {
+    "tournament": 3,
+    "date": "2018-02-03T16:45:00Z",
+    "cup_round": "1",
+    "home_team": 5,
+    "home_team_score": 0,
+    "home_team_tries": 0,
+    "home_team_bonus": "Null",
+    "away_team": 9,
+    "away_team_score": 0,
+    "away_team_tries": 0,
+    "away_team_bonus": "Null",
+    "card": false,
+    "drop_goal": false,
+    "fight": false,
+    "created_date": "2018-01-07T23:07:06.546Z",
+    "modified_date": "2018-01-07T23:07:06.546Z",
+    "odds": 0,
+    "comment": ""
+  }
+},
+{
+  "model": "tournaments.match",
+  "pk": 19,
+  "fields": {
+    "tournament": 3,
+    "date": "2018-02-04T15:00:00Z",
+    "cup_round": "1",
+    "home_team": 8,
+    "home_team_score": 0,
+    "home_team_tries": 0,
+    "home_team_bonus": "Null",
+    "away_team": 4,
+    "away_team_score": 0,
+    "away_team_tries": 0,
+    "away_team_bonus": "Null",
+    "card": false,
+    "drop_goal": false,
+    "fight": false,
+    "created_date": "2018-01-07T23:08:10.262Z",
+    "modified_date": "2018-01-07T23:08:10.262Z",
+    "odds": 0,
+    "comment": ""
+  }
+},
+{
+  "model": "tournaments.match",
+  "pk": 20,
+  "fields": {
+    "tournament": 3,
+    "date": "2018-02-10T14:15:00Z",
+    "cup_round": "2",
+    "home_team": 9,
+    "home_team_score": 0,
+    "home_team_tries": 0,
+    "home_team_bonus": "Null",
+    "away_team": 8,
+    "away_team_score": 0,
+    "away_team_tries": 0,
+    "away_team_bonus": "Null",
+    "card": false,
+    "drop_goal": false,
+    "fight": false,
+    "created_date": "2018-01-14T20:27:55.893Z",
+    "modified_date": "2018-01-14T20:27:55.893Z",
+    "odds": 0,
+    "comment": ""
+  }
+},
+{
+  "model": "tournaments.match",
+  "pk": 21,
+  "fields": {
+    "tournament": 3,
+    "date": "2018-02-10T16:45:00Z",
+    "cup_round": "2",
+    "home_team": 4,
+    "home_team_score": 0,
+    "home_team_tries": 0,
+    "home_team_bonus": "Null",
+    "away_team": 7,
+    "away_team_score": 0,
+    "away_team_tries": 0,
+    "away_team_bonus": "Null",
+    "card": false,
+    "drop_goal": false,
+    "fight": false,
+    "created_date": "2018-01-14T20:28:26.441Z",
+    "modified_date": "2018-01-14T20:28:26.441Z",
+    "odds": 0,
+    "comment": ""
+  }
+},
+{
+  "model": "tournaments.match",
+  "pk": 22,
+  "fields": {
+    "tournament": 3,
+    "date": "2018-02-11T15:00:00Z",
+    "cup_round": "2",
+    "home_team": 6,
+    "home_team_score": 0,
+    "home_team_tries": 0,
+    "home_team_bonus": "Null",
+    "away_team": 5,
+    "away_team_score": 0,
+    "away_team_tries": 0,
+    "away_team_bonus": "Null",
+    "card": false,
+    "drop_goal": false,
+    "fight": false,
+    "created_date": "2018-01-14T20:29:02.313Z",
+    "modified_date": "2018-01-14T20:29:02.313Z",
+    "odds": 0,
+    "comment": ""
+  }
+},
+{
+  "model": "tournaments.match",
+  "pk": 23,
+  "fields": {
+    "tournament": 3,
+    "date": "2018-02-23T20:00:00Z",
+    "cup_round": "3",
+    "home_team": 5,
+    "home_team_score": 0,
+    "home_team_tries": 0,
+    "home_team_bonus": "Null",
+    "away_team": 8,
+    "away_team_score": 0,
+    "away_team_tries": 0,
+    "away_team_bonus": "Null",
+    "card": false,
+    "drop_goal": false,
+    "fight": false,
+    "created_date": "2018-01-14T20:29:39.502Z",
+    "modified_date": "2018-01-14T20:29:39.502Z",
+    "odds": 0,
+    "comment": ""
+  }
+},
+{
+  "model": "tournaments.match",
+  "pk": 24,
+  "fields": {
+    "tournament": 3,
+    "date": "2018-02-24T14:15:00Z",
+    "cup_round": "3",
+    "home_team": 9,
+    "home_team_score": 0,
+    "home_team_tries": 0,
+    "home_team_bonus": "Null",
+    "away_team": 7,
+    "away_team_score": 0,
+    "away_team_tries": 0,
+    "away_team_bonus": "Null",
+    "card": false,
+    "drop_goal": false,
+    "fight": false,
+    "created_date": "2018-01-14T20:30:20.635Z",
+    "modified_date": "2018-01-14T20:30:20.635Z",
+    "odds": 0,
+    "comment": ""
+  }
+},
+{
+  "model": "tournaments.match",
+  "pk": 25,
+  "fields": {
+    "tournament": 3,
+    "date": "2018-02-24T16:45:00Z",
+    "cup_round": "3",
+    "home_team": 6,
+    "home_team_score": 0,
+    "home_team_tries": 0,
+    "home_team_bonus": "Null",
+    "away_team": 4,
+    "away_team_score": 0,
+    "away_team_tries": 0,
+    "away_team_bonus": "Null",
+    "card": false,
+    "drop_goal": false,
+    "fight": false,
+    "created_date": "2018-01-14T20:30:57.442Z",
+    "modified_date": "2018-01-14T20:30:57.442Z",
+    "odds": 0,
+    "comment": ""
+  }
+},
+{
+  "model": "tournaments.match",
+  "pk": 26,
+  "fields": {
+    "tournament": 3,
+    "date": "2018-03-10T14:15:00Z",
+    "cup_round": "4",
+    "home_team": 9,
+    "home_team_score": 0,
+    "home_team_tries": 0,
+    "home_team_bonus": "Null",
+    "away_team": 6,
+    "away_team_score": 0,
+    "away_team_tries": 0,
+    "away_team_bonus": "Null",
+    "card": false,
+    "drop_goal": false,
+    "fight": false,
+    "created_date": "2018-01-14T20:31:45.558Z",
+    "modified_date": "2018-01-14T20:31:45.558Z",
+    "odds": 0,
+    "comment": ""
+  }
+},
+{
+  "model": "tournaments.match",
+  "pk": 27,
+  "fields": {
+    "tournament": 3,
+    "date": "2018-03-10T16:45:00Z",
+    "cup_round": "4",
+    "home_team": 5,
+    "home_team_score": 0,
+    "home_team_tries": 0,
+    "home_team_bonus": "Null",
+    "away_team": 4,
+    "away_team_score": 0,
+    "away_team_tries": 0,
+    "away_team_bonus": "Null",
+    "card": false,
+    "drop_goal": false,
+    "fight": false,
+    "created_date": "2018-01-14T20:32:15.270Z",
+    "modified_date": "2018-01-14T20:32:15.270Z",
+    "odds": 0,
+    "comment": ""
+  }
+},
+{
+  "model": "tournaments.match",
+  "pk": 28,
+  "fields": {
+    "tournament": 3,
+    "date": "2018-03-11T15:00:00Z",
+    "cup_round": "4",
+    "home_team": 7,
+    "home_team_score": 0,
+    "home_team_tries": 0,
+    "home_team_bonus": "Null",
+    "away_team": 9,
+    "away_team_score": 0,
+    "away_team_tries": 0,
+    "away_team_bonus": "Null",
+    "card": false,
+    "drop_goal": false,
+    "fight": false,
+    "created_date": "2018-01-14T20:34:00.398Z",
+    "modified_date": "2018-01-14T20:34:00.398Z",
+    "odds": 0,
+    "comment": ""
+  }
+},
+{
+  "model": "tournaments.match",
+  "pk": 29,
+  "fields": {
+    "tournament": 3,
+    "date": "2018-03-17T12:30:00Z",
+    "cup_round": "5",
+    "home_team": 8,
+    "home_team_score": 0,
+    "home_team_tries": 0,
+    "home_team_bonus": "Null",
+    "away_team": 6,
+    "away_team_score": 0,
+    "away_team_tries": 0,
+    "away_team_bonus": "Null",
+    "card": false,
+    "drop_goal": false,
+    "fight": false,
+    "created_date": "2018-01-14T20:38:20.073Z",
+    "modified_date": "2018-01-14T20:38:20.073Z",
+    "odds": 0,
+    "comment": ""
+  }
+},
+{
+  "model": "tournaments.match",
+  "pk": 30,
+  "fields": {
+    "tournament": 3,
+    "date": "2018-03-17T14:45:00Z",
+    "cup_round": "5",
+    "home_team": 4,
+    "home_team_score": 0,
+    "home_team_tries": 0,
+    "home_team_bonus": "Null",
+    "away_team": 9,
+    "away_team_score": 0,
+    "away_team_tries": 0,
+    "away_team_bonus": "Null",
+    "card": false,
+    "drop_goal": false,
+    "fight": false,
+    "created_date": "2018-01-14T20:39:01.675Z",
+    "modified_date": "2018-01-14T20:39:01.675Z",
+    "odds": 0,
+    "comment": ""
+  }
+},
+{
+  "model": "tournaments.match",
+  "pk": 31,
+  "fields": {
+    "tournament": 3,
+    "date": "2018-03-17T17:00:00Z",
+    "cup_round": "5",
+    "home_team": 7,
+    "home_team_score": 0,
+    "home_team_tries": 0,
+    "home_team_bonus": "Null",
+    "away_team": 5,
+    "away_team_score": 0,
+    "away_team_tries": 0,
+    "away_team_bonus": "Null",
+    "card": false,
+    "drop_goal": false,
+    "fight": false,
+    "created_date": "2018-01-14T20:39:35.405Z",
+    "modified_date": "2018-01-14T20:39:35.405Z",
+    "odds": 0,
+    "comment": ""
+  }
+}
+
+]
