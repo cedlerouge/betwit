@@ -1,9 +1,10 @@
 *.pyc
 *.sqlite3
-media
 */migrations/*
 divers/*
 log/*
 templates/index.html
 #no need to git staticfiles as it is populated by python manage.py collectstatic
-betwit/staticfiles
+/betwit/staticfiles
+/media/
+
