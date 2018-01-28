@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+<<<<<<< HEAD
 from bets.views import Index, Rules, UserProfile
 from betwit.views import HomeView
+=======
+from bets.views import Index, Rules, Apropos, Players, UserProfile
+>>>>>>> newsletter
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -25,18 +29,28 @@ urlpatterns = [
     url( r'^$', HomeView.as_view(), name="home" ),
     url( r'^admin/', admin.site.urls ),
     url( r'^rules/$', Rules.as_view(), name="rules" ),
+    url( r'^apropos/$', Apropos.as_view(), name="apropos" ),
+    url( r'^players/$', Players.as_view(), name="players" ),
     url( r'^tournaments/', include( 'tournaments.urls', namespace="tournaments" ) ),
     url( r'^accounts/', include( 'registration.backends.default.urls' ) ),
     url( r'^accounts/', include( 'django.contrib.auth.urls', namespace='auth' ) ),
     url( r'^settings/', UserProfile.as_view(), name="settings"),
     url( r'^settings/profile/', UserProfile.as_view(), name="settings_profile"),
     url( r'^reset/', include( 'django.contrib.auth.urls') ),
+<<<<<<< HEAD
     ## andablog
     url( r'^blog/', include( 'andablog.urls', namespace="andablog") ),
     # for live preview
     url( r'^markitup/', include('markitup.urls')),
     ##
     
+=======
+    ## newsletter
+    url(r'^newsletter/', include('newsletter.urls')),
+    url(r'^tinymce/', include('tinymce.urls')),
+    ##
+
+>>>>>>> newsletter
     #url( r'^accounts/.*', include( 'django.contrib.auth.urls', namespace='auth' ) ),
     # TODO bets and user page /bets/bets/user
     url( r'^bets/', include( 'bets.urls', namespace="bets" ) ),

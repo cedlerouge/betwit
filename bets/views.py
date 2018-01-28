@@ -33,6 +33,14 @@ class Rules(View):
     def get(self, request):
         return render(request, 'rules.html')
 
+class Apropos(View):
+    def get(self, request):
+        return render(request, 'apropos.html')
+
+class Players(View):
+    def get(self, request):
+        return render(request, 'slides.html')
+
 class UserRedirect(View):
     def get(self, request):
         if request.user.is_authenticated():

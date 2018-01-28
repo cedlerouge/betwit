@@ -12,4 +12,9 @@ pyparsing==2.1.10
 six==1.10.0
 whitenoise==3.3.0
 pytz
+<<<<<<< HEAD
 django-andablog
+=======
+django-newsletter
+django-tinymce
+>>>>>>> newsletter

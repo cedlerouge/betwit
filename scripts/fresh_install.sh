@@ -1,6 +1,6 @@
 #!/bin/bash
 
-initial_path=4(pwd)
+initial_path=$(pwd)
 prog=$0
 dir=$(dirname $prog)
 

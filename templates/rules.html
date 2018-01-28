@@ -2,18 +2,46 @@
 
 {% block content %}
 <div>
-    <h4>R&egrave;gleement du tournoi</h4>
+    <h4>R&egrave;glement du tournoi</h4>
     <b>R&egrave;gles g&eacute;n&eacute;rales</b>
-    <p>Ce concours de pronostic concerne le Tournoi des 6 Nations 2017.<br/>
-    C'est &agrav; chaque participant de ce jeu de prendre l'initiative de parier pour un match.<br/>
-    On ne peut plus parier pour un match après le début de la rencontre.<br/>
-Le comptage des points est automatique et se réfère aux tableaux ci-dessous.<br/>
-Le champion est celui qui a le plus de point à l'issue de la compétition.<p>
+    <p>Ce concours de pronostic concerne le Tournoi des 6 Nations 2018.<br/>
+    C'est &agrave; chaque participant de ce jeu de prendre l'initiative de parier pour un match.<br/>
+    On ne peut plus parier pour un match apr&egrave;s le d&eacute;but de la rencontre.<br/>
+Le comptage des points est automatique et se r&eacute;f&egrave;re aux tableaux ci-dessous.<br/>
+Le champion est celui qui a le plus de point &agrave; l'issue de la comp&eacute;tition.<p>
 
     <b>Les paris</b>
     <p>Les paris &quot;Au jour le jour&quot; sont des pronostics faits pour chaque match de la comp&eacute;tition.<br/>
-Les paris &quot;Avant tournoi&quot; concernent les prévisions du classement final.<br/>
-Les "risques", s'ils sont choisis par un joueur, peuvent rapporter des points si l'&eacute;v&eacute;nement se r&eacute;alise, mais donnent des points n&eacute;si l'&eacute;v&eacute;nement ne se r&eacute;alise pas.</p>
+Les paris &quot;Avant tournoi&quot; concernent les pr&eacute;visions du classement final.<p>
+
+    <b>Les risques</b>
+    <p>Les "risques", s'ils sont choisis par un joueur, peuvent rapporter des points si l'&eacute;v&eacute;nement se r&eacute;alise, mais donnent des points n&eacute;gatifs si l'&eacute;v&eacute;nement ne se r&eacute;alise pas.<br/>
+        Les risques propos&eacute;s sont : <br/>
+        <ul>
+            <li>Pour chaque match : Carton jaune (oui/non), Drop (oui/non), Bagarre g&eacute;n&eacute;rale (Oui/non)</li>
+            <li>Pour chaque match et chaque &eacute;quipe : Bonus offensif (Oui/non), Bonus d&eacute;fensif (oui/non)</li>
+            <li>Pour le tournoi : grand chelem (oui/non), Cuiller de bois (oui/non)</li>
+        </ul>
+    </p>
+        
+    <b>La c&ocirc;te</b>
+    <p>A chaque match sera associ&eacute; une c&ocirc;te, qui sera calcul&eacute;e en fonction des pronostics de l'ensemble des participants.<br/>
+    Parier sur une &eacute;quipe auquel personne ne croit donnera donc plus de points qu'un pari &eacute;vident sur une &eacute;quipe gagnante.<br/>
+    La c&ocirc;te ne sera connue qu'au coup d'envoi du match, et les paris de chacun conditionneront les points distribu&eacute;s aux autres !</p>
+
+    <b>Les jokers</b>
+    <p>Cette ann&eacute;e, et &agrave; l'initiative de Sustrac (qui fourmille de bonnes id&eacute;es), nous mettons en place deux jokers :<br/>
+    Vous n'avez droit d'utiliser qu'un seul de ces jokers pour tout le tournoi ! <br/>
+    <ul>
+        <li>Le joker &quot;Gueule de bois&quot; : vous avez oubli&eacute; de parier sur un match ? Joker ! Il vous assurera 2 points de consolation, correspondant au minimum des points victoire.</li>
+        <li>
+            Le joker &quot;Copiteur&quot; : vous annoncez avant un match que votre pari sera identique &agrave; celui d'un participant de votre choix.<br/>
+            Vous ne comptabilisez pas votre pari, et par cons&eacute;quent celui-ci ne p&egrave;sera pas dans le calcul des c&ocirc;tes.<br/>
+            Par contre vous marquerez le m&ecirc;me nombre de point que votre victime !
+        </li>
+    </ul> 
+        
+        </p>
 
 
     <div class="table-responsive">
@@ -33,7 +61,7 @@ Les "risques", s'ils sont choisis par un joueur, peuvent rapporter des points si
                     <td>2</td>
                     <td></td>
                     <td>Les 2 points du bon pronostic sont multipli&eacute;s par la c&ocirc;te.<br/>
-                        La c&ocirc;t&eacute; d&eacute;pend du pari "Victoire/Défaite/Nul" de chacun des participants.</td>
+                        La c&ocirc;t&eacute; d&eacute;pend du pari &quot;Victoire/D&eacute;faite/Nul&quot; de chacun des participants.</td>
                 </tr>
                 <tr>
                     <td>Bon nombre d'essai d'une &eacute;quipe</td>
@@ -57,13 +85,13 @@ Les "risques", s'ils sont choisis par un joueur, peuvent rapporter des points si
                     <td>Score du match parfait</td>
                     <td>6</td>
                     <td></td>
-                    <td>Si les scores sont exacts pour les deux &eacute;quipes, un bonus "score parfait" est attribu&eacute;</td>
+                    <td>Si les scores sont exacts pour les deux &eacute;quipes, un bonus &quot;score parfait&quot; est attribu&eacute;</td>
                 </tr>
                 <tr class="warning">
                     <td>Carton jaune</td>
                     <td>1</td> 
                     <td class="danger">-1</td>
-                    <td>Au moins un carton jaune a &eacute;t&eacute; distribu&eactue; à l'une ou l'autre des &eacute;quipes.</td>
+                    <td>Au moins un carton jaune a &eacute;t&eacute; distribu&eacute; &agrave; l'une ou l'autre des &eacute;quipes.</td>
                 </tr>    
                 <tr class="warning">
                     <td>Drop</td>
@@ -75,25 +103,28 @@ Les "risques", s'ils sont choisis par un joueur, peuvent rapporter des points si
                     <td>Bagarre g&eacute;n&eacute;rale</td>
                     <td>2</td> 
                     <td class="danger">-2</td>
-                    <td>Au moins une bagarre. Une baston générale doit comprendre au minima 4 hommes, dont au moins 1 du parti adverse.<br/>
-Si aucun coup de poing n'est distribué, le contrat n'est pas rempli.</td>
+                    <td>Au moins une bagarre. Une baston g&eacute;n&eacute;rale doit comprendre au minima 4 hommes, dont au moins 1 du parti adverse.<br/>
+Si aucun coup de poing n'est distribu&eacute;, le contrat n'est pas rempli.</td>
                 </tr>        
                 <tr class="warning">        
                     <td>Bonus offensif</td>
                     <td>1</td> 
                     <td class="danger">-1</td>
-                    <td>Le bonus offensif est valid&eacute; par une équipe qui marque plus de 4 essais</td>
+                    <td>Le bonus offensif est valid&eacute; par une &eacute;quipe qui marque plus de 4 essais.<br/>
+                    Il correspond &agrave; un risque de votre part et se nomme &quot;Attack&quot; dans votre pari.</td>
                 </tr>
                 <tr class="warning">
                     <td>Bonus d&eacute;fensif</td>
                     <td>1</td>
                     <td class="danger">-1</td>
-                    <td>Le bonus dfensif est valid&eacute; par une &eacute;quipe perdant de 7 points ou moins</td>
+                    <td>Le bonus d&eacute;fensif est valid&eacute; par une &eacute;quipe perdant de 7 points ou moins.
+                    Il correspond &agrave; un risque de votre part et se nomme &quot;Defense&quot; dans votre pari.<br/>
+                    Si vous ne voulez valider ni Attack ni Defense, le bonus ne sera pas coch&eacute; et restera &quot;Null&quot;</td>
                 </tr>
             </tbody>
         </table>
     </div> <!-- tableau point pendant tournoi -->
-    
+
     <div class="clearfix">
         <table class="table table-condensed table-striped">
         <caption>Paris avant tournoi</caption>
@@ -106,7 +137,7 @@ Si aucun coup de poing n'est distribué, le contrat n'est pas rempli.</td>
             </thead>
             <tbody>
                 <tr>
-                    <td>Bon classement d'une équipe</td>
+                    <td>Bon classement d'une &eacute;quipe</td>
                     <td>2</td>
                     <td></td>
                 </tr>        
@@ -117,21 +148,120 @@ Si aucun coup de poing n'est distribué, le contrat n'est pas rempli.</td>
                 </tr>        
                 <tr class="danger">         
                     <td>Grand chelem</td>
-                    <td>5</td>
-                    <td>-5</td>
+                    <td>3</td>
+                    <td>-3</td>
                 </tr>        
                 <tr class="danger">         
                     <td>Cuiller de bois</td>
-                    <td>5</td>
-                    <td>-5</td>
+                    <td>3</td>
+                    <td>-3</td>
                 </tr>        
                 <tr>         
                     <td>Classement parfait</td>
-                    <td>20</td>
+                    <td>15</td>
                     <td></td>
                 </tr>        
             </tbody>
         </table>
     </div> <!-- tableau de points -->
+
+    <div class="table-responsive">
+        <table class="table table-condensed table-striped">
+            <caption>Exemple de calcul de c&ocirc;te &agrave; 25 participants. La c&ocirc;te est liss&eacute;e selon un calcul logarithmique (et paf!)</caption>
+            <thead class="thead-inverse">
+                <tr>
+                    <th>Nombre de victoires pari&eacute;es pour l'&eacute;quipe 1</td>
+                    <th>0</th>
+                    <th>1</th>
+                    <th>2</td>
+                    <th>3</td>
+                    <th>4</td>
+                    <th>5</td>
+                    <th>6</td>
+                    <th>7</td>
+                    <th>8</td>
+                    <th>9</td>
+                    <th>10</td>
+                    <th>11</td>
+                    <th>12</td>
+                    <th>13</td>
+                    <th>14</td>
+                    <th>15</td>
+                    <th>16</td>
+                    <th>17</td>
+                    <th>18</td>
+                    <th>19</td>
+                    <th>20</td>
+                    <th>21</td>
+                    <th>22</td>
+                    <th>23</td>
+                    <th>24</td>
+                    <th>25</td>
+                </tr>    
+                <tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>C&ocirc;te &eacute;quipe 1</td>
+                    <td>0</td>
+                    <td>12</td>
+                    <td>11</td>
+                    <td>10</td>
+                    <td>8</td>
+                    <td>7</td>
+                    <td>7</td>
+                    <td>6</td>
+                    <td>5</td>
+                    <td>5</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>3</td>
+                    <td>3</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>Points remport&eacute;s si victoire &eacute;quipe 1</td>
+                    <td>0</td>
+                    <td>24</td>
+                    <td>22</td>
+                    <td>20</td>
+                    <td>16</td>
+                    <td>14</td>
+                    <td>14</td>
+                    <td>12</td>
+                    <td>10</td>
+                    <td>10</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>2</td>
+                </tr>
+            </tbody>
+        </table>
+    </div> <!-- tableau point pendant tournoi -->
+
 </div>
 {% endblock %}

@@ -43,10 +43,19 @@ INSTALLED_APPS = [
     'bets',
     'tournaments',
     'registration',
+<<<<<<< HEAD
     ## andablog
     'andablog',
     'markitup',  # For entry content
     'taggit',  # For entry tags
+=======
+    ## newsletter
+    'django.contrib.sites',
+    'tinymce',
+    'django_extensions',
+    'sorl.thumbnail',
+    'newsletter',
+>>>>>>> newsletter
     ##
 ]
 
@@ -242,8 +251,17 @@ REGISTRATION_AUTO_LOGIN = False # Automatically log the user in.
 # send email in console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+<<<<<<< HEAD
 ## andablog
 """ A python-markdown example that allows HTML in the entry content """
 MARKITUP_FILTER = ('markdown.markdown', {'safe_mode': False})
 MARKITUP_SET = 'markitup/sets/markdown/'
 ##
+=======
+## newsletter
+# Using django-tinymce
+NEWSLETTER_RICHTEXT_WIDGET = "tinymce.widgets.TinyMCE"
+
+SITE_ID = 2
+##
+>>>>>>> newsletter
