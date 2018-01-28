@@ -43,6 +43,13 @@ INSTALLED_APPS = [
     'bets',
     'tournaments',
     'registration',
+    ## newsletter
+    'django.contrib.sites',
+    'tinymce',
+    'django_extensions',
+    'sorl.thumbnail',
+    'newsletter',
+    ##
 ]
 
 MIDDLEWARE = [
@@ -237,3 +244,10 @@ REGISTRATION_AUTO_LOGIN = False # Automatically log the user in.
 # smtpout=
 # send email in console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+## newsletter
+# Using django-tinymce
+NEWSLETTER_RICHTEXT_WIDGET = "tinymce.widgets.TinyMCE"
+
+SITE_ID = 2
+##

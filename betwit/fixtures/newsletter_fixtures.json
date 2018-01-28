@@ -1,0 +1,73 @@
+[
+{
+  "model": "newsletter.newsletter",
+  "pk": 1,
+  "fields": {
+    "title": "news 1",
+    "slug": "news-1",
+    "email": "cedric.roger@dalarmor.org",
+    "sender": "Cedri c Roger",
+    "visible": true,
+    "send_html": true,
+    "site": [
+      2
+    ]
+  }
+},
+{
+  "model": "newsletter.subscription",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "name_field": "",
+    "email_field": "",
+    "ip": null,
+    "newsletter": 1,
+    "create_date": "2018-01-28T15:31:17.204Z",
+    "activation_code": "a1303bf1f8420991fd508c2540b6a7373f263ceb",
+    "subscribed": true,
+    "subscribe_date": "2018-01-28T15:31:17.208Z",
+    "unsubscribed": false,
+    "unsubscribe_date": null
+  }
+},
+{
+  "model": "newsletter.article",
+  "pk": 1,
+  "fields": {
+    "sortorder": 10,
+    "title": "article 1",
+    "text": "<p>Ceci est un ptit message pour mon 1er article</p>",
+    "url": "",
+    "image": "",
+    "post": 1
+  }
+},
+{
+  "model": "newsletter.message",
+  "pk": 1,
+  "fields": {
+    "title": "Message n1",
+    "slug": "message-n1",
+    "newsletter": 1,
+    "date_create": "2018-01-28T15:29:38.250Z",
+    "date_modify": "2018-01-28T15:29:38.250Z"
+  }
+},
+{
+  "model": "newsletter.submission",
+  "pk": 1,
+  "fields": {
+    "newsletter": 1,
+    "message": 1,
+    "publish_date": "2018-01-28T15:47:35Z",
+    "publish": true,
+    "prepared": true,
+    "sent": true,
+    "sending": false,
+    "subscriptions": [
+      1
+    ]
+  }
+}
+]
