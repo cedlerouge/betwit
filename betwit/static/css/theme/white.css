@@ -15,8 +15,7 @@ body {
   background-color: #fff; }
 
 html.dimbg .slide-background {
-    opacity: 0.2 !important;
-  }
+    opacity: 0.2 !important;}
 
 .reveal {
   font-family: "Source Sans Pro", Helvetica, sans-serif;

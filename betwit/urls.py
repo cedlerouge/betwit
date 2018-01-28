@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from bets.views import Index, Rules, Apropos, UserProfile
+from bets.views import Index, Rules, Apropos, Players, UserProfile
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -24,6 +24,7 @@ urlpatterns = [
     url( r'^admin/', admin.site.urls ),
     url( r'^rules/$', Rules.as_view(), name="rules" ),
     url( r'^apropos/$', Apropos.as_view(), name="apropos" ),
+    url( r'^players/$', Players.as_view(), name="players" ),
     url( r'^tournaments/', include( 'tournaments.urls', namespace="tournaments" ) ),
     url( r'^accounts/', include( 'registration.backends.default.urls' ) ),
     url( r'^accounts/', include( 'django.contrib.auth.urls', namespace='auth' ) ),
