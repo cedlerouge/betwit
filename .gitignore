@@ -5,3 +5,5 @@ media
 divers/*
 log/*
 templates/index.html
+#no need to git staticfiles as it is populated by python manage.py collectstatic
+betwit/staticfiles
