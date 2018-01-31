@@ -11,7 +11,7 @@ from django.utils import timezone
 from operator import attrgetter, itemgetter
 import datetime
 
-from tournaments.models import Tournament, Match
+from tournaments.models import Tournament, Match, Team
 from .models import MatchBet, TournamentBet
 from .forms import MatchBetForm, TournamentBetForm, BetPointForm, ProfileForm, UserForm
 
@@ -330,7 +330,7 @@ def bet_index( request ):
     params          = dict()
     tournament_list = Tournament.objects.order_by( '-year' )
     if len( tournament_list ) == 1:
-        return HttpResponseRedirect( reverse('bets:mbet_list', args=[tournament_list[0].id] ) )
+        return HttpResponseRedirect( reverse('bets:tbet_list', args=[tournament_list[0].id] ) )
         #return HttpResponseRedirect( reverse('bets:tbet_list', args=(tbet_list[0].id,)))
     params['tournament_list' ]  = tournament_list
     return render( request, 'bets/tournament_list.html', params )
