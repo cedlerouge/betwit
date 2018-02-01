@@ -141,6 +141,8 @@ class MyBets(View):
                     matchBet    = MatchBet.objects.filter( match = m ).filter( player = userProfile ).first()
                     if matchBet:
                         lm.append(matchBet)
+        if not tournamentBet:
+            return HttpResponseRedirect( reverse('bets:tbet_add', args=[t.id] ) )
 
         #        break
     #    for obj in betcup:
@@ -329,9 +331,10 @@ def bet_index( request ):
     logger.info('Welcome to bets module')
     params          = dict()
     tournament_list = Tournament.objects.order_by( '-year' )
-    if len( tournament_list ) == 1:
-        return HttpResponseRedirect( reverse('bets:tbet_list', args=[tournament_list[0].id] ) )
-        #return HttpResponseRedirect( reverse('bets:tbet_list', args=(tbet_list[0].id,)))
+    # TODO Need better management of tournamentS
+    #if len( tournament_list ) == 1:
+    #    return HttpResponseRedirect( reverse('bets:tbet_list', args=[tournament_list[0].id] ) )
+    #    #return HttpResponseRedirect( reverse('bets:tbet_list', args=(tbet_list[0].id,)))
     params['tournament_list' ]  = tournament_list
     return render( request, 'bets/tournament_list.html', params )
 
