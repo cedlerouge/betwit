@@ -171,10 +171,11 @@ class BetRanking(View):
       match_bets        = MatchBet.objects.filter(player = user)
       tournament_bets   = TournamentBet.objects.filter(player = user).last()
       score     = sum(int(b['points_won'] if b['points_won'] is not None else 0 ) for b in match_bets.values())
-      if tournament_bets:
+      try:
+        # if tournament_bets != Null
         scoref    = score + tournament_bets.points_won
-      else: 
-        scoref = score
+      except:
+        scoref    = score
       rankf.append((user.username, scoref))
       # find best score per prognosis
       best_score = 0
