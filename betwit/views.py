@@ -19,7 +19,7 @@ class HomeView(View):
         content = {
 
             # Blog
-            'entries':  Entry.objects.filter(Q(is_published=True) | Q(author__isnull=False))
+            'entries':  Entry.objects.filter(Q(is_published=True) | Q(author__isnull=False)).order_by('-published_timestamp')
             #comments = Comment.objects.last(5)
 
             # tournament
