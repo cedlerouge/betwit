@@ -247,7 +247,10 @@ REGISTRATION_AUTO_LOGIN = False # Automatically log the user in.
 
 # smtpout=
 # send email in console
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = "localhost"
+EMAIL_PORT = 25
+DEFAULT_FROM_EMAIL = "betwit@lepont.bzh"
 
 ## andablog
 """ A python-markdown example that allows HTML in the entry content """
