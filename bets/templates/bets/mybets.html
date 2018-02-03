@@ -68,9 +68,9 @@
         <td>{{ b.away_team_tries | default_if_none:"0" }}</td> 
         <td>{{ b.away_team_score | default_if_none:"0" }}</td>
         <td>{{ b.match.away_team.name }}</td>
+        <td>{{ b.drop_goal }}</td>
         <td>{{ b.card }}</td>
-        <td>{{ b.fight }}</td>
-        <td>{{ b.drop_goal }}<td>
+        <td>{{ b.fight }}<td>
         {% if current_date < b.match.date %}
             <td><a href="/bets/mbet_add/{{ tournament.id }}/{{ b.id }}">Modifier</a></td>
         {% endif %}
