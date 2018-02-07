@@ -15,10 +15,23 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from bets.views import UserProfile
 from betwit.views import HomeView, Index, Rules, Apropos, Players
 from django.conf.urls.static import static
 from django.conf import settings
+from andablog.sitemaps import EntrySitemap
+from betwit.sitemaps import BetwitSitemap #, TournamentSitemap, TeamSitemap, MatchSitemap, TeamMatchPointSitemap, MatchPointSitemap
+
+sitemaps = {
+    'betwit': BetwitSitemap(),
+    'blog': EntrySitemap(),
+    # 'tournament': TournamentSitemap(),
+    # 'team': TeamSitemap(),
+    # 'match': MatchSitemap(),
+    # 'team': TeamMatchPointSitemap(),
+    # 'match': MatchPointSitemap(),
+}
 
 
 urlpatterns = [
@@ -42,10 +55,13 @@ urlpatterns = [
     url(r'^newsletter/', include('newsletter.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
     ##
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
     #url( r'^accounts/.*', include( 'django.contrib.auth.urls', namespace='auth' ) ),
     # TODO bets and user page /bets/bets/user
     url( r'^bets/', include( 'bets.urls', namespace="bets" ) ),
+    # google search console
+    url(r'^googlexxxx\.html$', lambda r: HttpResponse("google-site-verification: googlexxxx.html", mimetype="text/plain")),
 ]
 # use django to deliver image only on dev mode
 if settings.DEBUG:
