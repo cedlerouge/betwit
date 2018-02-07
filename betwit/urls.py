@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from bets.views import Index, Rules, Apropos, Players, UserProfile
-from betwit.views import HomeView
+from bets.views import UserProfile
+from betwit.views import HomeView, Index, Rules, Apropos, Players
 from django.conf.urls.static import static
 from django.conf import settings
 

@@ -21,26 +21,6 @@ logger.info('This is it')
 
 # Create your views here.
 
-class Index(View):
-    def get(self, request):
-        #return HttpResponse('I am called from a get Request')
-        return render(request, 'base.html')
-    def post(self, request):
-        #return HttpResponse('I am called from a post Request')
-        return render(request, 'base.html')
-
-class Rules(View):
-    def get(self, request):
-        return render(request, 'rules.html')
-
-class Apropos(View):
-    def get(self, request):
-        return render(request, 'apropos.html')
-
-class Players(View):
-    def get(self, request):
-        return render(request, 'slides.html')
-
 class UserRedirect(View):
     def get(self, request):
         if request.user.is_authenticated():
