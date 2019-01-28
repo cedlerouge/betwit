@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
+from django.http import HttpResponse
 from bets.views import UserProfile
 from betwit.views import HomeView, Index, Rules, Apropos, Players
 from django.conf.urls.static import static
@@ -39,7 +40,7 @@ urlpatterns = [
     url( r'^admin/', admin.site.urls ),
     url( r'^rules/$', Rules.as_view(), name="rules" ),
     url( r'^apropos/$', Apropos.as_view(), name="apropos" ),
-    url( r'^players/$', Players.as_view(), name="players" ),
+    #url( r'^players/$', Players.as_view(), name="players" ),
     url( r'^tournaments/', include( 'tournaments.urls', namespace="tournaments" ) ),
     url( r'^accounts/', include( 'registration.backends.default.urls' ) ),
     url( r'^accounts/', include( 'django.contrib.auth.urls', namespace='auth' ) ),
@@ -55,13 +56,15 @@ urlpatterns = [
     url(r'^newsletter/', include('newsletter.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
     ##
-    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-
     #url( r'^accounts/.*', include( 'django.contrib.auth.urls', namespace='auth' ) ),
     # TODO bets and user page /bets/bets/user
     url( r'^bets/', include( 'bets.urls', namespace="bets" ) ),
+
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    url(r'^robots.txt$', include('robots.urls')),
     # google search console
-    url(r'^googlexxxx\.html$', lambda r: HttpResponse("google-site-verification: googlexxxx.html", mimetype="text/plain")),
+    url(r'^google1df483f09eef1978\.html$', lambda r: HttpResponse("google-site-verification: google1df483f09eef1978.html", content_type="text/plain")),
+    url(r'^BingSiteAuth\.xml$', lambda r: HttpResponse('<?xml version="1.0"?><users><user>DD087CD831FFD650179243A0BAA97B49</user></users>', content_type="application/xml")),
 ]
 # use django to deliver image only on dev mode
 if settings.DEBUG:
