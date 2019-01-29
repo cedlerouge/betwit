@@ -18,12 +18,13 @@
     {% for field in tbet %}
       <th>{{ field.label }}</th>
     {% endfor %}
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
     {% for field in tbet %}
-      <td>{{ field.value|default_if_none:'' }}</td>
+      <td>{{ field|default_if_none:'' }}</td>
     {% endfor %}
     {% if betcup_is_update %}
       <td><a href="{{ betcup_update_url }}">Modifier</a></td>
@@ -52,7 +53,8 @@
         <th>Drop</th>           
         <th>Carton</th>         
         <th>Bagarre</th>        
-        <th>total</th>          
+        <th>total</th>
+        <th></th>          
       </tr>
   </thead>
   <tbody>

@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from tournaments.models import Match
 from django.utils import timezone
 import pytz
+from .fields import TeamChoiceField
 
 class MatchBetForm( ModelForm ):
     """
@@ -55,7 +56,7 @@ class TeamListField(forms.ChoiceField):
     
     def to_python(self, value):
         return Team.objects.get(name = value)
-        
+
 class TournamentBetForm( ModelForm ):
     """
     TournamentBet form which will be closed at the begining of the first match
@@ -75,13 +76,24 @@ class TournamentBetForm( ModelForm ):
                    teams.append(t)
 
         super(TournamentBetForm, self).__init__(*args, **kwargs)
-        self.fields['first_team'] = TeamListField( tournament = tid)
-        self.fields['second_team'] = TeamListField( tournament = tid)
-        self.fields['third_team'] = TeamListField( tournament = tid)
-        self.fields['fourth_team'] = TeamListField( tournament = tid)
-        self.fields['fifth_team'] = TeamListField( tournament = tid)
-        self.fields['sixth_team'] = TeamListField( tournament = tid)
-
+        self.fields['first_team'] =  forms.ModelChoiceField( 
+            queryset = Team.objects.all()
+        )
+        self.fields['second_team'] =  forms.ModelChoiceField( 
+            queryset = Team.objects.all()
+        )
+        self.fields['third_team'] =  forms.ModelChoiceField( 
+            queryset = Team.objects.all()
+        )
+        self.fields['fourth_team'] =  forms.ModelChoiceField( 
+            queryset = Team.objects.all()
+        )
+        self.fields['fifth_team'] =  forms.ModelChoiceField( 
+            queryset = Team.objects.all()
+        )
+        self.fields['sixth_team'] =  forms.ModelChoiceField( 
+            queryset = Team.objects.all()
+        )
 
     class Meta:
         model   = TournamentBet

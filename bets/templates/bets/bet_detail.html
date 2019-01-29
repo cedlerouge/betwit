@@ -17,6 +17,7 @@
     {% for field in bet %}
       <th>{{ field.label }}</td>
     {% endfor %}
+    <th></th>
   </thead>
   <tbody>
     <tr>
@@ -24,10 +25,10 @@
     <td>{{ bet.match }}</td>
     {% endif %}
     {% for field in bet %}
-      <td>{{ field.value|default_if_none:'' }}</td>
+      <td>{{ field|default_if_none:'' }}</td>
     {% endfor %}
     {% if is_update %}
-      <td><a href="{{ update_url }}">Update</a></td>
+      <td><a href="{{ update_url }}">Modifier</a></td>
     {% endif %}
     </tr>
   </tbody>
