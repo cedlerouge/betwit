@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.http import HttpResponse
 from bets.views import UserProfile
-from betwit.views import HomeView, Index, Rules, Apropos, Players
+from betwit.views import HomeView, Index, Rules, Cote, Apropos, Players
 from django.conf.urls.static import static
 from django.conf import settings
 from andablog.sitemaps import EntrySitemap
@@ -39,6 +39,7 @@ urlpatterns = [
     url( r'^$', HomeView.as_view(), name="home" ),
     url( r'^admin/', admin.site.urls ),
     url( r'^rules/$', Rules.as_view(), name="rules" ),
+    url( r'^cote/$', Cote.as_view(), name="cote" ),
     url( r'^apropos/$', Apropos.as_view(), name="apropos" ),
     #url( r'^players/$', Players.as_view(), name="players" ),
     url( r'^tournaments/', include( 'tournaments.urls', namespace="tournaments" ) ),

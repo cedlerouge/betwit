@@ -22,6 +22,10 @@ class Rules(View):
     def get(self, request):
         return render(request, 'rules.html')
 
+class Cote(View):
+    def get(self, request):
+        return render(request, 'cote.html')
+
 class Apropos(View):
     def get(self, request):
         return render(request, 'apropos.html')
