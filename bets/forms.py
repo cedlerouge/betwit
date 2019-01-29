@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from tournaments.models import Match
 from django.utils import timezone
 import pytz
-from .fields import TeamChoiceField
 
 class MatchBetForm( ModelForm ):
     """
