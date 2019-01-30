@@ -24,6 +24,10 @@ from django.conf import settings
 from andablog.sitemaps import EntrySitemap
 from betwit.sitemaps import BetwitSitemap #, TournamentSitemap, TeamSitemap, MatchSitemap, TeamMatchPointSitemap, MatchPointSitemap
 
+#favicon 
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.views.generic.base import RedirectView
+
 sitemaps = {
     'betwit': BetwitSitemap(),
     'blog': EntrySitemap(),
@@ -61,6 +65,7 @@ urlpatterns = [
     # TODO bets and user page /bets/bets/user
     url( r'^bets/', include( 'bets.urls', namespace="bets" ) ),
 
+    url(r'^favicon.ico$', RedirectView.as_view(url=staticfiles_storage.url('img/favicon.ico'),), name="favicon" ),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     url(r'^robots.txt$', include('robots.urls')),
     # google search console
