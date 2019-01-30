@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-3">
         <div class="col-md-12" id="countdown">
             <table class="table table-striped table-condensed">
                 <thead>
@@ -13,13 +13,13 @@
                         <td colspan=4>{{ content.cntdn.home_team }} vs {{ content.cntdn.away_team }}</td>
                     </tr>
                     <tr>
+                        <td colspan=4 id="cntdn_msg"></td>
+                    </tr>
+                    <tr>
                         <td>Jours</td>
                         <td>Heures</td>
                         <td>Minutes</td>
                         <td>Secondes</td>
-                    </tr>
-                    <tr>
-                        <td colspan=4 id="cntdn_msg"></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,16 +32,17 @@
                 </tbody>
                 
             </table>
-                            <script language="JavaScript">
-                                TargetDate = "{{ content.cntdn_tgd | date:'m/d/Y H:i' }} ";
-                                BackColor = true;
-                                ForeColor = true;
-                                CountActive = true;
-                                CountStepper = -1;
-                                LeadingZero = true;
-                                DisplayFormat = "%%D%% &nbsp; %%H%% &nbsp; %%M%% &nbsp; %%S%%";
-                                FinishMessage = "C'est fini !";
-                            </script>
+                <script language="JavaScript">
+                    TargetDate = "{{ content.cntdn_tgd | date:'m/d/Y H:i' }} ";
+                    BackColor = true;
+                    ForeColor = true;
+                    CountActive = true;
+                    CountStepper = -1;
+                    LeadingZero = true;
+                    DisplayFormat = "%%D%% &nbsp; %%H%% &nbsp; %%M%% &nbsp; %%S%%";
+                    FinishMessage = "Le match vient de commencer";
+                </script>
+        </div>
         <div class="col-md-12">
             <!--C'est lemplacement du classement betwit-->
         </div>
@@ -49,7 +50,7 @@
             <!--C'est l'emplacement des resultats du tournoi des 6 nations-->
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-9">
             {% for entry in content.entries %}
             <div class="row">
                 <div class="col-sm-10 blog-main">
@@ -72,5 +73,5 @@
             </div>
             {% endfor %}
         </div>
-    {% endblock %}
 </div>
+{% endblock %}

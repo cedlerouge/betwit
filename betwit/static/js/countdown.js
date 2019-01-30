@@ -28,10 +28,10 @@ function calcage(secs, num1, num2) {
 }
 
 function CountBack(secs) {
-  //if (secs < 0) {
+  if (secs < 0) {
     document.getElementById("cntdn_msg").innerHTML = FinishMessage;
-    //return;
-  //}
+    return;
+  }
   document.getElementById("cntdn_j").innerHTML = calcage(secs,86400,100000);
   document.getElementById("cntdn_h").innerHTML = calcage(secs,3600,24);
   document.getElementById("cntdn_m").innerHTML = calcage(secs,60,60);
