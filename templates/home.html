@@ -2,9 +2,6 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-3">
-        <!--C'est l'emplacement des resultats du tournoi des 6 nations-->
-    </div>
     <div class="col-md-6">
         {% for entry in content.entries %}
         <div class="row">
@@ -28,8 +25,52 @@
         </div>
         {% endfor %}
     </div>
-    <div class="col-md-3">
-        <!--C'est lemplacement du classement betwit-->
+    <div class="col-md-6">
+        <div class="col-md-12" id="countdown">
+            <table class="table table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <td colspan=4>Prochain match</td>
+                    </tr>
+                    <tr>
+                        <td colspan=4>{{ content.cntdn.home_team }} vs {{ content.cntdn.away_team }}</td>
+                    </tr>
+                    <tr>
+                        <td>Jours</td>
+                        <td>Heurs</td>
+                        <td>Minutes</td>
+                        <td>Secondes</td>
+                    </tr>
+                    <tr>
+                        <td colspan=4 id="cntdn_msg"></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="cntdn_j">00</td>
+                        <td id="cntdn_h">00</td>
+                        <td id="cntdn_m">00</td>
+                        <td id="cntdn_s">00</td>
+                    </tr>
+                </tbody>
+                
+            </table>
+                            <script language="JavaScript">
+                                TargetDate = "{{ content.cntdn_tgd | date:'m/d/Y H:i' }} ";
+                                BackColor = true;
+                                ForeColor = true;
+                                CountActive = true;
+                                CountStepper = -1;
+                                LeadingZero = true;
+                                DisplayFormat = "%%D%% &nbsp; %%H%% &nbsp; %%M%% &nbsp; %%S%%";
+                                FinishMessage = "C'est fini !";
+                            </script>
+        <div class="col-md-12">
+            <!--C'est lemplacement du classement betwit-->
+        </div>
+        <div class="col-md-12">
+            <!--C'est l'emplacement des resultats du tournoi des 6 nations-->
+        </div>
     </div>
     {% endblock %}
 </div>

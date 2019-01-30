@@ -4,7 +4,7 @@ from django.db.models import Count
 from django.shortcuts import render
 from django.views.generic import View
 
-from tournaments.models import Tournament
+from tournaments.models import Tournament, Match
 from andablog.models import Entry
 import tournaments.board
 import datetime
@@ -43,16 +43,18 @@ class HomeView(View):
     def get(self, request):
         limit = 1
         tid = Tournament.objects.filter(state=1,year=datetime.datetime.now().year)
+        next_match = Match.objects.filter(tournament = tid).order_by('date')[0]
         content = {
 
             # Blog
             'entries':  Entry.objects.filter(Q(is_published=True) | Q(author__isnull=False)).order_by('-published_timestamp'),
             #comments = Comment.objects.last(5)
 
+            # CountDown
+            'cntdn' : next_match,
+            'cntdn_tgd' : next_match.date,
             # tournament
             'team_stats': tournaments.board.getTeamTable(tid)
-
-
 
         }
 
