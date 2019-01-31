@@ -40,14 +40,55 @@
                     CountStepper = -1;
                     LeadingZero = true;
                     DisplayFormat = "%%D%% &nbsp; %%H%% &nbsp; %%M%% &nbsp; %%S%%";
+                    Message = "<a href='/bets/mybets/'>Mes paris</a>"
                     FinishMessage = "Le match vient de commencer";
                 </script>
         </div>
         <div class="col-md-12">
-            <!--C'est lemplacement du classement betwit-->
+            <table class="table table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <td>Joueur</td>
+                        <td>score</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for j in content.first5 %}
+                    <tr>
+                        <td>{{ j.0 | capfirst }}</td>
+                        <td>{{ j.1 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="/bets/rank/">Plus de d&eacute;tails</a>
         </div>
         <div class="col-md-12">
-            <!--C'est l'emplacement des resultats du tournoi des 6 nations-->
+            <table class="table table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <td>&Eacute;quipe</td>
+                        <td>PL</td>
+                        <td>W</td>
+                        <td>N</td>
+                        <td>L</td>
+                        <td>Pts</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in content.team_stats %}
+                    <tr>
+                        <td>{{ s.team }}</td>
+                        <td>{{ s.played }}</td>
+                        <td>{{ s.win }}</td>
+                        <td>{{ s.draw}}</td>
+                        <td>{{ s.lose }}</td>
+                        <td>{{ s.points }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="/tournaments/tournaments/5/">Plus de d&eacute;tails</a>
         </div>
     </div>
     <div class="col-md-9">

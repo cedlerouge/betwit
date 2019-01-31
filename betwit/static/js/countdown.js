@@ -31,6 +31,9 @@ function CountBack(secs) {
   if (secs < 0) {
     document.getElementById("cntdn_msg").innerHTML = FinishMessage;
     return;
+  } else {
+    document.getElementById("cntdn_msg").innerHTML = Message;
+    return;
   }
   document.getElementById("cntdn_j").innerHTML = calcage(secs,86400,100000);
   document.getElementById("cntdn_h").innerHTML = calcage(secs,3600,24);
