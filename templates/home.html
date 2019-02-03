@@ -10,9 +10,6 @@
                         <td colspan=4>Prochain match</td>
                     </tr>
                     <tr>
-                        <td colspan=4>{{ content.cntdn.home_team }} vs {{ content.cntdn.away_team }}</td>
-                    </tr>
-                    <tr>
                         <td colspan=4 id="cntdn_msg"></td>
                     </tr>
                     <tr>
@@ -29,6 +26,18 @@
                         <td id="cntdn_m">00</td>
                         <td id="cntdn_s">00</td>
                     </tr>
+                    {% for m in content.next_matchs %}
+                    <tr>
+                        <td colspan=1>{{ m.date | date:'d/m H:i' }}</td>
+                        <td colspan=3>{{ m.ht }} vs {{ m.at }}</td>
+                    </tr>
+                    <tr>
+                        <td id="rating">cote</td>
+                        <td id="ht_r">{{ m.ht_rating }}</td>
+                        <td id="null_r">{{ m.null_rating }}</td>
+                        <td id="at_r">{{ m.at_rating }}</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
                 
             </table>
