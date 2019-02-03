@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.db import models
 from django.contrib.auth.models import User
 from tournaments.models import Match, Tournament, Team
+import math
 import pytz
 
 import logging                              
@@ -59,10 +60,83 @@ class MatchBet(models.Model):
     modified_date   = models.DateTimeField(auto_now_add=True)
     points_won      = models.IntegerField(null=True, blank=True, default=0)
 
+class MatchRating(models.Model):
+    """
+    Rating model : three rates by match
+        * one rate for the home team : ht_rating
+        * one rate for the away team : at_rating
+        * one rate for the null match : null_rating
+    """
+    match           = models.ForeignKey(Match)
+    ht_votes        = models.IntegerField(default=0)
+    at_votes        = models.IntegerField(default=0)
+    null_votes      = models.IntegerField(default=0)
+    total_votes     = models.IntegerField(default=0)
+    ht_rating       = models.FloatField(default=0)
+    at_rating       = models.FloatField(default=0)
+    null_rating     = models.FloatField(default=0)
+    date            = models.DateTimeField(auto_now_add=True)
+
+@receiver(post_save, sender=MatchBet)
+def update_rating(sender, instance, **kwargs):
+    """
+    base = 4
+    rating = MAX(LOG(bets_total/bets_on_team;base)*10;1)
+    1- recuperer l'id du match
+    2- recuperer tous les paris sur ce match
+    3- compter le nombre de vote pour chaque equipe
+    4- calculer la cote
+    5- mettre a jour la cote du match
+    """
+    base = 5
+    #logger.info()
+    match = Match.objects.get( id = instance.match.id)
+    match_bets   = MatchBet.objects.filter(match = match)
+    ht_votes = 0
+    at_votes = 0
+    null_votes = 0
+    for b in match_bets:
+        if b.home_team_score > b.away_team_score:
+            ht_votes += 1
+        elif b.home_team_score < b.away_team_score:
+            at_votes += 1
+        else :
+            null_votes += 1
+    total_votes = ht_votes + at_votes + null_votes
+    ht_rating = max(math.log(float(total_votes)/float((ht_votes if  ht_votes != 0 else 1)),base)*10,1)
+    at_rating = max(math.log(float(total_votes)/float((at_votes if  at_votes != 0 else 1)),base)*10,1)
+    null_rating = max(math.log(float(total_votes)/float((null_votes if  null_votes != 0 else 1)) ,base)*10,1)
+
+    rate = MatchRating()
+    rate.match = match
+    rate.ht_votes = ht_votes
+    rate.at_votes = at_votes
+    rate.null_votes = null_votes
+    rate.ht_rating = round(ht_rating,2)
+    rate.at_rating = round(at_rating,2)
+    rate.null_rating = round(null_rating,2)
+    rate.total_votes = total_votes
+    rate.save()
+
+    # TODO creer un table ratings(id , id_match, ht_rating, at_rating, null_rating)
+    # TODO ajouter une cote par paris ou creer une base time serie pour stocker l'evolution de la cote pour un match
+    # TODO creer une base time serie pour stocker l'evolution du classement de chaque joueur
+
+
 @receiver(post_save, sender=Match)
 def update_matchbet_points(sender, instance, **kwargs):
     # The odds of a match must be set
-    if instance.odds > 0 :
+    last_rate = MatchRating.objects.filter(match = instance).order_by('-date').first()
+    rate = 0
+
+    if last_rate is not None :
+        if instance.home_team_score > instance.away_team_score:
+            rate = last_rate.ht_rating
+        elif instance.home_team_score < instance.away_team_score:
+            rate = last_rate.at_rating
+        else :
+            rate = last_rate.null_rating
+    
         match_bets   = MatchBet.objects.filter(match = instance)
         for b in match_bets:
             logger.info('-----user ------: ' + str(b.player))
@@ -71,11 +145,11 @@ def update_matchbet_points(sender, instance, **kwargs):
             # compute Victory
             logger.info('--Victory--')
             if b.home_team_score > b.away_team_score and instance.home_team_score > instance.away_team_score:
-                points += 2 * instance.odds
+                points += 2 * rate
             elif b.home_team_score < b.away_team_score and instance.home_team_score < instance.away_team_score:
-                points += 2 * instance.odds
+                points += 2 * rate
             elif b.home_team_score == b.away_team_score and instance.home_team_score == instance.away_team_score:
-                points += 2 * instance.odds
+                points += 2 * rate
             logger.info('points => ' + str(points))
 
             # compute score

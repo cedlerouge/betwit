@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from models import Profile, MatchBet, TournamentBet
+from models import Profile, MatchBet, MatchRating, TournamentBet
 
 # Register your models here.
 
@@ -43,6 +43,12 @@ class BetAdmin(admin.ModelAdmin):
   def round(self, obj):
     return obj.match.cup_round
 
+class RatingAdmin(admin.ModelAdmin):
+  list_display  = ('match', 'ht_rating', 'at_rating', 'null_rating', 'date',)
+  list_filter   = ("match",)
+  ordering      = ('-date',)
+  search_fields = ('match',)
+
 class TournamentAdmin(admin.ModelAdmin):
   list_display = ('tournament_name', 'year', 'player', 'first_team', 'second_team', 'third_team', 'fourth_team', 'fifth_team', 'sixth_team', 'grand_slam', 'wooden_spoon')
   list_filter   = ('player',)
@@ -63,6 +69,7 @@ admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
 
 admin.site.register(MatchBet, BetAdmin)
+admin.site.register(MatchRating, RatingAdmin)
 
 #admin.site.register(MatchBet)
 admin.site.register(TournamentBet, TournamentAdmin)
