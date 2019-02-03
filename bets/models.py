@@ -58,7 +58,7 @@ class MatchBet(models.Model):
     fight           = models.BooleanField(default=False)
     created_date    = models.DateTimeField(auto_now_add=True)
     modified_date   = models.DateTimeField(auto_now_add=True)
-    points_won      = models.IntegerField(null=True, blank=True, default=0)
+    points_won      = models.FloatField(null=True, blank=True, default=0.0)
 
 class MatchRating(models.Model):
     """
