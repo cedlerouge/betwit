@@ -57,7 +57,7 @@ class HomeView(View):
         for user in users:
             match_bets        = MatchBet.objects.filter(player = user)
             tournament_bets   = TournamentBet.objects.filter(player = user).last()
-            score     = sum(int(b['points_won'] if b['points_won'] is not None else 0 ) for b in match_bets.values())
+            score     = sum(float(b['points_won'] if b['points_won'] is not None else 0 ) for b in match_bets.values())
             # I don't use tournament_bet for simplicity
             #try:
             #    # if tournament_bets != Null
@@ -68,8 +68,8 @@ class HomeView(View):
             # find best score per prognosis
             best_score = 0
             for b in match_bets.values():
-                if best_score <= int(b['points_won'] if b['points_won'] is not None else 0):
-                    best_score = int(b['points_won'] if b['points_won'] is not None else 0)
+                if best_score <= float(b['points_won'] if b['points_won'] is not None else 0):
+                    best_score = float(b['points_won'] if b['points_won'] is not None else 0)
             first5.append( (user.username, score, best_score) )
         first5.sort(key = itemgetter(1, 2), reverse = True)
         return first5[:5]
