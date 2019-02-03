@@ -6,13 +6,19 @@ from django.views.generic import View
 
 from django.contrib.auth.models import User
 
-from bets.models import MatchBet, TournamentBet
+from bets.models import MatchBet, TournamentBet, MatchRating
 from tournaments.models import Tournament, Match
 from andablog.models import Entry
 import tournaments.board
 from operator import itemgetter
 import datetime
 from django.db.models import Q
+
+
+import logging
+logger = logging.getLogger('django')
+logger.info('This is betwit/views')
+
 
 class Index(View):
     def get(self, request):
@@ -71,7 +77,25 @@ class HomeView(View):
     def get(self, request):
         limit = 1
         tid = Tournament.objects.filter(state=1,year=datetime.datetime.now().year)
-        next_match = Match.objects.filter(tournament = tid).order_by('date')[0]
+        #next_match = Match.objects.filter(tournament = tid).order_by('date')[0]
+        next_matchs = tournaments.board.getNextMatchs(tid,3)
+        # rassemble match informations and ratings in a table
+        matchs = list()
+        for m in next_matchs:
+            i = dict()
+            try:
+                rating = MatchRating.objects.filter( match = m).order_by("-date")[0]
+                i['ht_rating'] = rating.ht_rating
+                i['at_rating'] = rating.at_rating
+                i['null_rating'] = rating.null_rating
+            except:
+                i['ht_rating'] = 1
+                i['at_rating'] = 1
+                i['null_rating'] = 1
+            i['date'] = m.date
+            i['ht'] = m.home_team
+            i['at'] = m.away_team
+            matchs.append(i)
         content = {
 
             # Blog
@@ -79,8 +103,9 @@ class HomeView(View):
             #comments = Comment.objects.last(5)
 
             # CountDown
-            'cntdn': next_match,
-            'cntdn_tgd': next_match.date,
+            'cntdn': matchs[0],
+            'cntdn_tgd': matchs[0]['date'],
+            'next_matchs': matchs,
             # player rank 
             'first5': self.first_players(),
             # tournament
