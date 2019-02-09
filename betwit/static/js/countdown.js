@@ -30,21 +30,21 @@ function calcage(secs, num1, num2) {
 function CountBack(secs) {
   if (secs < 0) {
     document.getElementById("cntdn_msg").innerHTML = FinishMessage;
-    return;
+    //return;
   } else {
     document.getElementById("cntdn_msg").innerHTML = Message;
-    return;
+    //return;
   }
   document.getElementById("cntdn_j").innerHTML = calcage(secs,86400,100000);
   document.getElementById("cntdn_h").innerHTML = calcage(secs,3600,24);
   document.getElementById("cntdn_m").innerHTML = calcage(secs,60,60);
   document.getElementById("cntdn_s").innerHTML = calcage(secs,1,60);
-  /*DisplayStr = DisplayFormat.replace(/%%D%%/g, calcage(secs,86400,100000));
+  DisplayStr = DisplayFormat.replace(/%%D%%/g, calcage(secs,86400,100000));
   DisplayStr = DisplayStr.replace(/%%H%%/g, calcage(secs,3600,24));
   DisplayStr = DisplayStr.replace(/%%M%%/g, calcage(secs,60,60));
   DisplayStr = DisplayStr.replace(/%%S%%/g, calcage(secs,1,60));
 
-  document.getElementById("cntdwn").innerHTML = DisplayStr;*/
+  document.getElementById("cntdwn").innerHTML = DisplayStr;
   if (CountActive)
     setTimeout("CountBack(" + (secs+CountStepper) + ")", SetTimeOutPeriod);
 }

@@ -21,7 +21,7 @@ def getTeamTable(tournament_id):
     return results_list
 
 def getNextMatchs(tournament_id, limit):
-    matchs     = Match.objects.filter( tournament = tournament_id ).filter( date__gte = timezone.now( )).order_by( "round" ).order_by('date')[:limit]
+    matchs     = Match.objects.filter( tournament = tournament_id, date__gte = timezone.now( )).order_by( "round" ).order_by('date')[:limit]
     match_list = []
     for m in matchs:
         match_list.append(m)
