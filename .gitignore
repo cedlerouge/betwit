@@ -9,3 +9,4 @@ templates/index.html
 /media/
 .vscode/
 nohup.out
+*.code-workspace

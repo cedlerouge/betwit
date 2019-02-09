@@ -12,7 +12,7 @@ from operator import attrgetter, itemgetter
 import datetime
 
 from tournaments.models import Tournament, Match, Team
-from .models import MatchBet, TournamentBet
+from .models import MatchBet, TournamentBet, BetPoint
 from .forms import MatchBetForm, TournamentBetForm, BetPointForm, ProfileForm, UserForm
 
 import logging
@@ -148,9 +148,9 @@ class BetRanking(View):
     rankf       = list()
     for user in users:
       # TODO filter parmi les tournois
-      match_bets        = MatchBet.objects.filter(player = user)
+      bet_points        = BetPoint.objects.filter(player = user)
       tournament_bets   = TournamentBet.objects.filter(player = user).last()
-      score     = sum(float(b['points_won'] if b['points_won'] is not None else 0 ) for b in match_bets.values())
+      score     = sum(float(b['points_won'] if b['points_won'] is not None else 0 ) for b in bet_points.values())
       try:
         # if tournament_bets != Null
         scoref    = score + tournament_bets.points_won
@@ -159,7 +159,7 @@ class BetRanking(View):
       rankf.append((user.username, scoref))
       # find best score per prognosis
       best_score = 0
-      for b in match_bets.values():
+      for b in bet_points.values():
         if best_score <= float(b['points_won'] if b['points_won'] is not None else 0):
           best_score = float(b['points_won'] if b['points_won'] is not None else 0)
       rank.append( (user.username, score, best_score) )

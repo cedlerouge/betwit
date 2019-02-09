@@ -8,7 +8,7 @@ import math
 import pytz
 
 import logging                              
-logger = logging.getLogger('console')
+logger = logging.getLogger("django")
 logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler())
 logger.info('This is info bets/models')
@@ -59,6 +59,21 @@ class MatchBet(models.Model):
     created_date    = models.DateTimeField(auto_now_add=True)
     modified_date   = models.DateTimeField(auto_now_add=True)
     points_won      = models.FloatField(null=True, blank=True, default=0.0)
+
+class BetPoint(models.Model):
+    """
+    This is to store 
+    * points
+    * bet id
+    * date 
+    * player id 
+    without create too much matchrating entries at the end of match (because of updaterating function)
+    """
+    player      = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    match       = models.ForeignKey(Match, on_delete=models.DO_NOTHING)
+    matchbet    = models.ForeignKey(MatchBet, on_delete=models.DO_NOTHING)
+    points_won  = models.FloatField(default=0.0)
+
 
 class MatchRating(models.Model):
     """
@@ -125,10 +140,10 @@ def update_rating(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Match)
 def update_matchbet_points(sender, instance, **kwargs):
-    # The odds of a match must be set
+    # The rate of a match must be set
     last_rate = MatchRating.objects.filter(match = instance).order_by('-date').first()
     rate = 0
-
+    logger.debug('-----------last_rate---------------' + str(last_rate))
     if last_rate is not None :
         if instance.home_team_score > instance.away_team_score:
             rate = last_rate.ht_rating
@@ -139,7 +154,7 @@ def update_matchbet_points(sender, instance, **kwargs):
     
         match_bets   = MatchBet.objects.filter(match = instance)
         for b in match_bets:
-            logger.info('-----user ------: ' + str(b.player))
+            logger.debug('-----user ------: ' + str(b.player))
             points  = 0
             logger.info('points => ' + str(points))
             # compute Victory
@@ -234,9 +249,17 @@ def update_matchbet_points(sender, instance, **kwargs):
                 points -= 1
             logger.info('points => ' + str(points))
 
-            b.points_won = points
+            # Create or update betpoint emtry
+            bet_points = BetPoint.objects.filter(matchbet = b)
+            if not bet_points:
+                bet_points = BetPoint()
+                bet_points.match = b.match
+                bet_points.matchbet = b
+                bet_points.player = b.player
+
+            bet_points.points_won = points
             logger.info("b.points_won ==============> " + str(b.points_won))
-            b.save()
+            bet_points.save()
 
 
 
@@ -261,12 +284,3 @@ class TournamentBet(models.Model):
     points_won      = models.IntegerField(null=True, blank=True)
     created_date    = models.DateTimeField(auto_now_add=True)
     modified_date   = models.DateTimeField(auto_now_add=True)
-
-class BetPoint(models.Model):
-    """
-    BetPoint model is a key/value table that store
-    - each element of bet as key
-    - each point of winning element as value
-    """
-    key             = models.CharField(max_length=200)
-    value           = models.IntegerField()
