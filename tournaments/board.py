@@ -1,5 +1,6 @@
 from .models import Tournament, Match, Team, MatchPoint, TeamMatchPoint, TeamStat
 from django.utils import timezone
+from operator import attrgetter
 
 def getTeamList(tournament_id):
     matchs          = Match.objects.filter( tournament = tournament_id ).order_by( "round" ).order_by('date')
