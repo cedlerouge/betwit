@@ -12,7 +12,7 @@ from operator import attrgetter, itemgetter
 import datetime
 
 from tournaments.models import Tournament, Match, Team
-from .models import MatchBet, TournamentBet, BetPoint
+from .models import MatchBet, TournamentBet, BetPoint, MatchRating
 from .forms import MatchBetForm, TournamentBetForm, BetPointForm, ProfileForm, UserForm
 
 import logging
@@ -436,18 +436,42 @@ This view display all bets by match and round
 """
 @login_required
 def prognosis( request ):
-    params      = {'error_message': None, 'is_update': None }
+    params      = {'error_message': None, 'is_update': None, 'match': list(), 'bet':list() }
     match       = Match.objects.filter(date__lte=timezone.now())
+    # As rate is not stored in match, we must manipulate match object to display the rate of the match 
+    for m in match:
+        try :
+            rate = MatchRating.objects.get(match = m)
+            if m.home_team_score > m.away_team_score:
+                match.odds = rate.ht_rating 
+            elif m.home_team_score < m.away_team_score:
+                m.odds = rate.at_rating 
+            else: 
+                m.odds = rate.null_rating
+        except:
+            m.odds = 1
+        params['match'].append(m)
     # TODO filter matchbets by tournament
-    mbet        = MatchBet.objects.all()
+    mbet        = MatchBet.objects.all()   
+    # like rate, we must manipulate matchbet object 
+    # We can't save object althought rating will be add
+    for b in mbet: 
+        try:
+            bp = BetPoint.objects.get(matchbet=b)
+            b.points_won = bp.points_won
+            params['bet'].append(b)
+        except:
+            print str(b)
+
+    
     try:
         tbet        = TournamentBet.objects.filter(tournament = match[0].tournament)
         params['tournamentbets'] = tbet
     except Exception, e:
         logger.error("Get list of tournamentbet : " + str(e))
         params['tournamentbets'] = []
-    params['match'] = match
-    params['bet']   = mbet
+    #params['match'] = match
+    #params['bet']   = mbet
     return render(request, 'bets/prognosis.html', params)
 
 #class BetView( View )

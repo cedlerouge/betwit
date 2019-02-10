@@ -60,6 +60,9 @@ class MatchBet(models.Model):
     modified_date   = models.DateTimeField(auto_now_add=True)
     points_won      = models.FloatField(null=True, blank=True, default=0.0)
 
+    def __str__(self):
+        return str(self.player) + " - " + str(self.match)
+
 class BetPoint(models.Model):
     """
     This is to store 
@@ -73,6 +76,13 @@ class BetPoint(models.Model):
     match       = models.ForeignKey(Match, on_delete=models.DO_NOTHING)
     matchbet    = models.ForeignKey(MatchBet, on_delete=models.DO_NOTHING)
     points_won  = models.FloatField(default=0.0)
+    def __unicode__(self):
+        return "player %s - %s vs %s => %s" % (
+            self.player,
+            self.match.home_team,
+            self.match.away_team,
+            self.points_won
+        )
 
 
 class MatchRating(models.Model):
@@ -252,14 +262,16 @@ def update_matchbet_points(sender, instance, **kwargs):
             # Create or update betpoint emtry
             bet_points = BetPoint.objects.filter(matchbet = b)
             if not bet_points:
-                bet_points = BetPoint()
-                bet_points.match = b.match
-                bet_points.matchbet = b
-                bet_points.player = b.player
-
-            bet_points.points_won = points
-            logger.info("b.points_won ==============> " + str(b.points_won))
-            bet_points.save()
+                bpoints = BetPoint()
+                bpoints.match = b.match
+                bpoints.matchbet = b
+                bpoints.player = b.player
+            else:
+                bpoints = bet_points[0]
+            
+            bpoints.points_won = points
+            logger.info("b.points_won ==============> " + str(bpoints.points_won))
+            bpoints.save()
 
 
 
