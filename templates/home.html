@@ -10,9 +10,6 @@
                         <td colspan=4>Prochain match</td>
                     </tr>
                     <tr>
-                        <td colspan=4 id="cntdn_msg"></td>
-                    </tr>
-                    <tr>
                         <td>Jours</td>
                         <td>Heures</td>
                         <td>Minutes</td>
@@ -26,19 +23,25 @@
                         <td id="cntdn_m">00</td>
                         <td id="cntdn_s">00</td>
                     </tr>
+                </tbody>
+            </table>
+            <table class="table table-striped table-condensed">
                     {% for m in content.next_matchs %}
+                    <thead>
                     <tr>
                         <td colspan=1>{{ m.date | date:'d/m H:i' }}</td>
                         <td colspan=3>{{ m.ht }} vs {{ m.at }}</td>
                     </tr>
+                    </thead>
+                    <tbody>
                     <tr>
                         <td id="rating">cote</td>
                         <td id="ht_r">{{ m.ht_rating }}</td>
                         <td id="null_r">{{ m.null_rating }}</td>
                         <td id="at_r">{{ m.at_rating }}</td>
                     </tr>
+                    </tbody>
                     {% endfor %}
-                </tbody>
                 
             </table>
                 <script language="JavaScript">
@@ -53,6 +56,32 @@
                     FinishMessage = "Le match vient de commencer";
                 </script>
         </div>
+    </div>
+    <div class="col-md-6">
+        {% for entry in content.entries %}
+        <div class="row">
+            <div class="col-sm-10 blog-main">
+                <div class="blog-post">
+                    <h2 class="blog-post-title"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a>{% if not entry.is_published %} <span class="label label-default">Draft</span>{% endif %}</h2>
+                    <p class="blog-post-meta">{{ entry.published_timestamp|date:"DATE_FORMAT" }}{% if entry.author %} by {{ entry.author }}{% endif %}</p>
+                    <p>
+                        {% if entry.preview_content %}
+                            {% if entry.preview_image %}
+                                <a href="{{ entry.get_absolute_url }}"><img src="{{ entry.preview_image.url }}" alt="Preview image for {{ entry.title }}" class="img-responsive"/></a>
+                            {% endif %}
+                            {{ entry.preview_content }}
+                        {% else %}
+                            {# Truncate derived from: Avg reading speed (3.33 words/s) * Average attention span (8s) #}
+                            {{ entry.content|truncatewords_html:26 }} <a href="{{ entry.get_absolute_url }}">(More...) {% include "andablog/comments_count_snippet.html" with comment_object=entry %}</a>
+                        {% endif %}
+                    </p>
+                </div><!-- /.blog-post -->
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="col-md-3">
         <div class="col-md-12">
             <table class="table table-striped table-condensed">
                 <thead>
@@ -100,28 +129,5 @@
             <a href="/tournaments/tournaments/5/">Plus de d&eacute;tails</a>
         </div>
     </div>
-    <div class="col-md-9">
-            {% for entry in content.entries %}
-            <div class="row">
-                <div class="col-sm-10 blog-main">
-                    <div class="blog-post">
-                        <h2 class="blog-post-title"><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a>{% if not entry.is_published %} <span class="label label-default">Draft</span>{% endif %}</h2>
-                        <p class="blog-post-meta">{{ entry.published_timestamp|date:"DATE_FORMAT" }}{% if entry.author %} by {{ entry.author }}{% endif %}</p>
-                        <p>
-                            {% if entry.preview_content %}
-                                {% if entry.preview_image %}
-                                    <a href="{{ entry.get_absolute_url }}"><img src="{{ entry.preview_image.url }}" alt="Preview image for {{ entry.title }}" class="img-responsive"/></a>
-                                {% endif %}
-                                {{ entry.preview_content }}
-                            {% else %}
-                                {# Truncate derived from: Avg reading speed (3.33 words/s) * Average attention span (8s) #}
-                                {{ entry.content|truncatewords_html:26 }} <a href="{{ entry.get_absolute_url }}">(More...) {% include "andablog/comments_count_snippet.html" with comment_object=entry %}</a>
-                            {% endif %}
-                        </p>
-                    </div><!-- /.blog-post -->
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-</div>
+
 {% endblock %}
