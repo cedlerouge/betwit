@@ -439,9 +439,9 @@ def prognosis( request ):
     params      = {'error_message': None, 'is_update': None, 'match': list(), 'bet':list() }
     match       = Match.objects.filter(date__lte=timezone.now())
     # As rate is not stored in match, we must manipulate match object to display the rate of the match 
-    for m in match:
+    for m in match: 
         try :
-            rate = MatchRating.objects.get(match = m)
+            rate = MatchRating.objects.filter(match = m).last()
             if m.home_team_score > m.away_team_score:
                 m.odds = rate.ht_rating 
             elif m.home_team_score < m.away_team_score:
