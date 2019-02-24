@@ -443,7 +443,7 @@ def prognosis( request ):
         try :
             rate = MatchRating.objects.get(match = m)
             if m.home_team_score > m.away_team_score:
-                match.odds = rate.ht_rating 
+                m.odds = rate.ht_rating 
             elif m.home_team_score < m.away_team_score:
                 m.odds = rate.at_rating 
             else: 
