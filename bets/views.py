@@ -459,9 +459,10 @@ def prognosis( request ):
         try:
             bp = BetPoint.objects.get(matchbet=b)
             b.points_won = bp.points_won
-            params['bet'].append(b)
-        except:
-            print str(b)
+        except Exception,e :
+            # if there is no betpoint for this bet, b.point_won = 0
+            b.points_won = 0
+        params['bet'].append(b)
 
     
     try:
