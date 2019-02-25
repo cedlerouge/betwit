@@ -3,6 +3,7 @@ from django.utils import timezone
 from operator import attrgetter
 
 def getTeamList(tournament_id):
+    """ get list of team in a tournament """
     matchs          = Match.objects.filter( tournament = tournament_id ).order_by( "round" ).order_by('date')
     team_list       = []
     for m in matchs:
@@ -11,6 +12,7 @@ def getTeamList(tournament_id):
     return team_list
 
 def getTeamTable(tournament_id):
+    """ get team stats of a defined tournament"""
     team_stat = TeamStat.objects.filter(tournament = tournament_id)
     results_list = []
     try:
@@ -22,6 +24,10 @@ def getTeamTable(tournament_id):
     return results_list
 
 def getNextMatchs(tournament_id, limit):
+    """ 
+    Get the next match of a defined tournament
+    This is used to display countdown
+    """
     matchs     = Match.objects.filter( tournament = tournament_id, date__gte = timezone.now( )).order_by( "round" ).order_by('date')[:limit]
     match_list = []
     for m in matchs:
