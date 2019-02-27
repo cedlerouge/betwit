@@ -96,8 +96,8 @@
                 <tbody>
                     {% for j in content.first5 %}
                     <tr>
-                        <td>{{ j.0 | capfirst }}</td>
-                        <td>{{ j.1 }}</td>
+                        <td>{{ j.player | capfirst }}</td>
+                        <td>{{ j.points_won__sum }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

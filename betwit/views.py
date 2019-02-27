@@ -3,10 +3,11 @@ from __future__ import unicode_literals
 from django.db.models import Count
 from django.shortcuts import render
 from django.views.generic import View
+from django.db.models import Sum
 
 from django.contrib.auth.models import User
 
-from bets.models import MatchBet, TournamentBet, MatchRating
+from bets.models import MatchBet, TournamentBet, MatchRating, BetPoint
 from tournaments.models import Tournament, Match
 from andablog.models import Entry
 import tournaments.board
@@ -55,8 +56,9 @@ class HomeView(View):
         first5 = list()
 
         for user in users:
+            
             match_bets        = MatchBet.objects.filter(player = user)
-            tournament_bets   = TournamentBet.objects.filter(player = user).last()
+            #tournament_bets   = TournamentBet.objects.filter(player = user).last()
             score     = sum(float(b['points_won'] if b['points_won'] is not None else 0 ) for b in match_bets.values())
             # I don't use tournament_bet for simplicity
             #try:
@@ -72,7 +74,11 @@ class HomeView(View):
                     best_score = float(b['points_won'] if b['points_won'] is not None else 0)
             first5.append( (user.username, score, best_score) )
         first5.sort(key = itemgetter(1, 2), reverse = True)
-        return first5[:5]
+        first5 = BetPoint.objects.values('player').annotate(Sum('points_won')).order_by('-points_won__sum')[:5]
+        # retrieve username
+        for b in first5:
+            b['player'] = User.objects.get(id = b['player'])
+        return first5
 
     def get(self, request):
         limit = 1
