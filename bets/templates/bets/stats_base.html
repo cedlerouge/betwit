@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-1">
+        <nav>
+            <ul class="nav nav-pills nav-stacked span2">
+                <li><a href="/bets/stats/">Groupes</a></li>
+                <li><a href="/bets/stats-perso/">Perso</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="col-md-11">
+        {% block stats %}(no content){% endblock %}
+    </div>
+</div>
+{% endblock %}

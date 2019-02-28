@@ -1,0 +1,92 @@
+{% extends './stats_base.html' %}
+{% block stats %}
+            <div class="col-md-12" id="stats">
+                <div id='rank' style="width:100%; height:600px;"></div>
+                    <button id="hide-series">Hide Series</button>
+                    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+                    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+                    <script src="http://code.highcharts.com/modules/data.src.js"></script>
+                    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+                    <script>
+                        //document.addEventListener('DOMContentLoaded', function () {
+                            var myChart = Highcharts.chart('rank', {
+                                chart: {
+                                    scrollabelPlotArea: {
+                                        minWidth: 700
+                                    }
+                                },
+                                title : {
+                                    text: 'Evolution des points'
+                                },
+                                xAxis: {gridLineWidth: 1,
+                                    labels: {
+                                        align: 'left',
+                                        x: 3,
+                                        y: -3
+                                    }
+                                },
+                                yAxis: {
+                                    title: {
+                                        text: 'Points'
+                                    },
+                                    labels: {
+                                        align: 'left',
+                                        x: 3,
+                                        y: 16,
+                                        format: '{value:.,0f}'
+                                    },
+                                },plotOptions: {
+                                    series: {
+                                        cursor: 'pointer',
+                                        point: {
+                                            events: {
+                                                click: function (e) {
+                                                    hs.htmlExpand(null, {
+                                                        pageOrigin: {
+                                                            x: e.pageX || e.clientX,
+                                                            y: e.pageY || e.clientY
+                                                        },
+                                                        headingText: this.series.name,
+                                                        maincontentText: Highcharts.dateFormat('%A, %b %e, %Y', this.x) + ':<br/> ' +
+                                                            this.y + ' sessions',
+                                                        width: 200
+                                                    });
+                                                }
+                                            }
+                                        },
+                                        marker: {
+                                            lineWidth: 1
+                                        }
+                                    }
+                                },
+                                series: {{ content.bp_series | safe }}
+                            });
+                        //});
+                        // the button action
+    var chart = $('#rank').highcharts(),
+        $button = $('#hide-series');
+                        //var button = document.getElementById('hide-series');
+                        //var chart = document.getElementById('rank').myChart
+                        $button.click(function() {
+                            var series = chart.series[0];
+                            if (series.visible) {
+                                $(chart.series).each(function(){
+                                    //this.hide();
+                                    this.setVisible(false, false);
+                                });
+                                chart.redraw();
+                                $button.html('Show series');
+                            } else {
+                                $(chart.series).each(function(){
+                                    //this.show();
+                                    this.setVisible(true, false);
+                                });
+                                chart.redraw();
+                                $button.html('Hide series');
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+
+{% endblock %}

@@ -109,6 +109,9 @@ class Match(models.Model):
     def __unicode__(self):
         return "%s vs %s" % (self.home_team, self.away_team)
 
+    def str(self):
+        return str("%s vs %s" % (self.home_team, self.away_team))
+
 class TeamMatchPoint(models.Model):
     """
     Team model

@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from . import views
+from . import views, views_stats
 
 urlpatterns = [
     url( r'^u/$', views.UserRedirect.as_view(), name='profile'),
@@ -19,6 +19,8 @@ urlpatterns = [
     url( r'^mbet_add/(?P<tournament_id>[0-9]+)/match/(?P<m_id>[0-9]+)/$', views.matchBet_add, name='mbet_add_mid' ),
     url( r'^mbet/(?P<mbet_id>[0-9]+)/$', views.mbet_detail, name="mbet_detail" ),
     url( r'^prognosis/$', views.prognosis, name="prognosis" ),
+    url( r'^stats/$', views_stats.stats, name="stats" ),
+    url( r'^stats-perso/$', views_stats.stats_perso, name="stats_perso" ),
     url( r'^rank/$', views.BetRanking.as_view(), name="betrank" ),
 
 ]

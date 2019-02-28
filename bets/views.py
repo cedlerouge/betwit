@@ -15,6 +15,8 @@ from tournaments.models import Tournament, Match, Team
 from .models import MatchBet, TournamentBet, BetPoint, MatchRating
 from .forms import MatchBetForm, TournamentBetForm, BetPointForm, ProfileForm, UserForm
 
+
+
 import logging
 logger = logging.getLogger('bets')
 logger.info('This is it')
@@ -475,4 +477,4 @@ def prognosis( request ):
     #params['bet']   = mbet
     return render(request, 'bets/prognosis.html', params)
 
-#class BetView( View )
+

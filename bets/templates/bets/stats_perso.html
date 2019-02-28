@@ -1,0 +1,48 @@
+{% extends './stats_base.html' %}
+{% block stats %}
+            <div class="col-md-12" id="stats">
+                <div id='rank' style="width:100%; height:600px;"></div>
+                    <script src="https://code.highcharts.com/highcharts.js"></script>
+                    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+                    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+                    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+                    <script>
+                            Highcharts.chart('rank', {
+                                chart: {
+                                    type: 'column',
+                                    options3d: {
+                                        enabled: true,
+                                        alpha: 10,
+                                        beta: 25,
+                                        depth: 70
+                                    }
+                                },
+                                title: {
+                                    text: 'Points par match'
+                                },
+                                plotOptions: {
+                                    column: {
+                                        depth: 25
+                                    }
+                                },
+                                xAxis: {
+                                    categories: {{ content.categories | safe }},
+                                    labels: {
+                                        skew3d: true,
+                                        style: {
+                                            fontSize: '16px'
+                                        }
+                                    }
+                                },
+                                yAxis: {
+                                    title: {
+                                        text: null
+                                    }
+                                },
+                                series: [{{ content.serie | safe }}]
+                            });
+                    </script>
+                </div>
+            </div>
+
+{% endblock %}
