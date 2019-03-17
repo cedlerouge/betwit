@@ -109,9 +109,10 @@ class HomeView(View):
             #comments = Comment.objects.last(5)
 
             # CountDown
-            'cntdn': matchs[0],
-            'cntdn_tgd': matchs[0]['date'],
-            'next_matchs': matchs,
+            # At the end of the tournament, display NaN when there is no more match
+            'cntdn': matchs[0] if len(matchs)>0 else None ,
+            'cntdn_tgd': matchs[0]['date'] if len(matchs)>0 else None,
+            'next_matchs': matchs if len(matchs)>0 else None,
             # player rank 
             'first5': self.first_players(),
             # tournament
