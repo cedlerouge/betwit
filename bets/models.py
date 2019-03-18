@@ -59,6 +59,10 @@ class MatchBet(models.Model):
     created_date    = models.DateTimeField(auto_now_add=True)
     modified_date   = models.DateTimeField(auto_now_add=True)
     points_won      = models.FloatField(null=True, blank=True, default=0.0)
+    #TODO create an app for jokerbet - the subtility is how to compute score for each match when 2 apps must 
+    # compute the score
+    # specific app let making stats
+    jokerbet_value   = models.NullBooleanField()
 
     def __str__(self):
         return str(self.player) + " - " + str(self.match)
@@ -164,7 +168,7 @@ def update_matchbet_points(sender, instance, **kwargs):
     
         match_bets   = MatchBet.objects.filter(match = instance)
         for b in match_bets:
-            logger.debug('-----user ------: ' + str(b.player))
+            logger.info('-----------------------user ------: ' + str(b.player))
             points  = 0
             logger.info('points => ' + str(points))
             # compute Victory
@@ -257,6 +261,16 @@ def update_matchbet_points(sender, instance, **kwargs):
                 points += 1
             else:
                 points -= 1
+            logger.info('points => ' + str(points))
+
+            # compute the jokerbet 
+            logger.info('--jokerbet--')
+            
+            if b.jokerbet_value != "Null":
+                if b.jokerbet_value == instance.jokerbet_response:
+                    points += instance.jokerbet_win_pts
+                else:
+                    points -= instance.jokerbet_lose_pts
             logger.info('points => ' + str(points))
 
             # Create or update betpoint emtry
