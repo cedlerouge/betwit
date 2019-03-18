@@ -266,8 +266,8 @@ def update_matchbet_points(sender, instance, **kwargs):
             # compute the jokerbet 
             logger.info('--jokerbet--')
             
-            if b.jokerbet_value != "Null":
-                if b.jokerbet_value == instance.jokerbet_response:
+            if b.jokerbet_value is not None and instance.jokerbet_response is not None:
+                if b.jokerbet_value and instance.jokerbet_response:
                     points += instance.jokerbet_win_pts
                 else:
                     points -= instance.jokerbet_lose_pts
