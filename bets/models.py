@@ -62,6 +62,7 @@ class MatchBet(models.Model):
     #TODO create an app for jokerbet - the subtility is how to compute score for each match when 2 apps must 
     # compute the score
     # specific app let making stats
+    jokerbet_text    = models.CharField(max_length=150,null=True) 
     jokerbet_value   = models.NullBooleanField()
 
     def __str__(self):

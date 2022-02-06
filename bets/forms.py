@@ -1,9 +1,8 @@
 from django.forms import ModelForm, Textarea
 from django import forms
 from bets.models import MatchBet,TournamentBet, BetPoint, Profile
-from tournaments.models import Team
+from tournaments.models import Team, Match
 from django.contrib.auth.models import User
-from tournaments.models import Match
 from django.utils import timezone
 import pytz
 
@@ -11,7 +10,6 @@ class MatchBetForm( ModelForm ):
     """
     MatchBet form to place a bet on a match
     """
-    #matchs              = Match.objects.filter(date__gte=timezone.now())
     def __init__( self, *args, **kwargs ):
         mid = kwargs.pop( 'match', None)
         tid = kwargs.pop( 'tournament', None)
@@ -20,15 +18,16 @@ class MatchBetForm( ModelForm ):
         # else limit choice to only available match (match.date > timezone.now()
         choice = [(None, '-- choose a match --'), ]
         # this is in case we present a form where user can bet on every available match
-        choice = forms.ModelChoiceField(queryset=Match.objects.filter( date__gte = timezone.now() ) )
+        choice = forms.ModelChoiceField(queryset=Match.objects.filter( date__gte = timezone.now() ),widget=forms.HiddenInput() )
         # if mid defined, this is because user used /mbet_add/tid/match/mid
         if mid is not None:
-            choice = forms.ModelChoiceField(queryset=Match.objects.filter( id = mid ) )
+            choice = forms.ModelChoiceField(queryset=Match.objects.filter( id = mid ),widget=forms.HiddenInput())
         # if tid defined, this is beacause user used /mbet_add/tid
         if tid is not None:
-            choice  = forms.ModelChoiceField( queryset = Match.objects.filter( tournament = tid ).filter( date__gte = timezone.now() ) )
+            choice  = forms.ModelChoiceField( queryset = Match.objects.filter( tournament = tid ).filter( date__gte = timezone.now() ),widget=forms.HiddenInput() )
         super( MatchBetForm, self ).__init__( *args, **kwargs )
         self.fields['match'] = choice
+        self.fields['match'].widget.attrs['readonly'] = True
 
     class Meta:
         model   = MatchBet
