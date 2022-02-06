@@ -19,9 +19,11 @@ from .forms import MatchBetForm, TournamentBetForm, BetPointForm, ProfileForm, U
 
 import logging
 logger = logging.getLogger('bets')
+logger.addHandler( logging.StreamHandler() )
 logger.info('This is bets/views')
+logger.info('me vois tu ?   ')
 
-# Create your views here.
+# Create your views here.# Create your views here.
 
 class UserRedirect(View):
     def get(self, request):
@@ -190,7 +192,7 @@ def matchBet_add( request, tournament_id=None, mbet_id=None, m_id=None ):
             if mbet_id is not None:
                 # TODO Do not let save a match bet if an user has already his one for a specified match id
                 mbet = get_object_or_404(MatchBet, pk=mbet_id)
-                logger.info('mbet_id is present, so this is update')
+                logger.error('mbet_id is present, so this is update')
                 logger.info('mbet.id:' + str(mbet.id))
                 logger.info('mbet.home_team_score:' + str(mbet.home_team_score))
                 logger.info('mbet.created_date:' + str(mbet.created_date))
@@ -238,7 +240,7 @@ def matchBet_add( request, tournament_id=None, mbet_id=None, m_id=None ):
                 params['form']      = form
                 params['elt']       = "matchBet"
                 params['is_update'] = True
-                params['post_url']  = reverse( 'bets:mbet_add_mid', args=(tournament_id, mbet_id))
+                params['post_url']  = reverse( 'bets:mbet_add_post_mid', args=(tournament_id, mbet_id))
                 return render( request, 'bets/bet_form.html', params)
         form    = None
         if m_id:
