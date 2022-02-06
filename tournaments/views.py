@@ -85,6 +85,12 @@ def team_detail( request, team_id ):
 #    return render( request, 'tournaments/tournament_form.html', { 'post_url': 'tournaments:team_add', 'form': form } )
 
 def match_list( request ):
+    tournament      = Tournament.objects.filter( state = 1).order_by( '-year' )[0]
+    match_list      = Match.objects.filter(tournament = tournament).order_by( 'date' )
+    context         = { 'match_list':match_list }
+    return render( request, 'tournaments/match_list.html', context )
+
+def match_list_all( request ):
     match_list      = Match.objects.order_by( '-date' )
     context         = { 'match_list':match_list }
     return render( request, 'tournaments/match_list.html', context )
