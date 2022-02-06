@@ -10,9 +10,9 @@ import pytz
 import logging                              
 logger = logging.getLogger("django")
 logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.StreamHandler())
+#logger.addHandler(logging.StreamHandler())
 logger.info('This is info bets/models')
-logger.debug("This is debug bets/models")
+#logger.debug("This is debug bets/models")
 
 
 # Create your models here.
@@ -122,9 +122,9 @@ def update_rating(sender, instance, **kwargs):
     #logger.info()
     match = Match.objects.get( id = instance.match.id)
     match_bets   = MatchBet.objects.filter(match = match)
-    ht_votes = 0
-    at_votes = 0
-    null_votes = 0
+    ht_votes = 0.0
+    at_votes = 0.0
+    null_votes = 0.0
     for b in match_bets:
         if b.home_team_score > b.away_team_score:
             ht_votes += 1
@@ -133,9 +133,14 @@ def update_rating(sender, instance, **kwargs):
         else :
             null_votes += 1
     total_votes = ht_votes + at_votes + null_votes
-    ht_rating = max(math.log(float(total_votes)/float((ht_votes if  ht_votes != 0 else 1)),base)*10,1)
-    at_rating = max(math.log(float(total_votes)/float((at_votes if  at_votes != 0 else 1)),base)*10,1)
-    null_rating = max(math.log(float(total_votes)/float((null_votes if  null_votes != 0 else 1)) ,base)*10,1)
+    #### former calculation
+    #ht_rating = max(math.log(float(total_votes)/float((ht_votes if  ht_votes != 0 else 1)),base)*10,1)
+    #at_rating = max(math.log(float(total_votes)/float((at_votes if  at_votes != 0 else 1)),base)*10,1)
+    #null_rating = max(math.log(float(total_votes)/float((null_votes if  null_votes != 0 else 1)) ,base)*10,1)
+    ### new calculation (2022)
+    ht_rating = (((total_votes + 1) - ht_votes) / total_votes) * 7
+    at_rating = (((total_votes + 1) - at_votes) / total_votes) * 7
+    null_rating = (((total_votes + 1) - null_votes) / total_votes) * 7
 
     rate = MatchRating()
     rate.match = match

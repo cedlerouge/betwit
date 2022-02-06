@@ -19,6 +19,7 @@ from .forms import MatchBetForm, TournamentBetForm, BetPointForm, ProfileForm, U
 
 import logging
 logger = logging.getLogger('bets')
+logger.addHandler( logging.StreamHandler() )
 logger.info('This is bets/views')
 
 # Create your views here.
@@ -238,7 +239,7 @@ def matchBet_add( request, tournament_id=None, mbet_id=None, m_id=None ):
                 params['form']      = form
                 params['elt']       = "matchBet"
                 params['is_update'] = True
-                params['post_url']  = reverse( 'bets:mbet_add_mid', args=(tournament_id, mbet_id))
+                params['post_url']  = reverse( 'bets:mbet_add_post_mid', args=(tournament_id, mbet_id))
                 return render( request, 'bets/bet_form.html', params)
         form    = None
         if m_id:
