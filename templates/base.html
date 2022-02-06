@@ -1,3 +1,4 @@
+
 {% load bootstrap3 %}
 {% load static %}
 <!DOCTYPE html>
@@ -15,22 +16,6 @@
     {% bootstrap_css %}
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'css/betwit.css' %}" rel="stylesheet">
-    <!-- Matomo -->
-    <script type="text/javascript">
-      var _paq = _paq || [];
-      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-      _paq.push(['trackPageView']);
-      _paq.push(['enableLinkTracking']);
-      (function() {
-        var u="https://j80.sorsdupi.eu/piwik/";
-        _paq.push(['setTrackerUrl', u+'piwik.php']);
-        _paq.push(['setSiteId', '1']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-      })();
-    </script>
-    <noscript><p><img src="http://j80.sorsdupi.eu/piwik/piwik.php?idsite=1&rec=1" style="border:0;" alt="" /></p></noscript>
-    <!-- End Matomo Code -->
   </head>
 
   <body>
@@ -80,7 +65,7 @@
               {{ user.username }}<b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="{% url 'bets:mybets' %}">Mes Paris</a></li>
-              <li><a href="/bets/mbet_add/">Nouveau Pari</a></li>
+              <li><a href="/bets/">Nouveau Pari</a></li>
               <li class="divider"></li>
               <li><a href="/settings/">Mes Infos</a></li>
               <li><a href="/accounts/password/change/">Change Password</a></li>
@@ -100,6 +85,8 @@
     </nav>
 
     <div class="container" role="main">
+
+        {% block title %}(no title){% endblock %}
 
         {% bootstrap_messages %}
 

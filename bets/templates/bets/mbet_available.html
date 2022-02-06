@@ -10,18 +10,31 @@
     <p>{{ error_message }}</p>
 </div>
 {% else %}
-<div class="row-fluid">
-    <div class="span9">
-        <div class="row-fluid"> 
-        {% for m in match_list %}
-            <div class="span3">
-                <a href="/bets/mbet_add/{{ m.tournament.id }}/match/{{ m.id }}/">{{ m.home_team.name }} vs {{ m.away_team.name }}</a>
+<div>
+    {% for match in match_list %}
+    {% if forloop.counter0|divisibleby:"3" %}
+    <div class="row">
+        <div><h3>Round {{ match.cup_round}}</h3></div>
+    {% endif %}
+        <div class="col-sm-4 border border-dark">
+            <div class="card border border-dark mb-3"> <!--style="width: 25rem;"-->
+                <div class="card-body">
+                    <h4 class="card-title">{{ match.date }}</h4>
+                    <h4 class="card-subtitle mb-2 text-muted">{{ match.home_team }} vs {{ match.away_team }}</h4>
+    {% if match.date > date_now %}
+                    <a href="/bets/mbet_add/{{ match.tournament.id }}/match/{{ match.id }}/" class="btn btn-primary stretched-link">Parier</a>
+    {% endif %}
+                </div>
             </div>
-        {% endfor %}
+            </a>
         </div>
+    {% if forloop.counter|divisibleby:"3" %}
     </div>
+    {% endif %}
+    {% endfor %}
 </div>
 {% endif %}
 {% endblock %}
+
 
 
