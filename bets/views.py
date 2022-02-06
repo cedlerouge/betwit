@@ -22,7 +22,7 @@ logger = logging.getLogger('bets')
 logger.addHandler( logging.StreamHandler() )
 logger.info('This is bets/views')
 
-# Create your views here.# Create your views here.
+# Create your views here.
 
 class UserRedirect(View):
     def get(self, request):
