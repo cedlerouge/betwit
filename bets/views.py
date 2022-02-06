@@ -21,7 +21,6 @@ import logging
 logger = logging.getLogger('bets')
 logger.addHandler( logging.StreamHandler() )
 logger.info('This is bets/views')
-logger.info('me vois tu ?   ')
 
 # Create your views here.# Create your views here.
 
