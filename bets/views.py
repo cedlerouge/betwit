@@ -191,7 +191,7 @@ def matchBet_add( request, tournament_id=None, mbet_id=None, m_id=None ):
             if mbet_id is not None:
                 # TODO Do not let save a match bet if an user has already his one for a specified match id
                 mbet = get_object_or_404(MatchBet, pk=mbet_id)
-                logger.error('mbet_id is present, so this is update')
+                logger.info('mbet_id is present, so this is update')
                 logger.info('mbet.id:' + str(mbet.id))
                 logger.info('mbet.home_team_score:' + str(mbet.home_team_score))
                 logger.info('mbet.created_date:' + str(mbet.created_date))
