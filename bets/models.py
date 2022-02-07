@@ -138,9 +138,9 @@ def update_rating(sender, instance, **kwargs):
     #at_rating = max(math.log(float(total_votes)/float((at_votes if  at_votes != 0 else 1)),base)*10,1)
     #null_rating = max(math.log(float(total_votes)/float((null_votes if  null_votes != 0 else 1)) ,base)*10,1)
     ### new calculation (2022)
-    ht_rating = (((total_votes + 1) - ht_votes) / total_votes) * 7
-    at_rating = (((total_votes + 1) - at_votes) / total_votes) * 7
-    null_rating = (((total_votes + 1) - null_votes) / total_votes) * 7
+    ht_rating = calcul_rating(ht_votes, total_votes)
+    at_rating =  calcul_rating(at_votes, total_votes)
+    null_rating = calcul_rating(null_votes, total_votes)
 
     rate = MatchRating()
     rate.match = match
@@ -157,6 +157,11 @@ def update_rating(sender, instance, **kwargs):
     # TODO ajouter une cote par paris ou creer une base time serie pour stocker l'evolution de la cote pour un match
     # TODO creer une base time serie pour stocker l'evolution du classement de chaque joueur
 
+def calcul_rating(nb_votes, total_votes):
+    result = (((total_votes + 1) - nb_votes) / total_votes) * 7
+    if result < 1:
+        result = 1
+    return result
 
 @receiver(post_save, sender=Match)
 def update_matchbet_points(sender, instance, **kwargs):
