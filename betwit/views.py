@@ -35,7 +35,19 @@ class Rules(View):
 
 class Cote(View):
     def get(self, request):
-        return render(request, 'cote.html')
+        total_votes = 15
+        params = dict()
+        elt = []
+        for i in range(1, total_votes):
+            item = dict()
+            calcul = round((float((total_votes + 1) - float(i)) / total_votes) * 7, 2)
+            item['nb_votes'] = float(i)
+            item['cote'] = float(1)  if calcul  < 1 else float(calcul)
+            item['points'] = float(item['cote'] * 2)
+            elt.append(item)
+        params['results'] = elt
+        params['total_votes'] = total_votes
+        return render(request, 'cote.html', params)
 
 class Apropos(View):
     def get(self, request):
