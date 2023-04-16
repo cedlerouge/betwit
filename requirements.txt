@@ -7,7 +7,7 @@ Pillow==4.0.0
 pyparsing==2.1.10
 six==1.10.0
 whitenoise==3.3.0
-Django==1.10.5                
+Django==2.2.28                
 django-andablog==2.4.0        
 django-bootstrap3==8.1.0      
 django-extensions==1.9.9      
