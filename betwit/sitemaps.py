@@ -1,5 +1,6 @@
 
-from django.core.urlresolvers import reverse
+#from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib.sitemaps import Sitemap
 #from betwit.urls import urlpatterns as betwitUrls
 from tournaments.models import Tournament, Team, Match, MatchPoint, TeamMatchPoint

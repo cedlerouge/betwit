@@ -18,10 +18,22 @@ logger.info('This is info bets/models')
 # Create your models here.
 
 class Profile(models.Model):
+    LANGUAGE_CHOICES = [
+        ('fr', 'Français'),
+        ('en', 'English'),
+    ]
+
     user            = models.OneToOneField( User, on_delete=models.CASCADE)
     is_admin        = models.BooleanField(default=False)
     tz              = models.CharField(max_length=30,default='Europe/Paris')
     points_won      = models.IntegerField( null=True, default=0 )
+    language        = models.CharField(max_length=5, choices=LANGUAGE_CHOICES, default='fr')
+
+    def __str__(self):
+        return f"Profile({self.user.username})"
+
+    class Meta:
+        ordering = ["user_id"]
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, **kwargs):
@@ -45,8 +57,8 @@ class MatchBet(models.Model):
     """
     Bets model : one bet per match and per player
     """
-    player          = models.ForeignKey(User)
-    match           = models.ForeignKey(Match)
+    player          = models.ForeignKey(User, on_delete=models.CASCADE)
+    match           = models.ForeignKey(Match, on_delete=models.CASCADE)
     home_team_score = models.IntegerField()
     home_team_tries = models.IntegerField()
     home_team_bonus = models.CharField(max_length=15, choices=bonus_choices, default='--')
@@ -63,10 +75,13 @@ class MatchBet(models.Model):
     # compute the score
     # specific app let making stats
     jokerbet_text    = models.CharField(max_length=150,null=True) 
-    jokerbet_value   = models.NullBooleanField()
+    jokerbet_value   = models.BooleanField(null=True)
 
     def __str__(self):
-        return str(self.player) + " - " + str(self.match)
+        return f"{self.player} - {self.match}"
+
+    class Meta:
+        ordering = ["-created_date", "-id"]
 
 class BetPoint(models.Model):
     """
@@ -81,13 +96,12 @@ class BetPoint(models.Model):
     match       = models.ForeignKey(Match, on_delete=models.DO_NOTHING)
     matchbet    = models.ForeignKey(MatchBet, on_delete=models.DO_NOTHING)
     points_won  = models.FloatField(default=0.0)
-    def __unicode__(self):
-        return "player %s - %s vs %s => %s" % (
-            self.player,
-            self.match.home_team,
-            self.match.away_team,
-            self.points_won
-        )
+
+    def __str__(self):
+        return f"player {self.player} - {self.match.home_team} vs {self.match.away_team} => {self.points_won}"
+
+    class Meta:
+        ordering = ["-points_won", "-id"]
 
 
 class MatchRating(models.Model):
@@ -97,7 +111,7 @@ class MatchRating(models.Model):
         * one rate for the away team : at_rating
         * one rate for the null match : null_rating
     """
-    match           = models.ForeignKey(Match)
+    match           = models.ForeignKey(Match,on_delete=models.CASCADE)
     ht_votes        = models.IntegerField(default=0)
     at_votes        = models.IntegerField(default=0)
     null_votes      = models.IntegerField(default=0)
@@ -106,6 +120,12 @@ class MatchRating(models.Model):
     at_rating       = models.FloatField(default=0)
     null_rating     = models.FloatField(default=0)
     date            = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Rating({self.match}) {self.ht_rating}/{self.at_rating}/{self.null_rating}"
+
+    class Meta:
+        ordering = ["-date", "-id"]
 
 @receiver(post_save, sender=MatchBet)
 def update_rating(sender, instance, **kwargs):
@@ -308,16 +328,22 @@ class TournamentBet(models.Model):
     """
     Tournament Bets model : one bet per player
     """
-    player          = models.ForeignKey(User)
-    tournament      = models.ForeignKey(Tournament)
-    first_team      = models.ForeignKey(Team, related_name='first_team')
-    second_team     = models.ForeignKey(Team, related_name='second_team')
-    third_team      = models.ForeignKey(Team, related_name='third_team')
-    fourth_team     = models.ForeignKey(Team, related_name='fourth_team')
-    fifth_team      = models.ForeignKey(Team, related_name='fifth_team')
-    sixth_team      = models.ForeignKey(Team, related_name='sixth_team')
+    player          = models.ForeignKey(User, on_delete=models.CASCADE)
+    tournament      = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    first_team      = models.ForeignKey(Team, related_name='first_team', on_delete=models.PROTECT)
+    second_team     = models.ForeignKey(Team, related_name='second_team', on_delete=models.PROTECT)
+    third_team      = models.ForeignKey(Team, related_name='third_team', on_delete=models.PROTECT)
+    fourth_team     = models.ForeignKey(Team, related_name='fourth_team', on_delete=models.PROTECT)
+    fifth_team      = models.ForeignKey(Team, related_name='fifth_team', on_delete=models.PROTECT)
+    sixth_team      = models.ForeignKey(Team, related_name='sixth_team', on_delete=models.PROTECT)
     grand_slam      = models.BooleanField(default=False)
     wooden_spoon    = models.BooleanField(default=False)
     points_won      = models.IntegerField(null=True, blank=True)
     created_date    = models.DateTimeField(auto_now_add=True)
     modified_date   = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"TournamentBet({self.player} - {self.tournament})"
+
+    class Meta:
+        ordering = ["-created_date", "-id"]

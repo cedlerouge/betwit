@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path, re_path
 from . import views
 
 """
@@ -8,16 +8,14 @@ dans cette page est affiche
 * un bouton pour choisir un autre tournoi
 """
 
+app_name = 'tournaments'
+
 urlpatterns = [
-    url( r'^$', views.tournament_list, name='tournament_list' ),
-    url( r'^tournaments/$', views.tournament_list, name='tournament_list' ),
-    url( r'^tournaments/(?P<tournament_id>[0-9]+)/$', views.tournament_detail, name = "tournament_detail" ),
-    #rl( r'^tournaments/(?P<tournament_id>[0-9]+)/match_add/$', views.match_add, name='match_add' ),
-    # TODO url( r'^tournament/(?P<tournament_id>[0-9]+)/team_add/$', views.team_add_to, name='team_add_to' ),
-    url( r'^teams/$', views.team_list, name="team_list" ),
-    #rl( r'^teams/add/$', views.team_add, name='team_add' ),
-    #url( r'^team/team_add/$', views.team_add, name='team_add' ),
-    url( r'^teams/(?P<team_id>[0-9]+)/$', views.team_detail, name = "team_detail" ),
-    url( r'^matchs/$', views.match_list, name='match_list' ),
-    url( r'^matchs/(?P<match_id>[0-9]+)/$', views.match_detail, name = "match_detail" ),
+    path('', views.tournament_list, name='tournament_list'),
+    path('tournaments/', views.tournament_list, name='tournament_list'),
+    re_path(r'^tournaments/(?P<tournament_id>[0-9]+)/$', views.tournament_detail, name='tournament_detail'),
+    path('teams/', views.team_list, name='team_list'),
+    re_path(r'^teams/(?P<team_id>[0-9]+)/$', views.team_detail, name='team_detail'),
+    path('matchs/', views.match_list, name='match_list'),
+    re_path(r'^matchs/(?P<match_id>[0-9]+)/$', views.match_detail, name='match_detail'),
 ]

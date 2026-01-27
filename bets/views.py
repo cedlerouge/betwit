@@ -1,7 +1,8 @@
 from django.views.generic import View
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+#from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
@@ -482,7 +483,7 @@ def prognosis( request ):
         try:
             bp = BetPoint.objects.get(matchbet=b)
             b.points_won = bp.points_won
-        except Exception,e :
+        except Exception as e :
             # if there is no betpoint for this bet, b.point_won = 0
             b.points_won = 0
         params['bet'].append(b)
@@ -491,7 +492,7 @@ def prognosis( request ):
     try:
         tbet        = TournamentBet.objects.filter(tournament = match[0].tournament)
         params['tournamentbets'] = tbet
-    except Exception, e:
+    except Exception as e:
         logger.error("Get list of tournamentbet : " + str(e))
         params['tournamentbets'] = []
     #params['match'] = match

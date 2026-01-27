@@ -28,6 +28,9 @@ class Team(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ["name"]
+
 class Tournament(models.Model):
     """
     Tournament model
@@ -45,9 +48,12 @@ class Tournament(models.Model):
     def __str__(self):
         return self.name + " - " + str(self.year)
 
+    class Meta:
+        ordering = ["-year", "name"]
+
 class TeamStat(models.Model):
-    team        = models.ForeignKey(Team)
-    tournament  = models.ForeignKey(Tournament)
+    team        = models.ForeignKey(Team, on_delete=models.CASCADE)
+    tournament  = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     played      = models.IntegerField(null=True, blank=True, default=0)
     win         = models.IntegerField(null=True, blank=True, default=0)
     draw        = models.IntegerField(null=True, blank=True, default=0)
@@ -61,11 +67,11 @@ class TeamStat(models.Model):
     losebonus   = models.IntegerField(null=True, blank=True, default=0)
     points      = models.IntegerField(null=True, blank=True, default=0)
 
-    def __unicode__(self):
-        return "%s : %s" % (
-            self.tournament,
-            self.team
-        )
+    def __str__(self):
+        return f"{self.tournament} : {self.team}"
+
+    class Meta:
+        ordering = ["-points", "team__name"]
 
 class Match(models.Model):
     """
@@ -83,16 +89,16 @@ class Match(models.Model):
         ( '4', 'Round 4'),
         ( '5', 'Round 5'),
     )
-    tournament          = models.ForeignKey( Tournament )
+    tournament          = models.ForeignKey( Tournament, on_delete=models.CASCADE )
     date                = models.DateTimeField( auto_now_add=False )
     cup_round           = models.CharField(max_length=1, choices=cup_round, default='1')
     #tournament_round = models.IntegerField()
-    home_team           = models.ForeignKey(Team, related_name="home_team" )
+    home_team           = models.ForeignKey(Team, related_name="home_team", on_delete=models.PROTECT )
     home_team_score     = models.IntegerField( null=True, blank=True, default=0)
     home_team_tries     = models.IntegerField( null=True, blank=True, default=0)
     home_team_bonus     = models.CharField( max_length=15, choices=bonus, default='--' )
     #home_team_point = models.IntegerField( null=True, blank=True )
-    away_team           = models.ForeignKey( Team, related_name="away_team" )
+    away_team           = models.ForeignKey( Team, related_name="away_team", on_delete=models.PROTECT )
     away_team_score     = models.IntegerField( null=True, blank=True, default=0 )
     away_team_tries     = models.IntegerField( null=True, blank=True, default=0 )
     away_team_bonus     = models.CharField( max_length=15, choices=bonus, default='--' )
@@ -106,22 +112,25 @@ class Match(models.Model):
     odds                = models.IntegerField( null=True, blank=True, default=0 )
     #comment             = models.TextField( max_length=1000, null=True, blank=True )
     jokerbet_text       = models.CharField(max_length=50, default='')
-    jokerbet_response   = models.NullBooleanField()
+    jokerbet_response   = models.BooleanField(null=True)
     jokerbet_win_pts    = models.IntegerField(default=0)
     jokerbet_lose_pts   = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ["date", "id"]
 
     def __unicode__(self):
         return "%s vs %s" % (self.home_team, self.away_team)
 
-    def str(self):
-        return str("%s vs %s" % (self.home_team, self.away_team))
+    def __str__(self):
+        return f"{self.home_team} vs {self.away_team}"
 
 class TeamMatchPoint(models.Model):
     """
     Team model
     """
-    team        = models.ForeignKey(Team)
-    match       = models.ForeignKey(Match)
+    team        = models.ForeignKey(Team, on_delete=models.CASCADE)
+    match       = models.ForeignKey(Match, on_delete=models.CASCADE)
     victory     = models.IntegerField(null=True, blank=True, default=0)
     draw        = models.IntegerField(null=True, blank=True, default=0)
     trybonus    = models.IntegerField(null=True, blank=True, default=0)
@@ -247,12 +256,12 @@ def update_team_stats(sender, instance, **kwargs):
 
         try:
             home_stats      = TeamStat.objects.get(team = home_team, tournament = instance.match.tournament)
-        except Exception, e:
+        except Exception as e:
             clog.debug(e)
             home_stats      = TeamStat(team = home_team, tournament = instance.match.tournament)
         try:
             away_stats      = TeamStat.objects.get(team = away_team, tournament = instance.match.tournament)
-        except Exception, e:
+        except Exception as e:
             clog.debug(e)
             away_stats      = TeamStat(team = away_team, tournament = instance.match.tournament)
 

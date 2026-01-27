@@ -1,23 +1,41 @@
-Markdown==2.6.11
-appdirs==1.4.0
-gunicorn==19.6.0
-olefile==0.44
-packaging==16.8
-Pillow==4.0.0
-pyparsing==2.1.10
-six==1.10.0
-whitenoise==3.3.0
-Django==1.10.5                
-django-andablog==2.4.0        
-django-bootstrap3==8.1.0      
-django-extensions==1.9.9      
-django-jquery==3.1.0          
-django-markitup==3.0.0        
-django-model-utils==3.1.1     
-django-newsletter==0.6        
-django-registration-redux==1.4
-django-robots==3.0            
-django-taggit==0.22.2         
-django-tinymce==2.7.0         
-django-webtest==1.9.2         
-pytz==2017.3
+# Core/runtime
+Django==4.2.*
+whitenoise==6.7.0
+gunicorn==21.2.0
+Pillow==10.4.0
+Markdown==3.6
+packaging==24.1
+pyparsing==3.1.2
+six==1.16.0
+appdirs==1.4.4
+olefile==0.47
+pytz==2024.1
+
+# API and CORS
+djangorestframework>=3.14,<3.15
+django-cors-headers>=4.3,<5.0
+djangorestframework-simplejwt>=5.3.0
+django-filter>=24.0
+
+# Django apps (versions chosen for Django 4.2 compatibility)
+# django-andablog disabled due to Django 4.2 incompatibility
+django-bootstrap3>=24.3  # modern releases; Django 4.2 compatible
+django-extensions>=3.2.3
+# django-jquery is largely unmaintained; keep but bump to last release
+django-jquery>=3.1.0
+# markitup disabled with andablog
+# django-markitup>=4.1.0
+# model-utils
+django-model-utils>=4.5.1
+# newsletter
+django-newsletter>=0.9
+# registration-redux
+django-registration-redux>=2.13
+# robots
+django-robots>=6.1
+# taggit
+django-taggit>=5.0.1
+# tinymce (django-tinymce 4.x supports Django 4.2)
+django-tinymce>=4.1.0
+# webtest wrapper
+django-webtest>=1.9.11

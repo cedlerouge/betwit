@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+#from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.utils import timezone
@@ -36,12 +37,12 @@ def tournament_detail( request, tournament_id ):
     for m in matchs:
         try:
             home_team_points = TeamMatchPoint.objects.get(team = m.home_team, match = m)
-        except Exception, e:
+        except Exception as e:
             logger.error("get home " + str(m.home_team) + " TeamMatchPoint: ", e)
             home_team_points = TeamMatchPoint(team = m.home_team, match = m)
         try: 
             away_team_points = TeamMatchPoint.objects.get(team=m.away_team, match=m)
-        except Exception, e:
+        except Exception as e:
             logger.error("get away " + str(m.away_team) + " TeamMatchPoint: ", e)
             away_team_points = TeamMatchPoint(team = m.away_team, match = m)
         match_list.append((m, home_team_points, away_team_points))

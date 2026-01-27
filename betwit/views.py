@@ -9,7 +9,8 @@ from django.contrib.auth.models import User
 
 from bets.models import MatchBet, TournamentBet, MatchRating, BetPoint
 from tournaments.models import Tournament, Match
-from andablog.models import Entry
+# andablog disabled
+# from andablog.models import Entry
 import tournaments.board
 from operator import itemgetter
 import datetime
@@ -94,9 +95,10 @@ class HomeView(View):
 
     def get(self, request):
         limit = 1
-        tid = Tournament.objects.filter(state=1,year=datetime.datetime.now().year)
-        #next_match = Match.objects.filter(tournament = tid).order_by('date')[0]
-        next_matchs = tournaments.board.getNextMatchs(tid,3)
+        # Get a single current tournament (enabled) for the current year
+        tournament = Tournament.objects.filter(state=1, year=datetime.datetime.now().year).first()
+        # Build next matches list safely
+        next_matchs = tournaments.board.getNextMatchs(tournament, 3) if tournament else []
         # rassemble match informations and ratings in a table
         matchs = list()
         for m in next_matchs:
@@ -117,7 +119,7 @@ class HomeView(View):
         content = {
 
             # Blog
-            'entries':  Entry.objects.filter(Q(is_published=True) | Q(author__isnull=False)).order_by('-published_timestamp'),
+            'entries':  [],  # andablog disabled
             #comments = Comment.objects.last(5)
 
             # CountDown
@@ -128,7 +130,7 @@ class HomeView(View):
             # player rank 
             'first5': self.first_players(),
             # tournament
-            'team_stats': tournaments.board.getTeamTable(tid)
+            'team_stats': tournaments.board.getTeamTable(tournament) if tournament else []
 
         }
 
